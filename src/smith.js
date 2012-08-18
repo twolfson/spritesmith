@@ -6,6 +6,8 @@ var async = require('async'),
 // Generate the spritesmith function
 // TODO: Allow for quality specification, output type
 function Spritesmith(files, callback) {
+  var retObj = {};
+
   // In a waterfall fashion
   async.waterfall([
     // Retrieve the files as buffers
@@ -35,15 +37,41 @@ function Spritesmith(files, callback) {
       cb(null, canvas);
     },
     // Then, callback with the output canvas
-    function outputCanvas (canvas, cb) {
-      var retData = "",
-          pngStream = canvas.createPNGStream();
+    function smithOutputCanvas (canvas, cb) {
+      var pngStream = canvas.createPNGStream(),
+          imgData = [],
+          err;
+
+      // On data, add it to imgData
+      // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
       pngStream.on('data', function (chunk) {
-        retData += chunk.toString('binary');
+        var binaryStr = chunk.toString('binary');
+        imgData.push(binaryStr);
       });
+
+      // On error, save it
+      pngStream.on('error', function (_err) {
+        err = _err;
+      });
+
+      // When complete
       pngStream.on('end', function () {
-        cb(null, retData);
+        // If there was an error, callback with it
+        if (err) {
+          cb(err);
+        } else {
+        // Otherwise, join together image data, put it into the retObj
+          var retStr = imgData.join('');
+          retObj.image = retStr;
+
+          // Callback with no error
+          cb(null);
+        }
       });
+    },
+    function smithCallbackData (cb) {
+      // Callback with the return object
+      cb(null, retObj);
     }
   ], callback);
 }
