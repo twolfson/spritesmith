@@ -7,10 +7,10 @@ var async = require('async'),
 function Spritesmith(files, callback) {
   // In a waterfall fashion
   async.waterfall([
-    // Retrieve the files
+    // Retrieve the files as buffers
     function smithRetrieveFiles (cb) {
       async.map(files, function (file, cb) {
-        fs.readFile(file, 'utf8', cb);
+        fs.readFile(file, cb);
       }, cb);
     },
     // Then, create a canvas and the files to it
@@ -27,17 +27,22 @@ function Spritesmith(files, callback) {
         // Create an Image from the file
         var img = new Image();
         img.src = file;
-        // ctx.drawImage(img, 0, 0, img.width, img.height);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
       });
-// console.log(canvas.toDataUrl(function (err, data) {
-// console.log(arguments);
-// }));
+
       // Callback with the canvas
       cb(null, canvas);
     },
     // Then, callback with the output canvas
-    function tempCallback() {
-      arguments[arguments.length - 1](null, '2');
+    function outputCanvas (canvas, cb) {
+      var retData = "",
+          pngStream = canvas.createPNGStream();
+      pngStream.on('data', function (chunk) {
+        retData += chunk;
+      });
+      pngStream.on('end', function () {
+        cb(null, retData);
+      });
     }
   ], callback);
 }
