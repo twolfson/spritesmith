@@ -19,18 +19,44 @@ function Spritesmith(files, callback) {
     // Then, create a canvas and the files to it
     function smithAddFiles (files, cb) {
       // TODO: Predict the optimum size canvas
-      // Create a canvas
-      var canvas = new Canvas(100, 100),
-          ctx = canvas.getContext('2d');
-
-      // Add the files to the canvas
-      // TODO: Use a better algorithm
-      // TODO: Should this be async.each?
-      files.forEach(function (file) {
-        // Create an Image from the file
+      // Map the files into their image counterparts
+      var images = files.map(function (file) {
         var img = new Image();
         img.src = file;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
+        return img;
+      });
+
+      // Pluck the width and heights of the images
+      var imgHeights = images.map(function (img) {
+            return img.height;
+          }),
+          imgWidths = images.map(function (img) {
+            return img.width;
+          });
+
+      // Determine the maximum width and sum the heights
+      var maxWidth = Math.max.apply(Math, imgWidths),
+          totalHeight = imgHeights.reduce(function (a, b) {
+            return a + b;
+          }, 0);
+
+      // Create a canvas
+      var canvas = new Canvas(maxWidth, totalHeight),
+          ctx = canvas.getContext('2d'),
+          currentHeight = 0;
+
+      // Add the images to the canvas
+      // TODO: Use a better algorithm
+      // TODO: Should this be async.each?
+      images.forEach(function (img) {
+        // Save the image.height
+        var imgHeight = img.height;
+
+        // Draw the image at the current height
+        ctx.drawImage(img, 0, currentHeight, img.width, imgHeight);
+
+        // Add the img.height to the current height
+        currentHeight += imgHeight;
       });
 
       // Callback with the canvas

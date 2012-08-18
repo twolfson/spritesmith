@@ -14,7 +14,7 @@ smith(sprites, function (err, result) {
 
     // Assert the actual image is the same expected
     var expectedFile = __dirname + '/test_sprites/expected.png',
-        expectedImage = fs.writeFileSync(expectedFile, result.image, 'binary');
+        expectedImage = fs.readFileSync(expectedFile, 'binary');
     assert(expectedFile, result.image, "Actual image does not match expected image");
 
     // Notify that the test is passing
