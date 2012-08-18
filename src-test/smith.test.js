@@ -1,6 +1,8 @@
 // TODO: Move over to path
 var smith = require('../src/smith.js'),
-    sprites = [__dirname + '/test_sprites/sprite1.png'],
+    // sprites = [__dirname + '/test_sprites/sprite1.png'],
+    spriteDir = __dirname + '/test_sprites',
+    sprites = [spriteDir + '/sprite1.png', spriteDir + '/sprite2.jpg', spriteDir + '/sprite3.png'],
     fs = require('fs'),
     assert = require('assert');
 
@@ -13,9 +15,9 @@ smith(sprites, function (err, result) {
     // fs.writeFileSync(__dirname + '/test_sprites/expected.png', result.image, 'binary');
 
     // Assert the actual image is the same expected
-    var expectedFile = __dirname + '/test_sprites/expected.png',
+    var expectedFile = spriteDir + '/expected.png',
         expectedImage = fs.readFileSync(expectedFile, 'binary');
-    assert(expectedFile, result.image, "Actual image does not match expected image");
+    assert.strictEqual(expectedImage, result.image, "Actual image does not match expected image");
 
     // Notify that the test is passing
     console.log("Success!");
