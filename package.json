@@ -1,0 +1,16 @@
+{
+  "name": "spritesmith",
+  "version": "0.0.0",
+  "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sprite",
+    "spritesheet",
+    "css"
+  ],
+  "author": "Todd Wolfson <todd@twolfson.com>",
+  "license": "MIT"
+}
