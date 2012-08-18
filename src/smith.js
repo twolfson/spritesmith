@@ -4,6 +4,7 @@ var async = require('async'),
     Image = Canvas.Image;
 
 // Generate the spritesmith function
+// TODO: Allow for quality specification, output type
 function Spritesmith(files, callback) {
   // In a waterfall fashion
   async.waterfall([
