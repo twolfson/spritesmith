@@ -12,5 +12,9 @@
     "css"
   ],
   "author": "Todd Wolfson <todd@twolfson.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "canvas": "~0.13.0"
+  }
 }
