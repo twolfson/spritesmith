@@ -1,2 +1,2 @@
 var smith = require('../src/smith.js');
-smith();
+smith([__dirname + '/test_sprites/sprite1.png'], console.log);
