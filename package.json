@@ -2,7 +2,7 @@
   "name": "spritesmith",
   "version": "0.0.0",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
-  "main": "index.js",
+  "main": "src/smith.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
