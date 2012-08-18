@@ -38,13 +38,12 @@ function Spritesmith(files, callback) {
     function outputCanvas (canvas, cb) {
       var retData = "",
           pngStream = canvas.createPNGStream();
-      // pngStream.on('data', function (chunk) {
-      //   retData += chunk;
-      // });
-      // pngStream.on('end', function () {
-      //   cb(null, retData);
-      // });
-cb(null, pngStream);
+      pngStream.on('data', function (chunk) {
+        retData += chunk.toString('binary');
+      });
+      pngStream.on('end', function () {
+        cb(null, retData);
+      });
     }
   ], callback);
 }
