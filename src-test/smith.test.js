@@ -18,7 +18,7 @@ smith(sprites, function (err, result) {
     var expectedFile = spriteDir + '/expected.png',
         expectedImage = fs.readFileSync(expectedFile, 'binary');
     assert.strictEqual(expectedImage, result.image, "Actual image does not match expected image");
-
+console.log(result.coordinates);
     // Notify that the test is passing
     console.log("Success!");
   }
