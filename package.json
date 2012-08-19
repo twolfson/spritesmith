@@ -1,10 +1,10 @@
 {
   "name": "spritesmith",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node src-test/smith.test.js"
   },
   "keywords": [
     "sprite",
