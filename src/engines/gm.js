@@ -49,15 +49,21 @@ function Canvas(width, height) {
   // var canvas = gm(525, 110, "#00ff55aa");
   // TODO: Use path
   // var canvas = gm(__dirname + '/transparent.png').extent(width, height);
-  var canvas = gm(__dirname + '/../../src-test/actual_files/sprite_base.png');
+  // var canvas = gm(__dirname + '/../../src-test/actual_files/sprite_base.png');
+  var canvas = gm(__dirname + '\\..\\..\\src-test\\actual_files\\sprite_base.png');
+  canvas.compose('over');
   this.canvas = canvas;
 }
 Canvas.prototype = {
   'addImage': function addImage (img, x, y, cb) {
 console.log(img.file);
     var canvas = this.canvas;
-    canvas.page(img.width, img.height, img.file);
-    // canvas.page(x, y, img.file);
+    // canvas.page(img.width, img.height, img.file);
+img.file = img.file.replace(/\//g, '\\');
+    canvas.out('-page');
+    canvas.out('+' + x + '+' + y);
+    // canvas.page(x, y);
+    canvas.out(img.file);
   },
   'export': function exportFn (format, cb) {
     // Grab the exporter
