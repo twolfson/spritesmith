@@ -15,9 +15,11 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "canvas": "~0.13.0",
     "async": "~0.1.22"
   },
+  "optionalDependencies": {
+    "canvas": "~0.13.0"
+  }
   "repository": {
     "type": "git",
     "url": "https://github.com/Ensighten/spritesmith.git"

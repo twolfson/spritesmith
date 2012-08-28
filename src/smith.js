@@ -1,10 +1,23 @@
 var async = require('async'),
     fs = require('fs'),
-    Canvas = require('canvas'),
-    Image = Canvas.Image;
+    engines = {};
+
+// Attempt to load canvas
+try {
+  engines.canvas = require('./engines/canvas');
+} catch (e) {
+}
+
+// // Attempt to load imagemagick
+// try {
+  // engine = require('gm');
+  // engines.imagemagick = engine;
+// } catch (e) {
+// }
 
 // Generate the spritesmith function
 // TODO: Allow for quality specification, output type
+// function Spritesmith(files, options callback) {
 function Spritesmith(files, callback) {
   var retObj = {};
 
