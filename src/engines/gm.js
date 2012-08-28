@@ -45,21 +45,27 @@ var fs = require('fs'),
     };
 
 function Canvas(width, height) {
-  var canvas = gm('D:\\gitHub\\spritesmith\\src-test/test_sprites/sprite1.png').size(width, height);
+  // TODO: Get it working without transparent.png (i.e. use the next line)
+  // var canvas = gm(525, 110, "#00ff55aa");
+  // TODO: Use path
+  // var canvas = gm(__dirname + '/transparent.png').extent(width, height);
+  var canvas = gm(__dirname + '/../../src-test/actual_files/sprite_base.png');
   this.canvas = canvas;
 }
 Canvas.prototype = {
   'addImage': function addImage (img, x, y, cb) {
 console.log(img.file);
     var canvas = this.canvas;
-    canvas.page(x, y, img.file);
+    canvas.page(img.width, img.height, img.file);
+    // canvas.page(x, y, img.file);
   },
   'export': function exportFn (format, cb) {
     // Grab the exporter
     var exporter = exporters[format];
-
+this.canvas.flatten();
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
+console.log(this.canvas);
 
     // Render the item
     exporter.call(this, cb);
