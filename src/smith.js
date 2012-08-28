@@ -1,4 +1,5 @@
 var async = require('async'),
+    assert = require('assert'),
     engines = {};
 
 // Attempt to load canvas
@@ -8,18 +9,19 @@ try {
 }
 
 // // Attempt to load imagemagick
-// try {
-  // engine = require('gm');
-  // engines.imagemagick = engine;
-// } catch (e) {
-// }
+try {
+  engines.gm = require('./engines/gm');
+} catch (e) {
+}
 
 // Generate the spritesmith function
 // TODO: Allow for quality specification, output type
-// function Spritesmith(files, options, callback) {
 function Spritesmith(files, callback) {
   var retObj = {},
-      engine = engines.canvas;
+      engine = engines.canvas || engines.gm;
+      
+  // Assert there is an engine
+  assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
 
   // In a waterfall fashion
   async.waterfall([
