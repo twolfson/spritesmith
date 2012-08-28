@@ -14,6 +14,13 @@ smith(sprites, function (err, result) {
     var expectedDir = __dirname + '/expected_files';
     // DEV: Write out the result to a file
     // fs.writeFileSync(__dirname + '/test_sprites/expected.png', result.image, 'binary');
+    
+    // DEV: Write out to actual_files
+    if (true) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/sprite.png', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/coordinates.json', JSON.stringify(result.coordinates, null, 4));
+    }
 
     // Assert the actual image is the same expected
     var expectedFile = expectedDir + '/sprite.png',

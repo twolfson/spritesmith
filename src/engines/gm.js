@@ -4,47 +4,55 @@ var fs = require('fs'),
     gm = require('gm'),
     exporters = {
       'png': function canvasPngExporter (cb) {
-        var canvas = this.canvas,
-            pngStream = canvas.createPNGStream(),
-            imgData = [],
-            err;
-
-        // On data, add it to imgData
-        // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
-        pngStream.on('data', function (chunk) {
-          var binaryStr = chunk.toString('binary');
-          imgData.push(binaryStr);
-        });
-
-        // On error, save it
-        pngStream.on('error', function (_err) {
-          err = _err;
-        });
-
-        // When complete
-        pngStream.on('end', function () {
+        var canvas = this.canvas;
+        canvas.stream(function (err, stdout, stderr) {
           // If there was an error, callback with it
           if (err) {
-            cb(err);
-          } else {
-          // Otherwise, join together image data, put it into the retObj
-            var retStr = imgData.join('');
-
-            // Callback with no error
-            cb(null, retStr);
+            return cb(err);
           }
+
+          // Otherwise, create placeholder items
+          var imgData = [],
+              err;
+
+          // On data, add it to imgData
+          // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
+          stdout.on('data', function (chunk) {
+            var binaryStr = chunk.toString('binary');
+            imgData.push(binaryStr);
+          });
+
+          // On error, save it
+          stderr.on('data', function (_err) {
+            err = _err;
+          });
+
+          // When complete
+          stdout.on('end', function () {
+            // If there was an error, callback with it
+            if (err) {
+              cb(err);
+            } else {
+            // Otherwise, join together image data, put it into the retObj
+              var retStr = imgData.join('');
+
+              // Callback with no error
+              cb(null, retStr);
+            }
+          });
         });
       }
     };
 
 function Canvas(width, height) {
-  var canvas = gm('').page(width, height);
+  var canvas = gm('D:\\gitHub\\spritesmith\\src-test/test_sprites/sprite1.png').size(width, height);
   this.canvas = canvas;
 }
 Canvas.prototype = {
   'addImage': function addImage (img, x, y, cb) {
-    var ctx = this.ctx;
-    ctx.drawImage(img, x, y, img.width, img.height);
+console.log(img.file);
+    var canvas = this.canvas;
+    canvas.page(x, y, img.file);
   },
   'export': function exportFn (format, cb) {
     // Grab the exporter
@@ -77,22 +85,17 @@ function createImage(file, cb) {
       img.size(cb);
     },
     function saveImgSize (size, cb) {
-      // Save the size to the image
-      img.height = size.height;
-      img.width = size.width;
+      // Create a structure for preserving the height and width of the image
+      var imgFile = {
+        'height': size.height,
+        'width': size.width,
+        'file': file
+      };
 
-      // Callback
-      cb(null);
+      // Callback with the imgFile
+      cb(null, imgFile);
     }
-  ], function (err) {
-    // If there was an error, callback with it
-    if (err) {
-      cb(err);
-    } else {
-    // Otherwise, callback with the image
-      cb(null ,img);
-    }
-  });
+  ], cb);
 }
 Canvas.createImage = createImage;
 

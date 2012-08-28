@@ -66,7 +66,7 @@ function Spritesmith(files, callback) {
 
       // Add the images to the canvas
       // TODO: Use a better algorithm
-      // TODO: Should this be async.each?
+      // TODO: Should this be async.each
       images.forEach(function (img) {
         // Save the image properties
         var x = 0,
