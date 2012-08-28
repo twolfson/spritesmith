@@ -19,12 +19,14 @@ try {
 // TODO: Allow for quality specification, output type
 // function Spritesmith(files, options callback) {
 function Spritesmith(files, callback) {
-  var retObj = {};
+  var retObj = {},
+      engine = engines.canvas;
 
   // In a waterfall fashion
   async.waterfall([
     // Retrieve the files as buffers
     function smithRetrieveFiles (cb) {
+      // TODO: This is going to go inside of grabImages -- createImage engine
       async.map(files, function (file, cb) {
         // Read in the file
         fs.readFile(file, function (err, buffer) {
@@ -33,7 +35,7 @@ function Spritesmith(files, callback) {
             cb(err);
           } else {
           // Otherwise, write the path to the buffer and callback
-            buffer.path = file;
+            buffer._filepath = file;
             cb(null, buffer);
           }
         });
@@ -42,19 +44,20 @@ function Spritesmith(files, callback) {
     function grabImages (files, cb) {
       // TODO: Predict the optimum size canvas
       // Map the files into their image counterparts
-      var images = files.map(function (file) {
-        var img = new Image();
-        img.src = file;
+      async.map(files, function (file, cb) {
+        async.waterfall([
+          function createImage (cb) {
+            engine.createImage(file, cb);
+          },
+          function savePath (img, cb) {
+            // Save the buffer path to the image
+            img._filepath = file._filepath;
 
-        // Save the buffer path to the image
-        img.path = file.path;
-
-        // Retunr the image
-        return img;
-      });
-
-      // Callback with the images
-      cb(null, images);
+            // Callback with the image
+            cb(null, img);
+          }
+        ], cb);
+      }, cb);
     },
     // Then, create a canvas and the files to it
     function smithAddFiles (images, cb) {
@@ -73,8 +76,7 @@ function Spritesmith(files, callback) {
           }, 0);
 
       // Create a canvas
-      var canvas = new Canvas(maxWidth, totalHeight),
-          ctx = canvas.getContext('2d'),
+      var canvas = new engine(maxWidth, totalHeight),
           currentHeight = 0,
           coords = {};
 
@@ -89,13 +91,13 @@ function Spritesmith(files, callback) {
             imgHeight = img.height;
 
         // Draw the image at the current height
-        ctx.drawImage(img, x, y, imgWidth, imgHeight);
+        canvas.addImage(img, x, y);
 
         // Add the img.height to the current height
         currentHeight += imgHeight;
 
         // Save the coordinates for this image
-        coords[img.path] = {
+        coords[img._filepath] = {
           'x': x,
           'y': y,
           'height': imgHeight,
@@ -111,36 +113,19 @@ function Spritesmith(files, callback) {
     },
     // Then, callback with the output canvas
     function smithOutputCanvas (canvas, cb) {
-      var pngStream = canvas.createPNGStream(),
-          imgData = [],
-          err;
+      async.waterfall([
+        // Export the canvas as a png
+        function exportCanvas (cb) {
+          canvas['export']('png', cb);
+        },
+        function saveImageToRetObj(imgStr, cb) {
+          // Save the image to the retObj
+          retObj.image = imgStr;
 
-      // On data, add it to imgData
-      // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
-      pngStream.on('data', function (chunk) {
-        var binaryStr = chunk.toString('binary');
-        imgData.push(binaryStr);
-      });
-
-      // On error, save it
-      pngStream.on('error', function (_err) {
-        err = _err;
-      });
-
-      // When complete
-      pngStream.on('end', function () {
-        // If there was an error, callback with it
-        if (err) {
-          cb(err);
-        } else {
-        // Otherwise, join together image data, put it into the retObj
-          var retStr = imgData.join('');
-          retObj.image = retStr;
-
-          // Callback with no error
+          // Callback
           cb(null);
         }
-      });
+      ], cb);
     },
     function smithCallbackData (cb) {
       // Callback with the return object
