@@ -1,4 +1,6 @@
-var assert = require('assert'),
+var fs = require('fs'),
+    async = require('async'),
+    assert = require('assert'),
     CanvasLib = require('canvas'),
     ImageLib = CanvasLib.Image,
     exporters = {
@@ -61,12 +63,20 @@ Canvas.prototype = {
 
 // Write out Image as a static property of Canvas
 function createImage(file, cb) {
-  // Create an image object with the proper source file
-  var img = new ImageLib();
-  img.src = file;
+  async.waterfall([
+    function readImageFile (cb) {
+      // Read in the file as a buffer
+      fs.readFile(file, cb);
+    },
+    function createImageFn (imgBuffer, cb) {
+      // Create an image object with the proper source file
+      var img = new ImageLib();
+      img.src = imgBuffer;
 
-  // Callback with the image
-  cb(null, img);
+      // Callback with the image
+      cb(null, img);
+    }
+  ], cb);
 }
 Canvas.createImage = createImage;
 

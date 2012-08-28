@@ -1,5 +1,4 @@
 var async = require('async'),
-    fs = require('fs'),
     engines = {};
 
 // Attempt to load canvas
@@ -17,32 +16,14 @@ try {
 
 // Generate the spritesmith function
 // TODO: Allow for quality specification, output type
-// function Spritesmith(files, options callback) {
+// function Spritesmith(files, options, callback) {
 function Spritesmith(files, callback) {
   var retObj = {},
       engine = engines.canvas;
 
   // In a waterfall fashion
   async.waterfall([
-    // Retrieve the files as buffers
-    function smithRetrieveFiles (cb) {
-      // TODO: This is going to go inside of grabImages -- createImage engine
-      async.map(files, function (file, cb) {
-        // Read in the file
-        fs.readFile(file, function (err, buffer) {
-          // If there is an error, callback with it
-          if (err) {
-            cb(err);
-          } else {
-          // Otherwise, write the path to the buffer and callback
-            buffer._filepath = file;
-            cb(null, buffer);
-          }
-        });
-      }, cb);
-    },
-    function grabImages (files, cb) {
-      // TODO: Predict the optimum size canvas
+    function grabImages (cb) {
       // Map the files into their image counterparts
       async.map(files, function (file, cb) {
         async.waterfall([
@@ -51,7 +32,7 @@ function Spritesmith(files, callback) {
           },
           function savePath (img, cb) {
             // Save the buffer path to the image
-            img._filepath = file._filepath;
+            img._filepath = file;
 
             // Callback with the image
             cb(null, img);
@@ -61,6 +42,7 @@ function Spritesmith(files, callback) {
     },
     // Then, create a canvas and the files to it
     function smithAddFiles (images, cb) {
+      // TODO: Predict the optimum size canvas
       // Pluck the width and heights of the images
       var imgHeights = images.map(function (img) {
             return img.height;
