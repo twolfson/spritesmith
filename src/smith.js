@@ -39,11 +39,9 @@ function Spritesmith(files, callback) {
         });
       }, cb);
     },
-    // Then, create a canvas and the files to it
-    function smithAddFiles (files, cb) {
+    function grabImages (files, cb) {
       // TODO: Predict the optimum size canvas
       // Map the files into their image counterparts
-      // TODO: This function can go into its own waterfall
       var images = files.map(function (file) {
         var img = new Image();
         img.src = file;
@@ -55,6 +53,11 @@ function Spritesmith(files, callback) {
         return img;
       });
 
+      // Callback with the images
+      cb(null, images);
+    },
+    // Then, create a canvas and the files to it
+    function smithAddFiles (images, cb) {
       // Pluck the width and heights of the images
       var imgHeights = images.map(function (img) {
             return img.height;
