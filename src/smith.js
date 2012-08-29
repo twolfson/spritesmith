@@ -19,7 +19,7 @@ try {
 function Spritesmith(files, callback) {
   var retObj = {},
       engine = engines.canvas || engines.gm;
-      
+
   // Assert there is an engine
   assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
 
@@ -60,40 +60,46 @@ function Spritesmith(files, callback) {
           }, 0);
 
       // Create a canvas
-      var canvas = new engine(maxWidth, totalHeight),
-          currentHeight = 0,
-          coords = {};
+      async.waterfall([
+        function createCanvasFn (cb) {
+          engine.createCanvas(maxWidth, totalHeight, cb);
+        },
+        function addImagesFn (canvas, cb) {
+          var currentHeight = 0,
+              coords = {};
 
-      // Add the images to the canvas
-      // TODO: Use a better algorithm
-      // TODO: Should this be async.each
-      images.forEach(function (img) {
-        // Save the image properties
-        var x = 0,
-            y = currentHeight,
-            imgWidth = img.width,
-            imgHeight = img.height;
+          // Add the images to the canvas
+          // TODO: Use a better algorithm
+          // TODO: Should this be async.each
+          images.forEach(function (img) {
+            // Save the image properties
+            var x = 0,
+                y = currentHeight,
+                imgWidth = img.width,
+                imgHeight = img.height;
 
-        // Draw the image at the current height
-        canvas.addImage(img, x, y);
+            // Draw the image at the current height
+            canvas.addImage(img, x, y);
 
-        // Add the img.height to the current height
-        currentHeight += imgHeight;
+            // Add the img.height to the current height
+            currentHeight += imgHeight;
 
-        // Save the coordinates for this image
-        coords[img._filepath] = {
-          'x': x,
-          'y': y,
-          'height': imgHeight,
-          'width': imgWidth
-        };
-      });
+            // Save the coordinates for this image
+            coords[img._filepath] = {
+              'x': x,
+              'y': y,
+              'height': imgHeight,
+              'width': imgWidth
+            };
+          });
 
-      // Save the coordinates to retObj
-      retObj.coordinates = coords;
+          // Save the coordinates to retObj
+          retObj.coordinates = coords;
 
-      // Callback with the canvas
-      cb(null, canvas);
+          // Callback with the canvas
+          cb(null, canvas);
+        }
+      ], cb);
     },
     // Then, callback with the output canvas
     function smithOutputCanvas (canvas, cb) {

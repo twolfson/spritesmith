@@ -36,7 +36,8 @@ var fs = require('fs'),
           }
         });
       }
-    };
+    },
+    engine = {};
 
 function Canvas(width, height) {
   var canvas = new CanvasLib(width, height),
@@ -61,7 +62,18 @@ Canvas.prototype = {
   }
 };
 
-// Write out Image as a static property of Canvas
+// Expose Canvas to engine
+engine.Canvas = Canvas;
+
+function createCanvas(width, height, cb) {
+  var canvas = new Canvas(width, height);
+  cb(null, canvas);
+}
+
+// Expose createCanvas to engine
+engine.createCanvas = createCanvas;
+
+// Write out Image as a static property of engine
 function createImage(file, cb) {
   async.waterfall([
     function readImageFile (cb) {
@@ -78,10 +90,10 @@ function createImage(file, cb) {
     }
   ], cb);
 }
-Canvas.createImage = createImage;
+engine.createImage = createImage;
 
 // Expose the exporters
-Canvas.exporters = exporters;
+engine.exporters = exporters;
 
 // Export the canvas
-module.exports = Canvas;
+module.exports = engine;

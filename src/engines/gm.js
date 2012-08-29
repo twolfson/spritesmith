@@ -42,27 +42,20 @@ var fs = require('fs'),
           });
         });
       }
-    };
+    },
+    engine = {};
 
-function Canvas(width, height) {
-  // TODO: Get it working without transparent.png (i.e. use the next line)
-  // var canvas = gm(525, 110, "#00ff55aa");
-  // TODO: Use path
-  // var canvas = gm(__dirname + '/transparent.png').extent(width, height);
-  // var canvas = gm(__dirname + '/../../src-test/actual_files/sprite_base.png');
-  var canvas = gm(__dirname + '\\..\\..\\src-test\\actual_files\\sprite_base.png');
-  canvas.compose('over');
+function Canvas(file) {
+  var canvas = gm(file);
   this.canvas = canvas;
 }
 Canvas.prototype = {
   'addImage': function addImage (img, x, y, cb) {
+    // Add the im
 console.log(img.file);
     var canvas = this.canvas;
-    // canvas.page(img.width, img.height, img.file);
-img.file = img.file.replace(/\//g, '\\');
     canvas.out('-page');
     canvas.out('+' + x + '+' + y);
-    // canvas.page(x, y);
     canvas.out(img.file);
   },
   'export': function exportFn (format, cb) {
@@ -77,6 +70,35 @@ console.log(this.canvas);
     exporter.call(this, cb);
   }
 };
+
+// Expose Canvas to engine
+engine.Canvas = Canvas;
+
+function createCanvas(width, height, cb) {
+  // TODO: Use path
+  // TODO: Use a legit tmp file
+  var tmpfile = __dirname + '/../../src-test/actual_files/sprite_base.png';
+  async.waterfall([
+    function generateCanvas (cb) {
+      // TODO: Get it working without transparent.png (i.e. use the next line)
+      // var canvas = gm(525, 110, "#00ff55aa");
+      var base = gm(__dirname + '/transparent.png').extent(width, height);
+
+      // Write out the base file
+      base.write(tmpfile, cb);
+    },
+    function loadBackCanvas (x, y, z, cb) {
+      // Create a canvas
+      var canvas = new Canvas(tmpfile);
+
+      // Callback with it
+      cb(null, canvas);
+    }
+  ], cb);
+}
+
+// Expose createCanvas to engine
+engine.createCanvas = createCanvas;
 
 // Write out Image as a static property of Canvas
 /**
@@ -109,10 +131,10 @@ function createImage(file, cb) {
     }
   ], cb);
 }
-Canvas.createImage = createImage;
+engine.createImage = createImage;
 
 // Expose the exporters
-Canvas.exporters = exporters;
+engine.exporters = exporters;
 
 // Export the canvas
-module.exports = Canvas;
+module.exports = engine;
