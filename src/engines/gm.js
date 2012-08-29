@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    path = require('path'),
     async = require('async'),
     assert = require('assert'),
     gm = require('gm'),
@@ -96,13 +97,14 @@ Canvas.prototype = {
 // Expose Canvas to engine
 engine.Canvas = Canvas;
 
+// Create paths for the scratch directory and transparent pixel
+var scratchDir = path.join(__dirname, '../../scratch'),
+    transparentPixel = path.join(__dirname, 'transparent.png');
 function createCanvas(width, height, cb) {
-  // TODO: Use path
-  var scratchDir = __dirname + '/../../scratch',
-      now = +new Date(),
+  var now = +new Date(),
       rand = Math.random(),
       randomFilename = now + '.' + rand + '.png',
-      tmpfile = scratchDir + '/' + randomFilename;
+      tmpfile = path.join(scratchDir, randomFilename);
   async.waterfall([
     function guaranteeScratchDir (cb) {
       // This always passes due to error annoyances
@@ -113,7 +115,7 @@ function createCanvas(width, height, cb) {
     function generateCanvas (cb) {
       // TODO: Get it working without transparent.png (i.e. use the next line)
       // var canvas = gm(525, 110, "#00ff55aa");
-      var base = gm(__dirname + '/transparent.png').extent(width, height);
+      var base = gm(transparentPixel).extent(width, height);
 
       // Write out the base file
       base.write(tmpfile, cb);
