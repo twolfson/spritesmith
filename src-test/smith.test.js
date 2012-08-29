@@ -1,10 +1,15 @@
 // TODO: Move over to path
 var smith = require('../src/smith.js'),
-    // sprites = [__dirname + '/test_sprites/sprite1.png'],
-    spriteDir = __dirname + '/test_sprites',
-    sprites = [spriteDir + '/sprite1.png', spriteDir + '/sprite2.jpg', spriteDir + '/sprite3.png'],
     fs = require('fs'),
-    assert = require('assert');
+    path = require('path'),
+    assert = require('assert'),
+    // sprites = [__dirname + '/test_sprites/sprite1.png'],
+    spriteDir = path.join(__dirname, 'test_sprites'),
+    sprites = [
+      path.join(spriteDir, 'sprite1.png'),
+      path.join(spriteDir, 'sprite2.jpg'),
+      path.join(spriteDir, 'sprite3.png')
+    ];
 
 // Attempt to smith out the sprites
 smith(sprites, function (err, result) {
@@ -13,8 +18,8 @@ smith(sprites, function (err, result) {
   } else {
     var expectedDir = __dirname + '/expected_files';
     // DEV: Write out the result to a file
-    // fs.writeFileSync(__dirname + '/test_sprites/expected.png', result.image, 'binary');
-    
+    // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
+
     // DEV: Write out to actual_files
     if (true) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
@@ -23,9 +28,15 @@ smith(sprites, function (err, result) {
     }
 
     // Assert the actual image is the same expected
-    var expectedFile = expectedDir + '/sprite.png',
-        expectedImage = fs.readFileSync(expectedFile, 'binary');
-    assert.strictEqual(expectedImage, result.image, "Actual image does not match expected image");
+    var actualImage = result.image,
+        expectedCanvasFile = path.join(expectedDir, 'canvas.png'),
+        expectedGmFile = path.join(expectedDir, 'gm.png'),
+        expectedCanvasImage = fs.readFileSync(expectedCanvasFile, 'binary'),
+        expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
+        matchesCanvas = expectedCanvasImage === actualImage,
+        matchesGm = expectedGmImage === actualImage,
+        matchesAnImage = matchesCanvas || matchesGm;
+    assert(matchesAnImage, "Actual image does not match expected image");
 
     // Load in the coordinates
     var expectedCoords = require(expectedDir + '/coordinates.json');
@@ -33,8 +44,7 @@ smith(sprites, function (err, result) {
     // Normalize the actual coordinates
     // TODO: Normalize dir should be an option
     var actualCoords = result.coordinates,
-        normCoords = {},
-        path = require('path');
+        normCoords = {};
     assert(actualCoords, "Result does not have a coordinates property");
 
     Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
