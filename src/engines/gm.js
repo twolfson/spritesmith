@@ -45,8 +45,8 @@ var fs = require('fs'),
     },
     engine = {};
 
-function Canvas() {
-  var canvas = gm.apply({}, arguments);
+function Canvas(file) {
+  var canvas = gm(file);
   this.canvas = canvas;
 }
 Canvas.prototype = {
@@ -60,17 +60,36 @@ Canvas.prototype = {
     canvas.out(img.file);
   },
   'export': function exportFn (format, cb) {
-    // Grab the exporter
-    var exporter = exporters[format];
+    // Grab the tmpfile and exporter
+    var that = this,
+        canvas = that.canvas,
+        tmpfile = canvas.source,
+        exporter = exporters[format];
 
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
 
-    // Flatten the image
-    this.canvas.flatten();
-console.log(this.canvas);
-    // Render the item
-    exporter.call(this, cb);
+    async.waterfall([
+      function outputImage (cb) {
+        // Flatten the image
+        canvas.flatten();
+
+        // Render the item
+        exporter.call(that, cb);
+      },
+      function cleanupTmpfile (output, cb) {
+        // Attempt to delete the tmpfile
+        fs.unlink(tmpfile, function (err) {
+          // If there is an error, log it
+          if (err) {
+            console.error('Warning: Could not delete temporary spritesmith file!' + tmpfile, err);
+          }
+
+          // Continue with the output
+          cb(null, output);
+        });
+      }
+    ], cb);
   }
 };
 
@@ -79,38 +98,29 @@ engine.Canvas = Canvas;
 
 function createCanvas(width, height, cb) {
   // TODO: Use path
-  // TODO: Use a legit tmp file
-  // TODO: Either use scratch file *or* attempt to get that streamimg awesome
-  var tmpfile = __dirname + '/../../src-test/actual_files/sprite_base.png';
+  var scratchDir = __dirname + '/../../scratch',
+      now = +new Date(),
+      rand = Math.random(),
+      randomFilename = now + '.' + rand + '.png',
+      tmpfile = scratchDir + '/' + randomFilename;
   async.waterfall([
+    function guaranteeScratchDir (cb) {
+      // This always passes due to error annoyances
+      fs.mkdir(scratchDir, function () {
+        cb(null);
+      });
+    },
     function generateCanvas (cb) {
       // TODO: Get it working without transparent.png (i.e. use the next line)
       // var canvas = gm(525, 110, "#00ff55aa");
       var base = gm(__dirname + '/transparent.png').extent(width, height);
 
-      // Write out the base as a stream
-      base.stream(cb);
+      // Write out the base file
+      base.write(tmpfile, cb);
     },
-    function loadBackCanvas (stdout, stderr, cmd, cb) {
-      // Make a proper stream out of stdout and stderr
-      var events = require('events'),
-          EE = events.EventEmitter,
-          stream = new EE;
-      
-      stdout.on('data', function (buffer) {
-        stream.emit('data', buffer);
-      });
-      
-      stderr.on('data', function (buffer) {
-        stream.emit('error', buffer);
-      });
-      
-      stdout.on('close', function (buffer) {
-        stream.emit('close', buffer);
-      });
-      
+    function loadBackCanvas (x, y, z, cb) {
       // Create a canvas
-      var canvas = new Canvas(stream, 'base.png');
+      var canvas = new Canvas(tmpfile);
 
       // Callback with it
       cb(null, canvas);
