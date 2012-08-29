@@ -8,7 +8,7 @@ try {
 } catch (e) {
 }
 
-// // Attempt to load imagemagick
+// Attempt to load imagemagick
 try {
   engines.gm = require('./engines/gm');
 } catch (e) {
@@ -16,12 +16,22 @@ try {
 
 // Generate the spritesmith function
 // TODO: Allow for quality specification, output type
-function Spritesmith(files, callback) {
+function Spritesmith(files, options, callback) {
   var retObj = {},
-      engine = engines.canvas || engines.gm;
+      enginePref = options.engine || 'auto',
+      engine = engines[enginePref];
 
-  // Assert there is an engine
-  assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
+  // If the engine is not defined
+  if (engine === undefined) {
+    // If the engine was not auto, inform the user
+    assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine \'' + enginePref + '\' could not be loaded. Please be sure you have installed it properly on your machine.');
+
+    // Begin attempting to load the engines
+    engine = engines.canvas || engines.gm;
+
+    // Assert there is an engine
+    assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
+  }
 
   // In a waterfall fashion
   async.waterfall([
