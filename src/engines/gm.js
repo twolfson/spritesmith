@@ -48,8 +48,11 @@ canvas.write('omnom.png', function () {console.log(arguments);});
     engine = {};
 
 function Canvas(file) {
-  // var canvas = gm(file);
-  var canvas = gm(100, 300, 'transparent');
+  var canvas = gm(file);
+  canvas.out('-background');
+  canvas.out('transparent');
+  canvas.out('xc:transparent');
+  // var canvas = gm(100, 300, 'transparent');
   this.canvas = canvas;
 }
 Canvas.prototype = {
