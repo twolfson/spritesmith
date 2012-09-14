@@ -21,7 +21,7 @@ smith(sprites, {}, function (err, result) {
     // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
 
     // DEV: Write out to actual_files
-    if (true) {
+    if (false) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/coordinates.json', JSON.stringify(result.coordinates, null, 4));
