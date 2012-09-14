@@ -6,7 +6,6 @@ var fs = require('fs'),
     exporters = {
       'png': function canvasPngExporter (cb) {
         var canvas = this.canvas;
-canvas.write('omnom.png', function () {console.log(arguments);});
         canvas.stream(function (err, stdout, stderr) {
           // If there was an error, callback with it
           if (err) {
@@ -85,16 +84,16 @@ Canvas.prototype = {
         exporter.call(that, cb);
       },
       function cleanupTmpfile (output, cb) {
-        // // Attempt to delete the tmpfile
-        // fs.unlink(tmpfile, function (err) {
-          // // If there is an error, log it
-          // if (err) {
-            // console.error('Warning: Could not delete temporary spritesmith file!' + tmpfile, err);
-          // }
+        // Attempt to delete the tmpfile
+        fs.unlink(tmpfile, function (err) {
+          // If there is an error, log it
+          if (err) {
+            console.error('Warning: Could not delete temporary spritesmith file!' + tmpfile, err);
+          }
 
           // Continue with the output
           cb(null, output);
-        // });
+        });
       }
     ], cb);
   }
@@ -112,7 +111,6 @@ function createCanvas(width, height, cb) {
       rand = Math.random(),
       randomFilename = now + '.' + rand + '.png',
       tmpfile = path.join(scratchDir, randomFilename);
-      // tmpfile = path.join(scratchDir, 'test.png');
   async.waterfall([
     function guaranteeScratchDir (cb) {
       // This always passes due to error annoyances
@@ -121,10 +119,8 @@ function createCanvas(width, height, cb) {
       });
     },
     function generateCanvas (cb) {
-      // TODO: Get it working without transparent.png (i.e. use the next line)
-      // var canvas = gm(525, 110, "#00ff55aa");
-      // var base = gm(transparentPixel).extent(width, height);
-      var base = gm(100, 300, 'transparent');
+      // Generate a transparent canvas
+      var base = gm(width, height, 'transparent');
 
       // Write out the base file
       base.write(tmpfile, cb);
