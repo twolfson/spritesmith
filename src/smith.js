@@ -1,154 +1,9 @@
 var async = require('async'),
     assert = require('assert'),
+    EngineSmith = require('./smiths/engine.smith.js'),
+    PackingSmith = require('./smiths/packing.smith.js'),
+    CanvasSmith = require('./smiths/canvas.smith.js'),
     engines = {};
-
-function EngineSmithy(engine) {
-  this.engine = engine;
-}
-EngineSmithy.prototype = {
-  // Create an image from a file via the engine
-  'createImage': function (file, cb) {
-    var engine = this.engine;
-    async.waterfall([
-      function createImage (cb) {
-        engine.createImage(file, cb);
-      },
-      function savePath (img, cb) {
-        // Save the buffer path to the image
-        img._filepath = file;
-
-        // Callback with the image
-        cb(null, img);
-      }
-    ], cb);
-  },
-  // Sugar function for creating multiple images
-  'createImages': function (files, cb) {
-    // Map the files into their image counterparts
-    async.map(files, this.createImage.bind(this), cb);
-  },
-  // Helper to create canvas via engine
-  'createCanvas': function (width, height, cb) {
-    var engine = this.engine;
-    return engine.createCanvas(width, height, cb);
-  }
-};
-
-// TODO: Rename all 'images' to 'item'
-function PackingSmithy(algorithm) {
-  this.images = {};
-  this.coords = {};
-
-  // TODO: Load in via .addAlgorithm
-  this.algorithm = function (name, img) {
-    var y = this.y || 0,
-        imgHeight = img.height;
-
-    // The image will be saved at the current height
-    var saveImg = {
-          'x': 0,
-          'y': y,
-          'height': img.height,
-          'width': img.width
-        };
-
-    // Increment the y
-    this.y = y + imgHeight;
-
-    // Return the save image
-    return saveImg;
-  };
-}
-PackingSmithy.prototype = {
-  'addImage': function (name, img) {
-    // Add the image
-    var coords = this.algorithm(name, img),
-        saveObj = {
-          'name': name,
-          'coords': coords,
-          'img': img,
-          'x': coords.x,
-          'y': coords.y
-        };
-    this.images[name] = saveObj;
-    this.coords[name] = coords;
-  },
-  'exportCoordinates': function () {
-    // Return the coordinates
-    return this.coords;
-  },
-  'getStats': function () {
-    // Collect each of the coordinates into an array
-    var coords = this.coords,
-        coordNames = Object.getOwnPropertyNames(coords),
-        coordArr = coordNames.map(function (name) {
-          return coords[name];
-        });
-
-    // Get the endX and endY for each image
-    var endXArr = coordArr.map(function (coord) {
-          return coord.x + coord.width;
-        }),
-        endYArr = coordArr.map(function (coord) {
-          return coord.y + coord.height;
-        });
-
-    // Get the maximums of these
-    var retObj = {
-          'maxHeight': Math.max.apply(Math, endYArr),
-          'maxWidth': Math.max.apply(Math, endXArr)
-        };
-
-    // Return the stats
-    return retObj;
-  },
-  'generateCanvas': function (engine, cb) {
-    // Grab the stats
-    var stats = this.getStats(),
-        maxHeight = stats.maxHeight,
-        maxWidth = stats.maxWidth;
-
-    // Generate a canvas
-    engine.createCanvas(maxWidth, maxHeight, cb);
-  },
-  'exportItems': function () {
-    // Return the images
-    return this.images;
-  }
-};
-
-function CanvasSmithy(canvas) {
-  this.canvas = canvas;
-}
-CanvasSmithy.prototype = {
-  'addImage': function (imgObj) {
-    var img = imgObj.img,
-        x = imgObj.x,
-        y = imgObj.y,
-        canvas = this.canvas;
-    canvas.addImage(img, x, y);
-  },
-  'addImages': function (images) {
-    var that = this;
-    images.forEach(function (img) {
-      that.addImage(img);
-    });
-  },
-  'addImageMap': function (imageMap) {
-    var that = this,
-        imageNames = Object.getOwnPropertyNames(imageMap);
-
-    // Add the images
-    imageNames.forEach(function (name) {
-      var image = imageMap[name];
-      that.addImage(image);
-    });
-  },
-  'export': function (options, cb) {
-    // TODO: Use export options here
-    this.canvas['export']('png', cb);
-  }
-};
 
 /**
  * Spritesmith generation function
@@ -178,9 +33,9 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
-  // Create our smithies
-  var engineSmith = new EngineSmithy(engine),
-      packingSmith = new PackingSmithy('auto');
+  // Create our smiths
+  var engineSmith = new EngineSmith(engine),
+      packingSmith = new PackingSmith('auto');
 
   // In a waterfall fashion
   async.waterfall([
@@ -211,7 +66,7 @@ function Spritesmith(params, callback) {
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
       // Create a CanvasSmithy
-      var canvasSmith = new CanvasSmithy(canvas);
+      var canvasSmith = new CanvasSmith(canvas);
 
       // Grab the images
       var images = packingSmith.exportItems();
@@ -236,6 +91,11 @@ function Spritesmith(params, callback) {
   ], callback);
 }
 
+// Add the smiths to Spritesmith
+Spritesmith.EngineSmith = EngineSmith;
+Spritesmith.PackingSmith = PackingSmith;
+Spritesmith.CanvasSmith = CanvasSmith;
+
 /**
  * Method to add new engines via
  * @param {String} name Name of engine
@@ -245,7 +105,6 @@ function addEngine(name, engine) {
   engines[name] = engine;
 }
 Spritesmith.addEngine = addEngine;
-
 
 // Attempt to load canvas and imagemagick
 var canvasEngine,
