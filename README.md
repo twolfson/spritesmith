@@ -12,3 +12,12 @@ Additionally, you will need to install [node-gyp](https://github.com/TooTallNate
 ```shell
 sudo npm install -g node-gyp
 ```
+
+Contributing
+------------
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via [grunt][grunt] and test via `npm test`.
+
+License
+-------
+Copyright (c) 2012 Ensighten
+Licensed under the MIT license.
