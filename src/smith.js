@@ -2,6 +2,31 @@ var async = require('async'),
     assert = require('assert'),
     engines = {};
 
+function Smithy(engine) {
+  this.engine = engine;
+}
+Smithy.prototype = {
+  createImage: function (file, cb) {
+    var engine = this.engine;
+    async.waterfall([
+      function createImage (cb) {
+        engine.createImage(file, cb);
+      },
+      function savePath (img, cb) {
+        // Save the buffer path to the image
+        img._filepath = file;
+
+        // Callback with the image
+        cb(null, img);
+      }
+    ], cb);
+  },
+  createImages: function (files, cb) {
+    // Map the files into their image counterparts
+    async.map(files, this.createImage.bind(this), cb);
+  }
+};
+
 /**
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
@@ -29,24 +54,13 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
+  var smith = new Smithy(engine);
+
   // In a waterfall fashion
   async.waterfall([
     function grabImages (cb) {
       // Map the files into their image counterparts
-      async.map(files, function (file, cb) {
-        async.waterfall([
-          function createImage (cb) {
-            engine.createImage(file, cb);
-          },
-          function savePath (img, cb) {
-            // Save the buffer path to the image
-            img._filepath = file;
-
-            // Callback with the image
-            cb(null, img);
-          }
-        ], cb);
-      }, cb);
+      smith.createImages(files, cb);
     },
     // Then, create a canvas and the files to it
     function smithAddFiles (images, cb) {
