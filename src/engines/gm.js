@@ -13,8 +13,7 @@ var fs = require('fs'),
           }
 
           // Otherwise, create placeholder items
-          var imgData = [],
-              err;
+          var imgData = [];
 
           // On data, add it to imgData
           // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
