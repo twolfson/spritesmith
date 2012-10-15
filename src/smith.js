@@ -2,23 +2,19 @@ var async = require('async'),
     assert = require('assert'),
     engines = {};
 
-// Attempt to load canvas
-try {
-  engines.canvas = require('./engines/canvas');
-} catch (e) {
-}
-
-// Attempt to load imagemagick
-try {
-  engines.gm = require('./engines/gm');
-} catch (e) {
-}
-
-// Generate the spritesmith function
-// TODO: Allow for quality specification, output type
-function Spritesmith(files, options, callback) {
+/**
+ * Spritesmith generation function
+ * @param {Object} params Parameters for spritesmith
+ * @param {String[]} [params.src] Images to generate into sprite sheet
+ * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined)
+ * TODO: engineOpts is not yet available
+ * @param {Mixed} [params.engineOpts] Options to pass through to engine
+ * @param {Function} callback Function that receives compiled spritesheet and map
+ */
+function Spritesmith(params, callback) {
   var retObj = {},
-      enginePref = options.engine || 'auto',
+      files = params.src,
+      enginePref = params.engine || 'auto',
       engine = engines[enginePref];
 
   // If the engine is not defined
@@ -133,6 +129,31 @@ function Spritesmith(files, options, callback) {
     }
   ], callback);
 }
+
+/**
+ * Method to add new engines via
+ * @param {String} name Name of engine
+ * @param {Function} engine Engine to bind under name
+ */
+function addEngine(name, engine) {
+  engines[name] = engine;
+}
+Spritesmith.addEngine = addEngine;
+
+
+// Attempt to load canvas and imagemagick
+var canvasEngine,
+    gmEngine;
+try {
+  canvasEngine = require('./engines/canvas');
+} catch (e) {}
+
+try {
+  gmEngine = require('./engines/gm');
+} catch (e) {}
+
+if (canvasEngine) { addEngine('canvas', canvasEngine); }
+if (gmEngine) { addEngine('gm', gmEngine); }
 
 // Export Spritesmith
 module.exports = Spritesmith;
