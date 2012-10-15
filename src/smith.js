@@ -2,32 +2,6 @@ var async = require('async'),
     assert = require('assert'),
     engines = {};
 
-function sum(a, b) {
-  return a + b;
-}
-function getImageStats(images) {
-  // Pluck the width and heights of the images
-  var imgHeights = images.map(function (img) {
-        return img.height;
-      }),
-      imgWidths = images.map(function (img) {
-        return img.width;
-      });
-
-  // Determine the maximums and totals
-  var retVal = {
-    'heights': imgHeights,
-    'widths': imgWidths,
-    'maxHeight': Math.max.apply(Math, imgHeights),
-    'maxWidth': Math.max.apply(Math, imgWidths),
-    'totalHeight': imgHeights.reduce(sum, 0),
-    'totalWidth': imgWidths.reduce(sum, 0)
-  };
-
-  // Return all the info
-  return retVal;
-}
-
 function EngineSmithy(engine) {
   this.engine = engine;
 }
@@ -53,8 +27,6 @@ EngineSmithy.prototype = {
     // Map the files into their image counterparts
     async.map(files, this.createImage.bind(this), cb);
   },
-  // Collector for image stats
-  'getImageStats': getImageStats,
   // Helper to create canvas via engine
   'createCanvas': function (width, height, cb) {
     var engine = this.engine;
@@ -62,7 +34,8 @@ EngineSmithy.prototype = {
   }
 };
 
-function CanvasSmithy(algorithm) {
+// TODO: Rename all 'images' to 'item'
+function PackingSmithy(algorithm) {
   this.images = {};
   this.coords = {};
 
@@ -86,7 +59,7 @@ function CanvasSmithy(algorithm) {
     return saveImg;
   };
 }
-CanvasSmithy.prototype = {
+PackingSmithy.prototype = {
   'addImage': function (name, img) {
     // Add the image
     var coords = this.algorithm(name, img),
@@ -105,7 +78,6 @@ CanvasSmithy.prototype = {
     return this.coords;
   },
   'getStats': function () {
-    // TODO: Deprecate imgStats
     // Collect each of the coordinates into an array
     var coords = this.coords,
         coordNames = Object.getOwnPropertyNames(coords),
@@ -130,41 +102,51 @@ CanvasSmithy.prototype = {
     // Return the stats
     return retObj;
   },
-  'exportToCanvas': function (engine, options, cb) {
+  'generateCanvas': function (engine, cb) {
     // Grab the stats
     var stats = this.getStats(),
         maxHeight = stats.maxHeight,
-        maxWidth = stats.maxWidth,
-        that = this;
+        maxWidth = stats.maxWidth;
 
-    async.waterfall([
-      // Generate a canvas
-      function generateCanvas (cb) {
-        engine.createCanvas(maxWidth, maxHeight, cb)
-      },
-      // Add the images
-      function addImages (canvas, cb) {
-        var images = that.images,
-            imageNames = Object.getOwnPropertyNames(images);
-        imageNames.forEach(function (name) {
-          var image = images[name],
-              img = image.img,
-              x = image.x,
-              y = image.y;
-          canvas.addImage(img, x, y);
-        });
-
-        // Callback with the canvas
-        cb(null, canvas);
-      },
-      // Export the canvas
-      function exportCanvas (canvas, cb) {
-        // TODO: Use export options here
-        canvas['export']('png', cb);
-      }
-    ], cb);
+    // Generate a canvas
+    engine.createCanvas(maxWidth, maxHeight, cb);
   },
-  'export': function () {
+  'exportItems': function () {
+    // Return the images
+    return this.images;
+  }
+};
+
+function CanvasSmithy(canvas) {
+  this.canvas = canvas;
+}
+CanvasSmithy.prototype = {
+  'addImage': function (imgObj) {
+    var img = imgObj.img,
+        x = imgObj.x,
+        y = imgObj.y,
+        canvas = this.canvas;
+    canvas.addImage(img, x, y);
+  },
+  'addImages': function (images) {
+    var that = this;
+    images.forEach(function (img) {
+      that.addImage(img);
+    });
+  },
+  'addImageMap': function (imageMap) {
+    var that = this,
+        imageNames = Object.getOwnPropertyNames(imageMap);
+
+    // Add the images
+    imageNames.forEach(function (name) {
+      var image = imageMap[name];
+      that.addImage(image);
+    });
+  },
+  'export': function (options, cb) {
+    // TODO: Use export options here
+    this.canvas['export']('png', cb);
   }
 };
 
@@ -196,9 +178,9 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
-  // Get our smithies
+  // Create our smithies
   var engineSmith = new EngineSmithy(engine),
-      canvasSmith = new CanvasSmithy('auto');
+      packingSmith = new PackingSmithy('auto');
 
   // In a waterfall fashion
   async.waterfall([
@@ -210,7 +192,7 @@ function Spritesmith(params, callback) {
     function smithAddFiles (images, cb) {
       images.forEach(function (img) {
         var name = img._filepath;
-        canvasSmith.addImage(name, img);
+        packingSmith.addImage(name, img);
       });
 
       // Callback with nothing
@@ -218,13 +200,27 @@ function Spritesmith(params, callback) {
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
-      var coords = canvasSmith.coords;
+      var coords = packingSmith.coords;
       retObj.coordinates = coords;
       cb(null);
     },
-    // Then, callback with the output canvas
-    function smithOutputCanvas (cb) {
-      canvasSmith.exportToCanvas(engine, {}, cb);
+    // Then, generate a canvas
+    function generateCanvas (cb) {
+      packingSmith.generateCanvas(engine, cb);
+    },
+    // Then, export the canvas
+    function exportCanvas (canvas, cb) {
+      // Create a CanvasSmithy
+      var canvasSmith = new CanvasSmithy(canvas);
+
+      // Grab the images
+      var images = packingSmith.exportItems();
+
+      // Add the images onto canvasSmith
+      canvasSmith.addImageMap(images);
+
+      // Export our canvas
+      canvasSmith['export']({}, cb);
     },
     function saveImageToRetObj(imgStr, cb) {
       // Save the image to the retObj
