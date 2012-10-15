@@ -28,10 +28,10 @@ function getImageStats(images) {
   return retVal;
 }
 
-function Smithy(engine) {
+function EngineSmithy(engine) {
   this.engine = engine;
 }
-Smithy.prototype = {
+EngineSmithy.prototype = {
   // Create an image from a file via the engine
   'createImage': function (file, cb) {
     var engine = this.engine;
@@ -59,9 +59,46 @@ Smithy.prototype = {
   'createCanvas': function (width, height, cb) {
     var engine = this.engine;
     return engine.createCanvas(width, height, cb);
-  },
-  'packCanvas': function (canvas, algorithm, cb) {
+  }
+};
 
+function CanvasSmithy(algorithm) {
+  this.images = {};
+
+  // TODO: Load in via .addAlgorithm
+  this.algorithm = function (name, img) {
+    var y = this.y || 0,
+        imgHeight = imgHeight;
+
+    // The image will be saved at the current height
+    var saveImg = {
+          'name': name,
+          'x': 0,
+          'y': y,
+          'height': img.height,
+          'width': img.width,
+          '_img': img
+        };
+
+    // Increment the y
+    this.y = y + imgHeight;
+
+    // Save the image
+    this.images[name] = saveImg;
+  };
+}
+CanvasSmith.prototype = {
+  'addImage': function (img) {
+    // Add the image
+    return this.algorithm.call(this, img);
+  },
+  'exportCoordinates': function () {
+
+  },
+  'exportToCanvas': function () {
+
+  },
+  'export': function () {
   }
 };
 
@@ -93,62 +130,27 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
-  var smith = new Smithy(engine);
+  // Get our smithies
+  var engineSmith = new EngineSmithy(engine),
+      canvasSmith = new CanvasSmithy('auto');
 
   // In a waterfall fashion
   async.waterfall([
     function grabImages (cb) {
       // Map the files into their image counterparts
-      smith.createImages(files, cb);
+      engineSmith.createImages(files, cb);
     },
-    // Then, create a canvas and the files to it
+    // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
-      // TODO: Predict the optimum size canvas
-      var imgStats = smith.getImageStats(images),
-          maxWidth = imgStats.maxWidth,
-          totalHeight = imgStats.totalHeight;
+      var addImageToCanvas = canvasSmith.addImage.bind(canvasSmith);
+      images.forEach(addImageToCanvas);
 
-      // Create a canvas
-      async.waterfall([
-        function createCanvasFn (cb) {
-          smith.createCanvas(maxWidth, totalHeight, cb);
-        },
-        function addImagesFn (canvas, cb) {
-          var currentHeight = 0,
-              coords = {};
+      // Callback with nothing
+      cb(null);
+    },
+    // Then, output the coordinates
+    function smithOutputCoordinates (cb) {
 
-          // Add the images to the canvas
-          // TODO: Use a better algorithm
-          // TODO: Should this be async.each
-          images.forEach(function (img) {
-            // Save the image properties
-            var x = 0,
-                y = currentHeight,
-                imgWidth = img.width,
-                imgHeight = img.height;
-
-            // Draw the image at the current height
-            canvas.addImage(img, x, y);
-
-            // Add the img.height to the current height
-            currentHeight += imgHeight;
-
-            // Save the coordinates for this image
-            coords[img._filepath] = {
-              'x': x,
-              'y': y,
-              'height': imgHeight,
-              'width': imgWidth
-            };
-          });
-
-          // Save the coordinates to retObj
-          retObj.coordinates = coords;
-
-          // Callback with the canvas
-          cb(null, canvas);
-        }
-      ], cb);
     },
     // Then, callback with the output canvas
     function smithOutputCanvas (canvas, cb) {
