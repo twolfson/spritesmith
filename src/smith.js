@@ -64,39 +64,105 @@ EngineSmithy.prototype = {
 
 function CanvasSmithy(algorithm) {
   this.images = {};
+  this.coords = {};
 
   // TODO: Load in via .addAlgorithm
   this.algorithm = function (name, img) {
     var y = this.y || 0,
-        imgHeight = imgHeight;
+        imgHeight = img.height;
 
     // The image will be saved at the current height
     var saveImg = {
-          'name': name,
           'x': 0,
           'y': y,
           'height': img.height,
-          'width': img.width,
-          '_img': img
+          'width': img.width
         };
 
     // Increment the y
     this.y = y + imgHeight;
 
-    // Save the image
-    this.images[name] = saveImg;
+    // Return the save image
+    return saveImg;
   };
 }
-CanvasSmith.prototype = {
-  'addImage': function (img) {
+CanvasSmithy.prototype = {
+  'addImage': function (name, img) {
     // Add the image
-    return this.algorithm.call(this, img);
+    var coords = this.algorithm(name, img),
+        saveObj = {
+          'name': name,
+          'coords': coords,
+          'img': img,
+          'x': coords.x,
+          'y': coords.y
+        };
+    this.images[name] = saveObj;
+    this.coords[name] = coords;
   },
   'exportCoordinates': function () {
-
+    // Return the coordinates
+    return this.coords;
   },
-  'exportToCanvas': function () {
+  'getStats': function () {
+    // TODO: Deprecate imgStats
+    // Collect each of the coordinates into an array
+    var coords = this.coords,
+        coordNames = Object.getOwnPropertyNames(coords),
+        coordArr = coordNames.map(function (name) {
+          return coords[name];
+        });
 
+    // Get the endX and endY for each image
+    var endXArr = coordArr.map(function (coord) {
+          return coord.x + coord.width;
+        }),
+        endYArr = coordArr.map(function (coord) {
+          return coord.y + coord.height;
+        });
+
+    // Get the maximums of these
+    var retObj = {
+          'maxHeight': Math.max.apply(Math, endYArr),
+          'maxWidth': Math.max.apply(Math, endXArr)
+        };
+
+    // Return the stats
+    return retObj;
+  },
+  'exportToCanvas': function (engine, options, cb) {
+    // Grab the stats
+    var stats = this.getStats(),
+        maxHeight = stats.maxHeight,
+        maxWidth = stats.maxWidth,
+        that = this;
+
+    async.waterfall([
+      // Generate a canvas
+      function generateCanvas (cb) {
+        engine.createCanvas(maxWidth, maxHeight, cb)
+      },
+      // Add the images
+      function addImages (canvas, cb) {
+        var images = that.images,
+            imageNames = Object.getOwnPropertyNames(images);
+        imageNames.forEach(function (name) {
+          var image = images[name],
+              img = image.img,
+              x = image.x,
+              y = image.y;
+          canvas.addImage(img, x, y);
+        });
+
+        // Callback with the canvas
+        cb(null, canvas);
+      },
+      // Export the canvas
+      function exportCanvas (canvas, cb) {
+        // TODO: Use export options here
+        canvas['export']('png', cb);
+      }
+    ], cb);
   },
   'export': function () {
   }
@@ -142,31 +208,30 @@ function Spritesmith(params, callback) {
     },
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
-      var addImageToCanvas = canvasSmith.addImage.bind(canvasSmith);
-      images.forEach(addImageToCanvas);
+      images.forEach(function (img) {
+        var name = img._filepath;
+        canvasSmith.addImage(name, img);
+      });
 
       // Callback with nothing
       cb(null);
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
-
+      var coords = canvasSmith.coords;
+      retObj.coordinates = coords;
+      cb(null);
     },
     // Then, callback with the output canvas
-    function smithOutputCanvas (canvas, cb) {
-      async.waterfall([
-        // Export the canvas as a png
-        function exportCanvas (cb) {
-          canvas['export']('png', cb);
-        },
-        function saveImageToRetObj(imgStr, cb) {
-          // Save the image to the retObj
-          retObj.image = imgStr;
+    function smithOutputCanvas (cb) {
+      canvasSmith.exportToCanvas(engine, {}, cb);
+    },
+    function saveImageToRetObj(imgStr, cb) {
+      // Save the image to the retObj
+      retObj.image = imgStr;
 
-          // Callback
-          cb(null);
-        }
-      ], cb);
+      // Callback
+      cb(null);
     },
     function smithCallbackData (cb) {
       // Callback with the return object
