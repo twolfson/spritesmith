@@ -5,48 +5,33 @@ var fs = require('fs'),
     gm = require('gm'),
     exporters = {
       'png': function canvasPngExporter (cb) {
-        var canvas = this.canvas;
-        canvas.stream(function (err, stdout, stderr) {
+        var canvas = this.canvas,
+            file = canvas._file;
+
+        // Write out to file (how meta)
+        canvas.write(file, function (err) {
           // If there was an error, callback with it
           if (err) {
             return cb(err);
           }
 
-          // Otherwise, create placeholder items
-          var imgData = [];
-
-          // On data, add it to imgData
-          // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
-          stdout.on('data', function (chunk) {
-            var binaryStr = chunk.toString('binary');
-            imgData.push(binaryStr);
-          });
-
-          // On error, save it
-          stderr.on('data', function (_err) {
-            err = _err;
-          });
-
-          // When complete
-          stdout.on('end', function () {
-            // If there was an error, callback with it
-            if (err) {
-              cb(err);
-            } else {
-            // Otherwise, join together image data, put it into the retObj
-              var retStr = imgData.join('');
-
-              // Callback with no error
-              cb(null, retStr);
-            }
-          });
+          // Read the file back in (in binary)
+          fs.readFile(file, 'binary', cb);
         });
       }
     },
     engine = {};
 
 function Canvas(file) {
-  var canvas = gm(file);
+  var canvas = gm(1, 1, 'transparent');
+
+  // Override the -size options (won't work otherwise)
+  canvas._in = ['-background', 'transparent'];
+
+  // Save the file as a reference
+  canvas._file = file;
+
+  // Save the canvas
   this.canvas = canvas;
 }
 Canvas.prototype = {
@@ -63,7 +48,7 @@ Canvas.prototype = {
     // Grab the tmpfile and exporter
     var that = this,
         canvas = that.canvas,
-        tmpfile = canvas.source,
+        tmpfile = canvas._file,
         exporter = exporters[format];
 
     // Assert it exists
@@ -71,8 +56,8 @@ Canvas.prototype = {
 
     async.waterfall([
       function outputImage (cb) {
-        // Flatten the image
-        canvas.flatten();
+        // Flatten the image (with transparency)
+        canvas.mosaic();
 
         // Render the item
         exporter.call(that, cb);
@@ -96,6 +81,7 @@ Canvas.prototype = {
 // Expose Canvas to engine
 engine.Canvas = Canvas;
 
+// TODO: Make this a spritesmith helper
 // Create paths for the scratch directory and transparent pixel
 var scratchDir = path.join(__dirname, '../../scratch'),
     transparentPixel = path.join(__dirname, 'transparent.png');
@@ -112,9 +98,8 @@ function createCanvas(width, height, cb) {
       });
     },
     function generateCanvas (cb) {
-      // TODO: Get it working without transparent.png (i.e. use the next line)
-      // var canvas = gm(525, 110, "#00ff55aa");
-      var base = gm(transparentPixel).extent(width, height);
+      // Generate a transparent canvas
+      var base = gm(width, height, 'transparent');
 
       // Write out the base file
       base.write(tmpfile, cb);
