@@ -2,11 +2,38 @@ var async = require('async'),
     assert = require('assert'),
     engines = {};
 
+function sum(a, b) {
+  return a + b;
+}
+function getImageStats(images) {
+  // Pluck the width and heights of the images
+  var imgHeights = images.map(function (img) {
+        return img.height;
+      }),
+      imgWidths = images.map(function (img) {
+        return img.width;
+      });
+
+  // Determine the maximums and totals
+  var retVal = {
+    'heights': imgHeights,
+    'widths': imgWidths,
+    'maxHeight': Math.max.apply(Math, imgHeights),
+    'maxWidth': Math.max.apply(Math, imgWidths),
+    'totalHeight': imgHeights.reduce(sum, 0),
+    'totalWidth': imgWidths.reduce(sum, 0)
+  };
+
+  // Return all the info
+  return retVal;
+}
+
 function Smithy(engine) {
   this.engine = engine;
 }
 Smithy.prototype = {
-  createImage: function (file, cb) {
+  // Create an image from a file via the engine
+  'createImage': function (file, cb) {
     var engine = this.engine;
     async.waterfall([
       function createImage (cb) {
@@ -21,9 +48,20 @@ Smithy.prototype = {
       }
     ], cb);
   },
-  createImages: function (files, cb) {
+  // Sugar function for creating multiple images
+  'createImages': function (files, cb) {
     // Map the files into their image counterparts
     async.map(files, this.createImage.bind(this), cb);
+  },
+  // Collector for image stats
+  'getImageStats': getImageStats,
+  // Helper to create canvas via engine
+  'createCanvas': function (width, height, cb) {
+    var engine = this.engine;
+    return engine.createCanvas(width, height, cb);
+  },
+  'packCanvas': function (canvas, algorithm, cb) {
+
   }
 };
 
@@ -31,8 +69,9 @@ Smithy.prototype = {
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined)
+ * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined via Spritesmith.addEngine)
  * TODO: engineOpts is not yet available
+ * @param {String} [params.algorithm] Algorithm to pack images with (vertical or user-defined via Spritesmith.addAlgorithm)
  * @param {Mixed} [params.engineOpts] Options to pass through to engine
  * @param {Function} callback Function that receives compiled spritesheet and map
  */
@@ -65,24 +104,14 @@ function Spritesmith(params, callback) {
     // Then, create a canvas and the files to it
     function smithAddFiles (images, cb) {
       // TODO: Predict the optimum size canvas
-      // Pluck the width and heights of the images
-      var imgHeights = images.map(function (img) {
-            return img.height;
-          }),
-          imgWidths = images.map(function (img) {
-            return img.width;
-          });
-
-      // Determine the maximum width and sum the heights
-      var maxWidth = Math.max.apply(Math, imgWidths),
-          totalHeight = imgHeights.reduce(function (a, b) {
-            return a + b;
-          }, 0);
+      var imgStats = smith.getImageStats(images),
+          maxWidth = imgStats.maxWidth,
+          totalHeight = imgStats.totalHeight;
 
       // Create a canvas
       async.waterfall([
         function createCanvasFn (cb) {
-          engine.createCanvas(maxWidth, totalHeight, cb);
+          smith.createCanvas(maxWidth, totalHeight, cb);
         },
         function addImagesFn (canvas, cb) {
           var currentHeight = 0,
