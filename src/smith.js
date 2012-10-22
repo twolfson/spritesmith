@@ -10,9 +10,8 @@ var async = require('async'),
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
  * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined via Spritesmith.addEngine)
- * TODO: engineOpts is not yet available
  * @param {String} [params.algorithm] Algorithm to pack images with (vertical or user-defined via Spritesmith.addAlgorithm)
- * @param {Mixed} [params.engineOpts] Options to pass through to engine
+ * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
  */
 function Spritesmith(params, callback) {
@@ -35,7 +34,8 @@ function Spritesmith(params, callback) {
 
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
-      packingSmith = new PackingSmith('auto');
+      packingSmith = new PackingSmith('auto'),
+      exportOpts = params.exportOpts || {};
 
   // In a waterfall fashion
   async.waterfall([
@@ -47,7 +47,7 @@ function Spritesmith(params, callback) {
     function smithAddFiles (images, cb) {
       images.forEach(function (img) {
         var name = img._filepath;
-        packingSmith.addImage(name, img);
+        packingSmith.addItem(name, img);
       });
 
       // Callback with nothing
@@ -75,7 +75,7 @@ function Spritesmith(params, callback) {
       canvasSmith.addImageMap(images);
 
       // Export our canvas
-      canvasSmith['export']({}, cb);
+      canvasSmith['export'](exportOpts, cb);
     },
     function saveImageToRetObj(imgStr, cb) {
       // Save the image to the retObj
@@ -95,6 +95,9 @@ function Spritesmith(params, callback) {
 Spritesmith.EngineSmith = EngineSmith;
 Spritesmith.PackingSmith = PackingSmith;
 Spritesmith.CanvasSmith = CanvasSmith;
+
+// Expose the engines
+Spritesmith.engines = engines;
 
 /**
  * Method to add new engines via
@@ -119,6 +122,10 @@ try {
 
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
+
+// Make algorithms easier to add
+Spritesmith.addAlgorithm = PackingSmith.addAlgorithm;
+Spritesmith.algorithms = PackingSmith.algorithms;
 
 // Export Spritesmith
 module.exports = Spritesmith;

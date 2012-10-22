@@ -1,31 +1,12 @@
-// TODO: Rename all 'images' to 'item'
+var algorithms = {};
 function PackingSmith(algorithm) {
-  this.images = {};
+  this.items = {};
   this.coords = {};
-
-  // TODO: Load in via .addAlgorithm
-  this.algorithm = function (name, img) {
-    var y = this.y || 0,
-        imgHeight = img.height;
-
-    // The image will be saved at the current height
-    var saveImg = {
-          'x': 0,
-          'y': y,
-          'height': img.height,
-          'width': img.width
-        };
-
-    // Increment the y
-    this.y = y + imgHeight;
-
-    // Return the save image
-    return saveImg;
-  };
+  this.algorithm = algorithm;
 }
 PackingSmith.prototype = {
-  'addImage': function (name, img) {
-    // Add the image
+  'addItem': function (name, img) {
+    // Add the item
     var coords = this.algorithm(name, img),
         saveObj = {
           'name': name,
@@ -34,7 +15,7 @@ PackingSmith.prototype = {
           'x': coords.x,
           'y': coords.y
         };
-    this.images[name] = saveObj;
+    this.items[name] = saveObj;
     this.coords[name] = coords;
   },
   'exportCoordinates': function () {
@@ -49,7 +30,7 @@ PackingSmith.prototype = {
           return coords[name];
         });
 
-    // Get the endX and endY for each image
+    // Get the endX and endY for each item
     var endXArr = coordArr.map(function (coord) {
           return coord.x + coord.width;
         }),
@@ -76,10 +57,37 @@ PackingSmith.prototype = {
     engine.createCanvas(maxWidth, maxHeight, cb);
   },
   'exportItems': function () {
-    // Return the images
-    return this.images;
+    // Return the items
+    return this.items;
   }
 };
+
+function addAlgorithm(name, fn) {
+  // Save the algorithm to algorithms
+  algorithms[name] = fn;
+}
+// Add in top-down algorithm
+function (name, item) {
+    var y = this.y || 0,
+        itemHeight = item.height;
+
+    // The item will be saved at the current height
+    var saveItem = {
+          'x': 0,
+          'y': y,
+          'height': itemHeight,
+          'width': item.width
+        };
+
+    // Increment the y
+    this.y = y + imgHeight;
+
+    // Return the save item
+    return saveItem;
+  };
+
+// Expose algorithms on PackingSmith
+PackingSmith.algorithms = algorithms;
 
 // Export PackingSmith
 module.exports = PackingSmith;
