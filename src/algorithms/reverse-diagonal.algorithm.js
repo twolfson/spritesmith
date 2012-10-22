@@ -1,17 +1,20 @@
 // Add in bottom-up algorithm
 function topDownAlgorithm (item) {
-  var y = this.y || 0,
+  var x = this.x || 0,
+      y = this.y || 0,
+      itemWidth = item.width,
       itemHeight = item.height;
 
   // The item will be saved at the current height
   var saveItem = {
-        'x': 0,
+        'x': x - itemWidth,
         'y': y - itemHeight,
-        'width': item.width,
+        'width': itemWidth,
         'height': itemHeight
       };
 
-  // Decrement the y
+  // Decrement the x and y
+  this.x = x - itemWidth;
   this.y = y - itemHeight;
 
   // Return the save item

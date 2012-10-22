@@ -152,8 +152,10 @@ Spritesmith.algorithms = algorithms;
 // Add default algorithms
 addAlgorithm('top-down', require('./algorithms/top-down.algorithm.js'));
 addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
+// addAlgorithm('left-right', require('./algorithms/left-right.algorithm.js'));
+// addAlgorithm('right-left', require('./algorithms/right-left.algorithm.js'));
 // addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
-// addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
+addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 
 // Export Spritesmith
 module.exports = Spritesmith;

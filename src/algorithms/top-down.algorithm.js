@@ -7,8 +7,8 @@ function topDownAlgorithm (item) {
   var saveItem = {
         'x': 0,
         'y': y,
-        'height': itemHeight,
-        'width': item.width
+        'width': item.width,
+        'height': itemHeight
       };
 
   // Increment the y
