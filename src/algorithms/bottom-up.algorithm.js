@@ -10,7 +10,7 @@ function topDownAlgorithm (item) {
         'height': itemHeight,
         'width': item.width
       };
-console.log(saveItem);
+
   // Increment the y
   this.y = y - itemHeight;
 
