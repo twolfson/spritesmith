@@ -41,7 +41,8 @@ function Spritesmith(params, callback) {
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
       packingSmith = new PackingSmith(algorithm),
-      exportOpts = params.exportOpts || {};
+      exportOpts = params.exportOpts || {},
+      packedObj;
 
   // In a waterfall fashion
   async.waterfall([
@@ -61,13 +62,21 @@ function Spritesmith(params, callback) {
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
-      var coords = packingSmith.exportCoordinates();
-      retObj.coordinates = coords;
+      // Export and saved packedObj for later
+      packedObj = packingSmith['export']();
+
+      // Save the coordinates
+      retObj.coordinates = packedObj.coordinates;
+
+      // Continue
       cb(null);
     },
     // Then, generate a canvas
     function generateCanvas (cb) {
-      packingSmith.generateCanvas(engine, cb);
+    // Generate a canvas
+      var width = packedObj.width,
+          height = packedObj.height;
+      engine.createCanvas(width, height, cb);
     },
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
@@ -75,7 +84,7 @@ function Spritesmith(params, callback) {
       var canvasSmith = new CanvasSmith(canvas);
 
       // Grab the images
-      var images = packingSmith.exportItems();
+      var images = packedObj.itemMap;
 
       // Add the images onto canvasSmith
       canvasSmith.addImageMap(images);
