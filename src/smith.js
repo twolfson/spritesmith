@@ -36,7 +36,7 @@ function Spritesmith(params, callback) {
   }
 
   // Assert we have an algorithm
-  assert(algorithm, 'Sorry, the spritesmith algorithm ' + algorithmPref +' could not be loaded.');
+  assert(algorithm, 'Sorry, the \'' + algorithmPref +'\' spritesmith algorithm could not be loaded.');
 
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
@@ -154,7 +154,8 @@ addAlgorithm('top-down', require('./algorithms/top-down.algorithm.js'));
 addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
 // addAlgorithm('left-right', require('./algorithms/left-right.algorithm.js'));
 // addAlgorithm('right-left', require('./algorithms/right-left.algorithm.js'));
-// addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
+addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
+addAlgorithm('negative-diagonal', require('./algorithms/negative-diagonal.algorithm.js'));
 addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 
 // Export Spritesmith

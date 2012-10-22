@@ -1,20 +1,20 @@
-// Add in reverse-diagonal algorithm
-function reverseDiagonalAlgorithm (item) {
+// Add in diagonal algorithm
+function diagonalAlgorithm (item) {
   var x = this.x || 0,
       y = this.y || 0,
       itemWidth = item.width,
       itemHeight = item.height;
 
-  // The down-right of our current position
+  // The item will be saved at the current height
   var saveItem = {
-        'x': x - itemWidth,
+        'x': x,
         'y': y,
         'width': itemWidth,
         'height': itemHeight
       };
 
-  // Decrement the x and increment y
-  this.x = x - itemWidth;
+  // Increment the x and y
+  this.x = x + itemWidth;
   this.y = y + itemHeight;
 
   // Return the save item
@@ -22,4 +22,4 @@ function reverseDiagonalAlgorithm (item) {
 }
 
 // Export our algorithm
-module.exports = reverseDiagonalAlgorithm;
+module.exports = diagonalAlgorithm;
