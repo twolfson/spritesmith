@@ -1,4 +1,3 @@
-var algorithms = {};
 function PackingSmith(algorithm) {
   this.items = {};
   this.coords = {};
@@ -7,7 +6,7 @@ function PackingSmith(algorithm) {
 PackingSmith.prototype = {
   'addItem': function (name, img) {
     // Add the item
-    var coords = this.algorithm(name, img),
+    var coords = this.algorithm(img),
         saveObj = {
           'name': name,
           'coords': coords,
@@ -61,33 +60,6 @@ PackingSmith.prototype = {
     return this.items;
   }
 };
-
-function addAlgorithm(name, fn) {
-  // Save the algorithm to algorithms
-  algorithms[name] = fn;
-}
-// Add in top-down algorithm
-function (name, item) {
-    var y = this.y || 0,
-        itemHeight = item.height;
-
-    // The item will be saved at the current height
-    var saveItem = {
-          'x': 0,
-          'y': y,
-          'height': itemHeight,
-          'width': item.width
-        };
-
-    // Increment the y
-    this.y = y + imgHeight;
-
-    // Return the save item
-    return saveItem;
-  };
-
-// Expose algorithms on PackingSmith
-PackingSmith.algorithms = algorithms;
 
 // Export PackingSmith
 module.exports = PackingSmith;

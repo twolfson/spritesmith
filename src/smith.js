@@ -3,14 +3,15 @@ var async = require('async'),
     EngineSmith = require('./smiths/engine.smith.js'),
     PackingSmith = require('./smiths/packing.smith.js'),
     CanvasSmith = require('./smiths/canvas.smith.js'),
-    engines = {};
+    engines = {},
+    algorithms = {};
 
 /**
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
  * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined via Spritesmith.addEngine)
- * @param {String} [params.algorithm] Algorithm to pack images with (vertical or user-defined via Spritesmith.addAlgorithm)
+ * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down or user-defined via Spritesmith.addAlgorithm)
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
  */
@@ -18,7 +19,9 @@ function Spritesmith(params, callback) {
   var retObj = {},
       files = params.src,
       enginePref = params.engine || 'auto',
-      engine = engines[enginePref];
+      engine = engines[enginePref],
+      algorithmPref = params.algorithm || 'top-down',
+      algorithm = algorithms[algorithmPref];
 
   // If the engine is not defined
   if (engine === undefined) {
@@ -32,9 +35,12 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
+  // Assert we have an algorithm
+  assert(algorithm, 'Sorry, the spritesmith algorithm ' + algorithmPref +' could not be loaded.');
+
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
-      packingSmith = new PackingSmith('auto'),
+      packingSmith = new PackingSmith(algorithm),
       exportOpts = params.exportOpts || {};
 
   // In a waterfall fashion
@@ -96,9 +102,6 @@ Spritesmith.EngineSmith = EngineSmith;
 Spritesmith.PackingSmith = PackingSmith;
 Spritesmith.CanvasSmith = CanvasSmith;
 
-// Expose the engines
-Spritesmith.engines = engines;
-
 /**
  * Method to add new engines via
  * @param {String} name Name of engine
@@ -108,24 +111,40 @@ function addEngine(name, engine) {
   engines[name] = engine;
 }
 Spritesmith.addEngine = addEngine;
+Spritesmith.engines = engines;
 
 // Attempt to load canvas and imagemagick
 var canvasEngine,
     gmEngine;
 try {
-  canvasEngine = require('./engines/canvas');
+  canvasEngine = require('./engines/canvas.engine.js');
 } catch (e) {}
 
 try {
-  gmEngine = require('./engines/gm');
+  gmEngine = require('./engines/gm.engine.js');
 } catch (e) {}
 
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
 
+/**
+ * Method to add new algorithms via
+ * @param {String} name Name of algorithm
+ * @param {Function} algorithm Algorithm to bind under name
+ */
+function addAlgorithm(name, algorithm) {
+  // Save the algorithm to algorithms
+  algorithms[name] = algorithm;
+}
 // Make algorithms easier to add
-Spritesmith.addAlgorithm = PackingSmith.addAlgorithm;
-Spritesmith.algorithms = PackingSmith.algorithms;
+Spritesmith.addAlgorithm = addAlgorithm;
+Spritesmith.algorithms = algorithms;
+
+// Add default algorithms
+addAlgorithm('top-down', require('./algorithms/top-down.algorithm.js'));
+// addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
+// addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
+// addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 
 // Export Spritesmith
 module.exports = Spritesmith;
