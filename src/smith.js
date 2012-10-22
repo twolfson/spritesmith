@@ -61,7 +61,7 @@ function Spritesmith(params, callback) {
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
-      var coords = packingSmith.coords;
+      var coords = packingSmith.exportCoordinates();
       retObj.coordinates = coords;
       cb(null);
     },
@@ -142,7 +142,7 @@ Spritesmith.algorithms = algorithms;
 
 // Add default algorithms
 addAlgorithm('top-down', require('./algorithms/top-down.algorithm.js'));
-// addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
+addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
 // addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
 // addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 

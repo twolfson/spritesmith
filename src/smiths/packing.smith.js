@@ -1,40 +1,28 @@
 function PackingSmith(algorithm) {
-  this.items = {};
-  this.coords = {};
+  this.packedItems = [];
   this.algorithm = algorithm;
 }
 PackingSmith.prototype = {
-  'addItem': function (name, img) {
+  'addItem': function (name, item) {
     // Add the item
-    var coords = this.algorithm(img),
+    var coords = this.algorithm(item),
         saveObj = {
           'name': name,
           'coords': coords,
-          'img': img,
-          'x': coords.x,
-          'y': coords.y
+          'item': item
         };
-    this.items[name] = saveObj;
-    this.coords[name] = coords;
-  },
-  'exportCoordinates': function () {
-    // Return the coordinates
-    return this.coords;
+    this.packedItems.push(saveObj);
   },
   'getStats': function () {
-    // Collect each of the coordinates into an array
-    var coords = this.coords,
-        coordNames = Object.getOwnPropertyNames(coords),
-        coordArr = coordNames.map(function (name) {
-          return coords[name];
-        });
-
     // Get the endX and endY for each item
-    var endXArr = coordArr.map(function (coord) {
-          return coord.x + coord.width;
+    var packedItems = this.packedItems,
+        endXArr = packedItems.map(function (packedItem) {
+          var coords = packedItem.coords;
+          return coords.x + coords.width;
         }),
-        endYArr = coordArr.map(function (coord) {
-          return coord.y + coord.height;
+        endYArr = packedItems.map(function (packedItem) {
+          var coords = packedItem.coords;
+          return coords.y + coords.height;
         });
 
     // Get the maximums of these
@@ -55,9 +43,35 @@ PackingSmith.prototype = {
     // Generate a canvas
     engine.createCanvas(maxWidth, maxHeight, cb);
   },
+  'exportCoordinates': function () {
+    // Extract and return the items as a map
+    var packedItems = this.packedItems,
+        coordMap = {};
+
+    packedItems.forEach(function (packedItem) {
+      var name = packedItem.name;
+      coordMap[name] = packedItem.coords;
+    });
+
+    return coordMap;
+  },
   'exportItems': function () {
-    // Return the items
-    return this.items;
+    // Extract and return the items as a map
+    var packedItems = this.packedItems,
+        itemMap = {};
+
+    packedItems.forEach(function (packedItem) {
+      var name = packedItem.name,
+          item = packedItem.item,
+          coords = packedItem.coords;
+      itemMap[name] = {
+        'item': item,
+        'x': coords.x,
+        'y': coords.y
+      };
+    });
+
+    return itemMap;
   }
 };
 

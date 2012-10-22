@@ -12,6 +12,7 @@ var smith = require('../src/smith.js'),
     ];
 
 // Attempt to smith out the sprites
+// smith({'src': sprites, 'algorithm': 'bottom-up'}, function (err, result) {
 smith({'src': sprites}, function (err, result) {
   if (err) {
     throw err;
@@ -21,7 +22,7 @@ smith({'src': sprites}, function (err, result) {
     // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
 
     // DEV: Write out to actual_files
-    if (false) {
+    if (true) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/coordinates.json', JSON.stringify(result.coordinates, null, 4));
