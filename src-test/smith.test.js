@@ -12,7 +12,7 @@ var smith = require('../src/smith.js'),
     ];
 
 // Attempt to smith out the sprites
-smith({'src': sprites, 'algorithm': 'left-right'}, function (err, result) {
+smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
 // smith({'src': sprites}, function (err, result) {
   if (err) {
     throw err;
