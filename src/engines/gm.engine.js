@@ -121,31 +121,61 @@ function addExporter(name, exporter) {
 engine.exporters = exporters;
 engine.addExporter = addExporter;
 
-function gmPngExporter(options, cb) {
-  var canvas = this.canvas,
-      file = new ScratchFile('png'),
-      filepath = file.filepath;
+// Helper to create gm exporters (could be a class for better abstraction)
+function getGmExporter(ext) {
+  /**
+   * Generic gm exporter
+   * @param {Object} options Options to export with
+   * @param {Number} [options.quality] Quality of the exported item
+   * @param {Function} cb Error-first callback to return binary image string to
+   */
+  return function gmExporterFn (options, cb) {
+    var canvas = this.canvas,
+        file = new ScratchFile(ext),
+        filepath = file.filepath;
 
-  async.waterfall([
-    // Write to file
-    function writeOutCanvas (cb) {
-      canvas.write(filepath, cb);
-    },
-    // Read the file back in (in binary)
-    function readInCanvas (x, y, z, cb) {
-     fs.readFile(filepath, 'binary', cb);
-    },
-    // Destroy the file
-    function destroyFile (retVal, cb) {
-      file.destroy(function () {
-        cb(null, retVal);
-      });
+    // Update the quality of the canvas (if specified)
+    var quality = options.quality;
+    if (quality !== undefined) {
+      canvas.quality(quality);
     }
-  ], cb);
+
+    async.waterfall([
+      // Write to file
+      function writeOutCanvas (cb) {
+        canvas.write(filepath, cb);
+      },
+      // Read the file back in (in binary)
+      function readInCanvas (x, y, z, cb) {
+       fs.readFile(filepath, 'binary', cb);
+      },
+      // Destroy the file
+      function destroyFile (retVal, cb) {
+        file.destroy(function () {
+          cb(null, retVal);
+        });
+      }
+    ], cb);
+  }
 }
+
+// Generate the png exporter
+var gmPngExporter = getGmExporter('png');
 addExporter('png', gmPngExporter);
 addExporter('image/png', gmPngExporter);
 
+// Generate the jpeg exporter
+var gmJpegExporter = getGmExporter('jpeg');
+addExporter('jpg', gmJpegExporter);
+addExporter('jpeg', gmJpegExporter);
+addExporter('image/jpg', gmJpegExporter);
+addExporter('image/jpeg', gmJpegExporter);
+
+// This does not seem to be working at the moment
+// // Generate the tiff exporter
+// var gmTiffExporter = getGmExporter('tiff');
+// addExporter('tiff', gmTiffExporter);
+// addExporter('image/tiff', gmTiffExporter);
 
 // Export the canvas
 module.exports = engine;

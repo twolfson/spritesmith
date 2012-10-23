@@ -88,7 +88,7 @@ function canvasPngExporter(options, cb) {
 addExporter('png', canvasPngExporter);
 addExporter('image/png', canvasPngExporter);
 
-// Add the jpeg exporter
+// Add the jpg exporter
 function canvasJpegExporter(options, cb) {
   var canvas = this.canvas,
       jpegStream = canvas.createJPEGStream();
