@@ -11,7 +11,7 @@ var smith = require('../src/smith.js'),
 
 // Attempt to smith out the sprites
 // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
-smith({'src': sprites, 'exportOpts': {'format': 'jpg'}}, function (err, result) {
+smith({'src': sprites, 'engine': 'gm'/*, 'exportOpts': {'format': 'jpg'}*/}, function (err, result) {
 // smith({'src': sprites}, function (err, result) {
   if (err) {
     throw err;
@@ -33,11 +33,14 @@ smith({'src': sprites, 'exportOpts': {'format': 'jpg'}}, function (err, result) 
     var actualImage = result.image,
         expectedCanvasFile = path.join(expectedDir, 'canvas.png'),
         expectedGmFile = path.join(expectedDir, 'gm.png'),
+        expectedGm2File = path.join(expectedDir, 'gm2.png'),
         expectedCanvasImage = fs.readFileSync(expectedCanvasFile, 'binary'),
         expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
+        expectedGm2Image = fs.readFileSync(expectedGm2File, 'binary'),
         matchesCanvas = expectedCanvasImage === actualImage,
         matchesGm = expectedGmImage === actualImage,
-        matchesAnImage = matchesCanvas || matchesGm;
+        matchesGm2 = expectedGm2Image === actualImage,
+        matchesAnImage = matchesCanvas || matchesGm || matchesGm2;
     assert(matchesAnImage, "Actual image does not match expected image");
 
     // Load in the coordinates

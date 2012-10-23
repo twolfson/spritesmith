@@ -39,20 +39,21 @@ Canvas.prototype = {
     // Add the image
     var canvas = this.canvas;
 
-    // TODO: Pull request this in
+    // TODO: Pull request this in to gm
     canvas.out('-page');
     canvas.out('+' + x + '+' + y);
     canvas.out(img.file);
   },
-  'export': function exportFn (format, cb) {
+  'export': function exportFn (options, cb) {
     // Grab the tmpfile and exporter
     var that = this,
         canvas = that.canvas,
         tmpfile = canvas._file,
+        format = options.format || 'png',
         exporter = exporters[format];
 
     // Assert it exists
-    assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
+    assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s gm engine');
 
     async.waterfall([
       function outputImage (cb) {
