@@ -3,40 +3,7 @@ var fs = require('fs'),
     assert = require('assert'),
     CanvasLib = require('canvas'),
     ImageLib = CanvasLib.Image,
-    exporters = {
-      'png': function canvasPngExporter (cb) {
-        var canvas = this.canvas,
-            pngStream = canvas.createPNGStream(),
-            imgData = [],
-            err;
-
-        // On data, add it to imgData
-        // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
-        pngStream.on('data', function (chunk) {
-          var binaryStr = chunk.toString('binary');
-          imgData.push(binaryStr);
-        });
-
-        // On error, save it
-        pngStream.on('error', function (_err) {
-          err = _err;
-        });
-
-        // When complete
-        pngStream.on('end', function () {
-          // If there was an error, callback with it
-          if (err) {
-            cb(err);
-          } else {
-          // Otherwise, join together image data, put it into the retObj
-            var retStr = imgData.join('');
-
-            // Callback with no error
-            cb(null, retStr);
-          }
-        });
-      }
-    },
+    exporters = {},
     engine = {};
 
 function Canvas(width, height) {
@@ -50,15 +17,22 @@ Canvas.prototype = {
     var ctx = this.ctx;
     ctx.drawImage(img, x, y, img.width, img.height);
   },
-  'export': function exportFn (format, cb) {
+  /**
+   * @param {Object} options Options for export
+   * @param {String} options.format Format to export as
+   * @param {Mixed} options.* Any other options the exporter might have
+   * @param {Function}
+   */
+  'export': function exportFn (options, cb) {
     // Grab the exporter
-    var exporter = exporters[format];
+    var format = options.format || 'png',
+        exporter = exporters[format];
 
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
 
     // Render the item
-    exporter.call(this, cb);
+    exporter.call(this, options, cb);
   }
 };
 
@@ -92,8 +66,59 @@ function createImage(file, cb) {
 }
 engine.createImage = createImage;
 
+// Function add new exporters
+function addExporter(name, exporter) {
+  exporters[name] = exporter;
+}
+
 // Expose the exporters
 engine.exporters = exporters;
+engine.addExporter = addExporter;
+
+// TODO: Make this a utility
+// I know -- every time this code runs, god kills a kitten
+function streamToString(stream, cb) {
+  // Generate imgData to store chunks
+  var imgData = [],
+      err = "";
+
+  // On data, add it to imgData
+  // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
+  stream.on('data', function (chunk) {
+    var binaryStr = chunk.toString('binary');
+    imgData.push(binaryStr);
+  });
+
+  // On error, save it
+  stream.on('error', function (_err) {
+    err += _err;
+  });
+
+  // When complete
+  stream.on('end', function () {
+    // If there was an error, callback with it
+    if (err) {
+      cb(err);
+    } else {
+    // Otherwise, join together image data, put it into the retObj
+      var retStr = imgData.join('');
+
+      // Callback with no error
+      cb(null, retStr);
+    }
+  });
+}
+
+// Add the png exporter
+function canvasPngExporter(options, cb) {
+  var canvas = this.canvas,
+      pngStream = canvas.createPNGStream();
+
+  // Stream out the png to a binary string and callback
+  streamToString(pngStream, cb);
+}
+addExporter('png', canvasPngExporter);
+addExporter('image/png', canvasPngExporter);
 
 // Export the canvas
 module.exports = engine;

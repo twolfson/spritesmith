@@ -1,9 +1,7 @@
-// TODO: Move over to path
 var smith = require('../src/smith.js'),
     fs = require('fs'),
     path = require('path'),
     assert = require('assert'),
-    // sprites = [__dirname + '/test_sprites/sprite1.png'],
     spriteDir = path.join(__dirname, 'test_sprites'),
     sprites = [
       path.join(spriteDir, 'sprite1.png'),
