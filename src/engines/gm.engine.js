@@ -60,10 +60,7 @@ function createCanvas(width, height, cb) {
       // Write out the base file
       base.write(filepath, cb);
     },
-    // TODO: Move over to async.series
-    function destroyScratchFile () {
-      var cb = arguments[arguments.length - 1];
-
+    function destroyScratchFile (x, y, z, cb) {
       // Ignore destory errors
       scratchFile.destroy(function () {
         cb(null);
