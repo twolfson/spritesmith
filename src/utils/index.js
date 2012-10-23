@@ -1,3 +1,42 @@
+var fs = require('fs'),
+    path = require('path'),
+    scratchDir = path.join(__dirname, '../../scratch');
+/**
+ * Scratch file maker
+ * @constructor
+ * @param {String} ext Extension for the file
+ */
+function ScratchFile(ext) {
+  // Generate our name and path
+  var now = +new Date(),
+      rand = Math.random(),
+      filename = now + '.' + rand + '.' + ext,
+      filepath = path.join(scratchDir, filename);
+
+  // Save the name and path
+  this.filename = filename;
+  this.filepath = filepath;
+}
+
+// Helper function to guarantee scratch dir exists
+function guaranteeScratchDir(cb) {
+  fs.mkdir(scratchDir, function () {
+    cb(null);
+  });
+}
+ScratchFile.guaranteeScratchDir = guaranteeScratchDir;
+
+ScratchFile.prototype = {
+  // Guaranteee scratch dir
+  'guaranteeScratchDir': guaranteeScratchDir,
+  // Destroy the scratch file
+  'destroy': function (cb) {
+    var filepath = this.filepath;
+    fs.unlink(filepath, cb);
+  }
+};
+
+// Generate our exports
 module.exports = {
   // I know -- every time this code runs, god kills a kitten
   'streamToString': function streamToString (stream, cb) {
@@ -30,5 +69,6 @@ module.exports = {
         cb(null, retStr);
       }
     });
-  }
+  },
+  'ScratchFile': ScratchFile
 };

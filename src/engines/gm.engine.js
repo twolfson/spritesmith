@@ -2,34 +2,17 @@ var fs = require('fs'),
     path = require('path'),
     async = require('async'),
     assert = require('assert'),
+    utils = require('../utils'),
+    ScratchFile = utils.ScratchFile,
     gm = require('gm'),
-    exporters = {
-      'png': function canvasPngExporter (cb) {
-        var canvas = this.canvas,
-            file = canvas._file;
-
-        // Write out to file (how meta)
-        canvas.write(file, function (err) {
-          // If there was an error, callback with it
-          if (err) {
-            return cb(err);
-          }
-
-          // Read the file back in (in binary)
-          fs.readFile(file, 'binary', cb);
-        });
-      }
-    },
+    exporters = {},
     engine = {};
 
-function Canvas(file) {
+function Canvas() {
   var canvas = gm(1, 1, 'transparent');
 
   // Override the -size options (won't work otherwise)
   canvas._in = ['-background', 'transparent'];
-
-  // Save the file as a reference
-  canvas._file = file;
 
   // Save the canvas
   this.canvas = canvas;
@@ -45,10 +28,9 @@ Canvas.prototype = {
     canvas.out(img.file);
   },
   'export': function exportFn (options, cb) {
-    // Grab the tmpfile and exporter
+    // Grab the exporter
     var that = this,
         canvas = that.canvas,
-        tmpfile = canvas._file,
         format = options.format || 'png',
         exporter = exporters[format];
 
@@ -62,18 +44,6 @@ Canvas.prototype = {
 
         // Render the item
         exporter.call(that, cb);
-      },
-      function cleanupTmpfile (output, cb) {
-        // Attempt to delete the tmpfile
-        fs.unlink(tmpfile, function (err) {
-          // If there is an error, log it
-          if (err) {
-            console.error('Warning: Could not delete temporary spritesmith file!' + tmpfile, err);
-          }
-
-          // Continue with the output
-          cb(null, output);
-        });
       }
     ], cb);
   }
@@ -82,32 +52,31 @@ Canvas.prototype = {
 // Expose Canvas to engine
 engine.Canvas = Canvas;
 
-// TODO: Make this a spritesmith helper
 // Create paths for the scratch directory and transparent pixel
-var scratchDir = path.join(__dirname, '../../scratch'),
-    transparentPixel = path.join(__dirname, 'transparent.png');
 function createCanvas(width, height, cb) {
-  var now = +new Date(),
-      rand = Math.random(),
-      randomFilename = now + '.' + rand + '.png',
-      tmpfile = path.join(scratchDir, randomFilename);
+  // Generate a scratch file
+  var scratchFile = new ScratchFile('png'),
+      filepath = scratchFile.filepath;
   async.waterfall([
-    function guaranteeScratchDir (cb) {
-      // This always passes due to error annoyances
-      fs.mkdir(scratchDir, function () {
-        cb(null);
-      });
-    },
     function generateCanvas (cb) {
       // Generate a transparent canvas
       var base = gm(width, height, 'transparent');
 
       // Write out the base file
-      base.write(tmpfile, cb);
+      base.write(filepath, cb);
     },
-    function loadBackCanvas (x, y, z, cb) {
+    // TODO: Move over to async.series
+    function destroyScratchFile () {
+      var cb = arguments[arguments.length - 1];
+
+      // Ignore destory errors
+      scratchFile.destroy(function () {
+        cb(null);
+      });
+    },
+    function loadBackCanvas (cb) {
       // Create a canvas
-      var canvas = new Canvas(tmpfile);
+      var canvas = new Canvas();
 
       // Callback with it
       cb(null, canvas);
@@ -151,8 +120,40 @@ function createImage(file, cb) {
 }
 engine.createImage = createImage;
 
+// Function to add new exporters
+function addExporter(name, exporter) {
+  exporters[name] = exporter;
+}
+
 // Expose the exporters
 engine.exporters = exporters;
+engine.addExporter = addExporter;
+
+// TODO: Allow options
+function gmPngExporter(cb) {
+  var canvas = this.canvas,
+      file = new ScratchFile('png'),
+      filepath = file.filepath;
+
+  // Write out to file (how meta)
+  canvas.write(filepath, function (err) {
+    // If there was an error, callback with it
+    if (err) {
+      return cb(err);
+    }
+
+    // Read the file back in (in binary)
+    fs.readFile(filepath, 'binary', function (err, retVal) {
+      // Destroy the file
+      file.destroy(function () {
+        cb(err, retVal);
+      });
+    });
+  });
+}
+addExporter('png', gmPngExporter);
+addExporter('image/png', gmPngExporter);
+
 
 // Export the canvas
 module.exports = engine;

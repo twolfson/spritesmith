@@ -68,7 +68,7 @@ function createImage(file, cb) {
 }
 engine.createImage = createImage;
 
-// Function add new exporters
+// Function to add new exporters
 function addExporter(name, exporter) {
   exporters[name] = exporter;
 }

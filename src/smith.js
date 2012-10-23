@@ -158,5 +158,8 @@ addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
 addAlgorithm('negative-diagonal', require('./algorithms/negative-diagonal.algorithm.js'));
 addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 
+// Expose utils
+Spritesmith.utils = require('./utils');
+
 // Export Spritesmith
 module.exports = Spritesmith;

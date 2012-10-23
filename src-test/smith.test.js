@@ -41,6 +41,7 @@ smith({'src': sprites, 'engine': 'gm'/*, 'exportOpts': {'format': 'jpg'}*/}, fun
         matchesGm = expectedGmImage === actualImage,
         matchesGm2 = expectedGm2Image === actualImage,
         matchesAnImage = matchesCanvas || matchesGm || matchesGm2;
+
     assert(matchesAnImage, "Actual image does not match expected image");
 
     // Load in the coordinates
