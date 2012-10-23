@@ -26,8 +26,7 @@ CanvasSmith.prototype = {
     });
   },
   'export': function (options, cb) {
-    // TODO: Use export options here
-    this.canvas['export']('png', cb);
+    this.canvas['export'](options, cb);
   }
 };
 

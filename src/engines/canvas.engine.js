@@ -120,5 +120,18 @@ function canvasPngExporter(options, cb) {
 addExporter('png', canvasPngExporter);
 addExporter('image/png', canvasPngExporter);
 
+// Add the jpeg exporter
+function canvasJpegExporter(options, cb) {
+  var canvas = this.canvas,
+      jpegStream = canvas.createJPEGStream();
+
+  // Stream out the jpeg to a binary string and callback
+  streamToString(jpegStream, cb);
+}
+addExporter('jpg', canvasJpegExporter);
+addExporter('jpeg', canvasJpegExporter);
+addExporter('image/jpg', canvasJpegExporter);
+addExporter('image/jpeg', canvasJpegExporter);
+
 // Export the canvas
 module.exports = engine;
