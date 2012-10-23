@@ -156,7 +156,7 @@ function getGmExporter(ext) {
         });
       }
     ], cb);
-  }
+  };
 }
 
 // Generate the png exporter
