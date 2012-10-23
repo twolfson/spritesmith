@@ -29,23 +29,18 @@ Canvas.prototype = {
   },
   'export': function exportFn (options, cb) {
     // Grab the exporter
-    var that = this,
-        canvas = that.canvas,
+    var canvas = this.canvas,
         format = options.format || 'png',
         exporter = exporters[format];
 
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s gm engine');
 
-    async.waterfall([
-      function outputImage (cb) {
-        // Flatten the image (with transparency)
-        canvas.mosaic();
+    // Flatten the image (with transparency)
+    canvas.mosaic();
 
-        // Render the item
-        exporter.call(that, cb);
-      }
-    ], cb);
+    // Render the item
+    exporter.call(this, options, cb);
   }
 };
 
@@ -129,27 +124,27 @@ function addExporter(name, exporter) {
 engine.exporters = exporters;
 engine.addExporter = addExporter;
 
-// TODO: Allow options
-function gmPngExporter(cb) {
+function gmPngExporter(options, cb) {
   var canvas = this.canvas,
       file = new ScratchFile('png'),
       filepath = file.filepath;
 
-  // Write out to file (how meta)
-  canvas.write(filepath, function (err) {
-    // If there was an error, callback with it
-    if (err) {
-      return cb(err);
-    }
-
+  async.waterfall([
+    // Write to file
+    function writeOutCanvas (cb) {
+      canvas.write(filepath, cb);
+    },
     // Read the file back in (in binary)
-    fs.readFile(filepath, 'binary', function (err, retVal) {
-      // Destroy the file
+    function readInCanvas (x, y, z, cb) {
+     fs.readFile(filepath, 'binary', cb);
+    },
+    // Destroy the file
+    function destroyFile (retVal, cb) {
       file.destroy(function () {
-        cb(err, retVal);
+        cb(null, retVal);
       });
-    });
-  });
+    }
+  ], cb);
 }
 addExporter('png', gmPngExporter);
 addExporter('image/png', gmPngExporter);
