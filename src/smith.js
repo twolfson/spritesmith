@@ -1,10 +1,9 @@
 var async = require('async'),
     assert = require('assert'),
     EngineSmith = require('./smiths/engine.smith.js'),
-    PackingSmith = require('./smiths/packing.smith.js'),
+    Layout = require('layout'),
     CanvasSmith = require('./smiths/canvas.smith.js'),
-    engines = {},
-    algorithms = {};
+    engines = {};
 
 
 /**
@@ -25,8 +24,7 @@ function Spritesmith(params, callback) {
       files = params.src,
       enginePref = params.engine || 'auto',
       engine = engines[enginePref],
-      algorithmPref = params.algorithm || 'top-down',
-      algorithm = algorithms[algorithmPref];
+      algorithmPref = params.algorithm || 'top-down';
 
   // If the engine is not defined
   if (engine === undefined) {
@@ -40,12 +38,9 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
-  // Assert we have an algorithm
-  assert(algorithm, 'Sorry, the \'' + algorithmPref +'\' spritesmith algorithm could not be loaded.');
-
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
-      packingSmith = new PackingSmith(algorithm),
+      layer = new Layout(algorithmPref),
       exportOpts = params.exportOpts || {},
       packedObj;
 
@@ -58,8 +53,7 @@ function Spritesmith(params, callback) {
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
       images.forEach(function (img) {
-        var name = img._filepath;
-        packingSmith.addItem(name, img);
+        layer.addItem({'width': img.width, 'height': img.height, 'meta': img});
       });
 
       // Callback with nothing
@@ -68,10 +62,24 @@ function Spritesmith(params, callback) {
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
       // Export and saved packedObj for later
-      packedObj = packingSmith['export']();
+      packedObj = layer['export']();
+
+      // Extract the coordinates
+      var coordinates = {},
+          packedItems = packedObj.items;
+      packedItems.forEach(function (item) {
+        var img = item.meta,
+            name = img._filepath;
+        coordinates[name] = {
+          'x': item.x,
+          'y': item.y,
+          'width': item.width,
+          'height': item.height
+        };
+      });
 
       // Save the coordinates
-      retObj.coordinates = packedObj.coordinates;
+      retObj.coordinates = coordinates;
 
       // Continue
       cb(null);
@@ -88,11 +96,8 @@ function Spritesmith(params, callback) {
       // Create a CanvasSmithy
       var canvasSmith = new CanvasSmith(canvas);
 
-      // Grab the images
-      var images = packedObj.itemMap;
-
       // Add the images onto canvasSmith
-      canvasSmith.addImageMap(images);
+      canvasSmith.addImages(packedObj.items);
 
       // Export our canvas
       canvasSmith['export'](exportOpts, cb);
@@ -113,7 +118,7 @@ function Spritesmith(params, callback) {
 
 // Add the smiths to Spritesmith
 Spritesmith.EngineSmith = EngineSmith;
-Spritesmith.PackingSmith = PackingSmith;
+Spritesmith.Layout = Layout;
 Spritesmith.CanvasSmith = CanvasSmith;
 
 /**
@@ -140,28 +145,6 @@ try {
 
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
-
-/**
- * Method to add new algorithms via
- * @param {String} name Name of algorithm
- * @param {Function} algorithm Algorithm to bind under name
- */
-function addAlgorithm(name, algorithm) {
-  // Save the algorithm to algorithms
-  algorithms[name] = algorithm;
-}
-// Make algorithms easier to add
-Spritesmith.addAlgorithm = addAlgorithm;
-Spritesmith.algorithms = algorithms;
-
-// Add default algorithms
-addAlgorithm('top-down', require('./algorithms/top-down.algorithm.js'));
-addAlgorithm('bottom-up', require('./algorithms/bottom-up.algorithm.js'));
-addAlgorithm('left-right', require('./algorithms/left-right.algorithm.js'));
-addAlgorithm('right-left', require('./algorithms/right-left.algorithm.js'));
-addAlgorithm('diagonal', require('./algorithms/diagonal.algorithm.js'));
-addAlgorithm('negative-diagonal', require('./algorithms/negative-diagonal.algorithm.js'));
-addAlgorithm('reverse-diagonal', require('./algorithms/reverse-diagonal.algorithm.js'));
 
 // Expose utils
 Spritesmith.utils = require('./utils');

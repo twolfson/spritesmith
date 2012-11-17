@@ -15,7 +15,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "async": "~0.1.22"
+    "async": "~0.1.22",
+    "layout": "~1.2.1"
   },
   "optionalDependencies": {
     "canvas": "~0.13.0",
