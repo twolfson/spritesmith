@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "node src-test/smith.test.js"
+    "test": "mocha src-test/smith.test.js"
   },
   "keywords": [
     "sprite",
