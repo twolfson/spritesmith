@@ -92,6 +92,7 @@ function assertSpritesheet() {
       expectedGmFile = path.join(expectedDir, namespace + 'gm.png'),
       expectedGm2File = path.join(expectedDir, namespace + 'gm2.png'),
       expectedCanvasImage = fs.readFileSync(expectedCanvasFile, 'binary'),
+      // expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
       expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
       expectedGm2Image = fs.readFileSync(expectedGm2File, 'binary'),
       matchesCanvas = expectedCanvasImage === actualImage,
