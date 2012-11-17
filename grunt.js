@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         curly: true,
         eqeqeq: true,
         immed: true,
-        latedef: true,
+        // latedef: true,
         newcap: true,
         noarg: true,
         sub: true,
@@ -24,7 +24,13 @@ module.exports = function(grunt) {
         node: true
       },
       globals: {
-        exports: true
+        exports: true,
+        describe: true,
+        it: true,
+        before: true,
+        beforeEach: true,
+        after: true,
+        afterEach: true
       }
     }
   });
