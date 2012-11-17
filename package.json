@@ -16,7 +16,8 @@
   "private": true,
   "dependencies": {
     "async": "~0.1.22",
-    "layout": "~1.2.1"
+    "layout": "~1.2.1",
+    "mocha": "~1.7.0"
   },
   "optionalDependencies": {
     "canvas": "~0.13.0",
