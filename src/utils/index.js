@@ -1,6 +1,9 @@
 var fs = require('fs'),
     path = require('path'),
     scratchDir = path.join(__dirname, '../../scratch');
+
+try { fs.mkdirSync(scratchDir); } catch (e) {}
+
 /**
  * Scratch file maker
  * @constructor
@@ -17,18 +20,7 @@ function ScratchFile(ext) {
   this.filename = filename;
   this.filepath = filepath;
 }
-
-// Helper function to guarantee scratch dir exists
-function guaranteeScratchDir(cb) {
-  fs.mkdir(scratchDir, function () {
-    cb(null);
-  });
-}
-ScratchFile.guaranteeScratchDir = guaranteeScratchDir;
-
 ScratchFile.prototype = {
-  // Guaranteee scratch dir
-  'guaranteeScratchDir': guaranteeScratchDir,
   // Destroy the scratch file
   'destroy': function (cb) {
     var filepath = this.filepath;
