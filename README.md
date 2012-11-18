@@ -60,7 +60,7 @@ For the `gm` engine, the current output options are:
 ```
 
 ### Available packing algorithms
-There is a bunch of packing algorithms available: `top-down`, `bottom-up`, `left-right`, `right-left`, `diagonal`, `negative-diagonal`, `reverse-diagonal`.
+The available packing algorithms are: `top-down`, `left-right`, `diagonal` (\\ format), `alt-diagonal` (/ format).
 
 ### Adding new engines
 Example engines can be found in [src/engines](tree/master/src/engines).
