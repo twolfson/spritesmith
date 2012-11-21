@@ -70,9 +70,9 @@ New engines can be added via `Spritesmith.addEngine(name, engine);`.
 If you decide to build a new engine, there are some utilities in [src/utils](tree/master/src/utils) which may be helpful.
 
 ### Adding new packing algorithms
-Example algorithms can be found in [src/algorithms](tree/master/src/algorithms).
+Algorithms are maintained inside of [twolfson/layout](https://github.com/twolfson/layout/). Example algorithms can be found in [twolfson/layout/lib/algorithms](https://github.com/twolfson/layout/tree/master/lib/algorithms).
 
-New algorithms can be added via `Spritesmith.addAlgorithm(name, algorithm);`.
+New algorithms can be added via `Spritesmith.Layout.addAlgorithm(name, algorithm);`.
 
 Examples
 --------
