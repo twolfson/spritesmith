@@ -1,6 +1,6 @@
 {
   "name": "spritesmith",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
@@ -13,7 +13,6 @@
   ],
   "author": "Todd Wolfson <todd@twolfson.com>",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "async": "~0.1.22",
     "layout": "~1.2.1"
