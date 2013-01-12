@@ -2,6 +2,10 @@ Spritesmith
 ===========
 Utility that takes image files and generates [spritesheets](http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS) and coordinate maps.
 
+Once you have satisfied the [requirements](#requirements), spritesmith can be installed via `npm install spritesmith`.
+
+Spritesmith is also available as a [grunt plugin](https://github.com/Ensighten/grunt-spritesmith).
+
 Requirements
 ------------
 Spritesmith supports multiple sprite engines however all of the current engines require external software to be installed.
