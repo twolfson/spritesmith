@@ -39,10 +39,8 @@ module.exports = {
     // On data, add it to imgData
     // Note: We must save in 'binary' since utf8 strings don't support any possible character that a file might use
     stream.on('data', function (chunk) {
-      console.log('datax');
       var binaryStr = chunk.toString('binary');
       imgData.push(binaryStr);
-      console.log('data');
     });
 
     // DEV: Originally, this collected errors for stream.on('end') but Cairo won't callback on error =(

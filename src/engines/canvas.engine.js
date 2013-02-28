@@ -30,12 +30,10 @@ Canvas.prototype = {
     var format = options.format || 'png',
         exporter = exporters[format];
 
-    console.log('www1');
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
 
     // Render the item
-    console.log('www2');
     exporter.call(this, options, cb);
   }
 };
@@ -85,7 +83,6 @@ function canvasPngExporter(options, cb) {
       pngStream = canvas.createPNGStream();
 
   // Stream out the png to a binary string and callback
-  console.log('xxx1');
   streamToString(pngStream, cb);
 }
 addExporter('png', canvasPngExporter);
