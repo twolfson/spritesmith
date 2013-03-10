@@ -48,10 +48,12 @@ function Spritesmith(params, callback) {
   async.waterfall([
     function grabImages (cb) {
       // Map the files into their image counterparts
+      console.log('hey1');
       engineSmith.createImages(files, cb);
     },
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
+      console.log('hey2');
       images.forEach(function (img) {
         layer.addItem({'width': img.width, 'height': img.height, 'meta': img});
       });
@@ -61,6 +63,7 @@ function Spritesmith(params, callback) {
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
+      console.log('hey3');
       // Export and saved packedObj for later
       packedObj = layer['export']();
 
@@ -86,6 +89,7 @@ function Spritesmith(params, callback) {
     },
     // Then, generate a canvas
     function generateCanvas (cb) {
+      console.log('hey4');
     // Generate a canvas
       var width = packedObj.width,
           height = packedObj.height;
@@ -93,6 +97,7 @@ function Spritesmith(params, callback) {
     },
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
+      console.log('hey5');
       // Create a CanvasSmithy
       var canvasSmith = new CanvasSmith(canvas);
 
@@ -103,6 +108,7 @@ function Spritesmith(params, callback) {
       canvasSmith['export'](exportOpts, cb);
     },
     function saveImageToRetObj(imgStr, cb) {
+      console.log('hey6');
       // Save the image to the retObj
       retObj.image = imgStr;
 
@@ -110,6 +116,7 @@ function Spritesmith(params, callback) {
       cb(null);
     },
     function smithCallbackData (cb) {
+      console.log('hey7');
       // Callback with the return object
       cb(null, retObj);
     }

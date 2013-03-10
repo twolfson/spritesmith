@@ -5,69 +5,69 @@ var smith = require('../src/smith.js'),
     spriteDir = path.join(__dirname, 'test_sprites'),
     expectedDir = __dirname + '/expected_files';
 
-describe('An array of sprites', function () {
-  var sprites = [
-        path.join(spriteDir, 'sprite1.png'),
-        path.join(spriteDir, 'sprite2.jpg'),
-        path.join(spriteDir, 'sprite3.png')
-      ];
+// describe('An array of sprites', function () {
+//   var sprites = [
+//         path.join(spriteDir, 'sprite1.png'),
+//         path.join(spriteDir, 'sprite2.jpg'),
+//         path.join(spriteDir, 'sprite3.png')
+//       ];
 
-  describe('when processed via spritesmith', function () {
-    before(function (done) {
-      var that = this;
+//   describe('when processed via spritesmith', function () {
+//     before(function (done) {
+//       var that = this;
 
-      // Create a namespace for loading from
-      this.namespace = 'topDown.';
+//       // Create a namespace for loading from
+//       this.namespace = 'topDown.';
 
-      // Attempt to smith out the sprites
-      // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
-      // smith({'src': sprites, 'engine': 'gm', 'exportOpts': {'format': 'jpg', 'quality': 20}}, function (err, result) {
-      smith({'src': sprites}, function (err, result) {
-        // If there is an error, throw it
-        if (err) {
-          throw err;
-        } else {
-        // Otherwise, save the result
-          that.result = result;
-        }
+//       // Attempt to smith out the sprites
+//       // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
+//       // smith({'src': sprites, 'engine': 'gm', 'exportOpts': {'format': 'jpg', 'quality': 20}}, function (err, result) {
+//       smith({'src': sprites}, function (err, result) {
+//         // If there is an error, throw it
+//         if (err) {
+//           throw err;
+//         } else {
+//         // Otherwise, save the result
+//           that.result = result;
+//         }
 
-        // Callback
-        done(err);
-      });
-    });
+//         // Callback
+//         done(err);
+//       });
+//     });
 
-    it('renders a top-down spritesheet', assertSpritesheet);
+//     it('renders a top-down spritesheet', assertSpritesheet);
 
-    it('has the proper coordinates', assertCoordinates);
-  });
+//     it('has the proper coordinates', assertCoordinates);
+//   });
 
-  describe('when converted from left to right', function () {
-    before(function (done) {
-      var that = this;
+//   describe('when converted from left to right', function () {
+//     before(function (done) {
+//       var that = this;
 
-      // Create a namespace for loading from
-      this.namespace = 'leftRight.';
+//       // Create a namespace for loading from
+//       this.namespace = 'leftRight.';
 
-      // Attempt to smith out the sprites
-      smith({'src': sprites, 'algorithm': 'left-right', 'engine': 'gm'}, function (err, result) {
-        // If there is an error, throw it
-        if (err) {
-          throw err;
-        } else {
-        // Otherwise, save the result
-          that.result = result;
-        }
+//       // Attempt to smith out the sprites
+//       smith({'src': sprites, 'algorithm': 'left-right', 'engine': 'gm'}, function (err, result) {
+//         // If there is an error, throw it
+//         if (err) {
+//           throw err;
+//         } else {
+//         // Otherwise, save the result
+//           that.result = result;
+//         }
 
-        // Callback
-        done(err);
-      });
-    });
+//         // Callback
+//         done(err);
+//       });
+//     });
 
-    it('renders a left-right spritesheet', assertSpritesheet);
+//     it('renders a left-right spritesheet', assertSpritesheet);
 
-    it('has the proper coordinates', assertCoordinates);
-  });
-});
+//     it('has the proper coordinates', assertCoordinates);
+//   });
+// });
 
 describe('An empty array', function () {
   var sprites = [];
