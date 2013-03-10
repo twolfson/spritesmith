@@ -48,12 +48,10 @@ function Spritesmith(params, callback) {
   async.waterfall([
     function grabImages (cb) {
       // Map the files into their image counterparts
-      console.log('hey1');
       engineSmith.createImages(files, cb);
     },
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
-      console.log('hey2');
       images.forEach(function (img) {
         layer.addItem({'width': img.width, 'height': img.height, 'meta': img});
       });
@@ -63,7 +61,6 @@ function Spritesmith(params, callback) {
     },
     // Then, output the coordinates
     function smithOutputCoordinates (cb) {
-      console.log('hey3');
       // Export and saved packedObj for later
       packedObj = layer['export']();
 
@@ -83,8 +80,6 @@ function Spritesmith(params, callback) {
 
       // Save the coordinates
       retObj.coordinates = coordinates;
-
-      console.log(coordinates);
 
       // Continue
       cb(null);
