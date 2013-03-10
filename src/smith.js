@@ -84,6 +84,8 @@ function Spritesmith(params, callback) {
       // Save the coordinates
       retObj.coordinates = coordinates;
 
+      console.log(coordinates);
+
       // Continue
       cb(null);
     },
@@ -97,12 +99,17 @@ function Spritesmith(params, callback) {
     },
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
-      console.log('hey5');
+      // If there are no items to pack, skip export
+      var items = packedObj.items;
+      if (items.length === 0) {
+        return cb(null, '');
+      }
+
       // Create a CanvasSmithy
       var canvasSmith = new CanvasSmith(canvas);
 
       // Add the images onto canvasSmith
-      canvasSmith.addImages(packedObj.items);
+      canvasSmith.addImages(items);
 
       // Export our canvas
       canvasSmith['export'](exportOpts, cb);

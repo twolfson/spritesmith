@@ -88,7 +88,7 @@ describe('An empty array', function () {
     });
 
     it('renders an empty spritesheet', function () {
-      console.log(result);
+      console.log(this.result);
     });
   });
 });
