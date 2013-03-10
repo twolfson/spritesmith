@@ -69,6 +69,30 @@ describe('An array of sprites', function () {
   });
 });
 
+describe('An empty array', function () {
+  var sprites = [];
+
+  describe('when processed via spritesmith', function () {
+    before(function (done) {
+      var that = this;
+
+      // Attempt to create a spritesheet
+      smith({'src': sprites}, function (err, result) {
+        // If there is an error, throw it
+        if (err) { throw err; }
+
+        // Save the result and callback
+        that.result = result;
+        done(err);
+      });
+    });
+
+    it('renders an empty spritesheet', function () {
+      console.log(result);
+    });
+  });
+});
+
 function assertSpritesheet() {
   var result = this.result,
       namespace = this.namespace;
