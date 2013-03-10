@@ -91,7 +91,6 @@ function Spritesmith(params, callback) {
     },
     // Then, generate a canvas
     function generateCanvas (cb) {
-      console.log('hey4');
     // Generate a canvas
       var width = packedObj.width,
           height = packedObj.height;
@@ -115,7 +114,6 @@ function Spritesmith(params, callback) {
       canvasSmith['export'](exportOpts, cb);
     },
     function saveImageToRetObj(imgStr, cb) {
-      console.log('hey6');
       // Save the image to the retObj
       retObj.image = imgStr;
 
@@ -123,7 +121,6 @@ function Spritesmith(params, callback) {
       cb(null);
     },
     function smithCallbackData (cb) {
-      console.log('hey7');
       // Callback with the return object
       cb(null, retObj);
     }

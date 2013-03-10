@@ -88,7 +88,11 @@ describe('An empty array', function () {
     });
 
     it('renders an empty spritesheet', function () {
-      console.log(this.result);
+      assert.strictEqual(this.result.image, '');
+    });
+
+    it('returns an empty coordinate mapping', function () {
+      assert.deepEqual(this.result.coordinates, {});
     });
   });
 });
