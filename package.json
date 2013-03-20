@@ -14,7 +14,7 @@
   "author": "Todd Wolfson <todd@twolfson.com>",
   "license": "MIT",
   "dependencies": {
-    "async": "~0.1.22",
+    "async": "~0.2.6",
     "layout": "~1.2.1"
   },
   "devDependencies": {

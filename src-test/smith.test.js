@@ -97,6 +97,37 @@ describe('An empty array', function () {
   });
 });
 
+describe('A ridiculous amount of sprites', function () {
+  var sprites = [],
+      spritePath = path.join(spriteDir, '16.jpg'),
+      i = 500;
+  while (i--) { sprites.push(spritePath); }
+
+  describe('when processed via spritesmith', function () {
+    before(function (done) {
+      var that = this;
+
+      // Attempt to create a spritesheet
+      smith({'src': sprites}, function (err, result) {
+        // If there is an error, throw it
+        if (err) { throw err; }
+
+        // Save the result and callback
+        that.result = result;
+        done(err);
+      });
+    });
+
+    it('does not crash', function () {
+      // Would have thrown
+    });
+
+    it('returns an image', function () {
+      assert.notEqual(this.result.image, '');
+    });
+  });
+});
+
 function assertSpritesheet() {
   var result = this.result,
       namespace = this.namespace;
