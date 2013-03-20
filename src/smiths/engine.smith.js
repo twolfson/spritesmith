@@ -23,6 +23,7 @@ EngineSmith.prototype = {
   'createImages': function (files, cb) {
     // Map the files into their image counterparts
     // DEV: Magic number of 10 to prevent file descriptor overuse
+    // This does not affect perf -- 12 seconds with 300, 11.5 with 10 for 2000 images (derp)
     async.mapLimit(files, 10, this.createImage.bind(this), cb);
   },
   // Helper to create canvas via engine
