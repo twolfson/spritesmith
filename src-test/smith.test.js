@@ -97,6 +97,7 @@ describe('An empty array', function () {
   });
 });
 
+// DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
 describe('A ridiculous amount of sprites', function () {
   var sprites = [],
       spritePath = path.join(spriteDir, '16.jpg'),

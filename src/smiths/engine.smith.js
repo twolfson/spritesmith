@@ -22,7 +22,8 @@ EngineSmith.prototype = {
   // Sugar function for creating multiple images
   'createImages': function (files, cb) {
     // Map the files into their image counterparts
-    async.map(files, this.createImage.bind(this), cb);
+    // DEV: Magic number of 10 to prevent file descriptor overuse
+    async.mapLimit(files, 10, this.createImage.bind(this), cb);
   },
   // Helper to create canvas via engine
   'createCanvas': function (width, height, cb) {
