@@ -49,7 +49,7 @@ describe('An array of sprites', function () {
       this.namespace = 'leftRight.';
 
       // Attempt to smith out the sprites
-      smith({'src': sprites, 'algorithm': 'left-right', 'engine': 'gm'}, function (err, result) {
+      smith({'src': sprites, 'algorithm': 'left-right'}, function (err, result) {
         // If there is an error, throw it
         if (err) {
           throw err;
