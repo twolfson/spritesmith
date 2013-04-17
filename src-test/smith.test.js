@@ -5,104 +5,72 @@ var smith = require('../src/smith.js'),
     spriteDir = path.join(__dirname, 'test_sprites'),
     expectedDir = __dirname + '/expected_files';
 
-describe('An array of sprites', function () {
-  var sprites = [
-        path.join(spriteDir, 'sprite1.png'),
-        path.join(spriteDir, 'sprite2.jpg'),
-        path.join(spriteDir, 'sprite3.png')
-      ];
-
-  describe('when processed via spritesmith', function () {
-    before(function (done) {
-      var that = this;
-
-      // Create a namespace for loading from
-      this.namespace = 'topDown.';
-
-      // Attempt to smith out the sprites
-      // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
-      // smith({'src': sprites, 'engine': 'gm', 'exportOpts': {'format': 'jpg', 'quality': 20}}, function (err, result) {
-      smith({'src': sprites}, function (err, result) {
-        // If there is an error, throw it
-        if (err) {
-          throw err;
-        } else {
-        // Otherwise, save the result
-          that.result = result;
-        }
-
-        // Callback
-        done(err);
-      });
-    });
-
-    it('renders a top-down spritesheet', assertSpritesheet);
-
-    it('has the proper coordinates', assertCoordinates);
-  });
-
-  describe('when converted from left to right', function () {
-    before(function (done) {
-      var that = this;
-
-      // Create a namespace for loading from
-      this.namespace = 'leftRight.';
-
-      // Attempt to smith out the sprites
-      smith({'src': sprites, 'algorithm': 'left-right'}, function (err, result) {
-        // If there is an error, throw it
-        if (err) {
-          throw err;
-        } else {
-        // Otherwise, save the result
-          that.result = result;
-        }
-
-        // Callback
-        done(err);
-      });
-    });
-
-    it('renders a left-right spritesheet', assertSpritesheet);
-
-    it('has the proper coordinates', assertCoordinates);
-  });
-});
-
-// describe('An empty array', function () {
-//   var sprites = [];
+// describe('An array of sprites', function () {
+//   var sprites = [
+//         path.join(spriteDir, 'sprite1.png'),
+//         path.join(spriteDir, 'sprite2.jpg'),
+//         path.join(spriteDir, 'sprite3.png')
+//       ];
 
 //   describe('when processed via spritesmith', function () {
 //     before(function (done) {
 //       var that = this;
 
-//       // Attempt to create a spritesheet
+//       // Create a namespace for loading from
+//       this.namespace = 'topDown.';
+
+//       // Attempt to smith out the sprites
+//       // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
+//       // smith({'src': sprites, 'engine': 'gm', 'exportOpts': {'format': 'jpg', 'quality': 20}}, function (err, result) {
 //       smith({'src': sprites}, function (err, result) {
 //         // If there is an error, throw it
-//         if (err) { throw err; }
+//         if (err) {
+//           throw err;
+//         } else {
+//         // Otherwise, save the result
+//           that.result = result;
+//         }
 
-//         // Save the result and callback
-//         that.result = result;
+//         // Callback
 //         done(err);
 //       });
 //     });
 
-//     it('renders an empty spritesheet', function () {
-//       assert.strictEqual(this.result.image, '');
+//     it('renders a top-down spritesheet', assertSpritesheet);
+
+//     it('has the proper coordinates', assertCoordinates);
+//   });
+
+//   describe('when converted from left to right', function () {
+//     before(function (done) {
+//       var that = this;
+
+//       // Create a namespace for loading from
+//       this.namespace = 'leftRight.';
+
+//       // Attempt to smith out the sprites
+//       smith({'src': sprites, 'algorithm': 'left-right'}, function (err, result) {
+//         // If there is an error, throw it
+//         if (err) {
+//           throw err;
+//         } else {
+//         // Otherwise, save the result
+//           that.result = result;
+//         }
+
+//         // Callback
+//         done(err);
+//       });
 //     });
 
-//     it('returns an empty coordinate mapping', function () {
-//       assert.deepEqual(this.result.coordinates, {});
-//     });
+//     it('renders a left-right spritesheet', assertSpritesheet);
+
+//     it('has the proper coordinates', assertCoordinates);
 //   });
 // });
 
-// DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
-describe('A ridiculous amount of sprites', function () {
-  var sprites = [],
-      spritePath = path.join(spriteDir, '16.jpg'),
-      i = 500;
-  while (i--) { sprites.push(spritePath); }
+describe('An empty array', function () {
+  var sprites = [];
 
   describe('when processed via spritesmith', function () {
     before(function (done) {
@@ -119,15 +87,47 @@ describe('A ridiculous amount of sprites', function () {
       });
     });
 
-    it('does not crash', function () {
-      // Would have thrown
+    it('renders an empty spritesheet', function () {
+      assert.strictEqual(this.result.image, '');
     });
 
-    it('returns an image', function () {
-      assert.notEqual(this.result.image, '');
+    it('returns an empty coordinate mapping', function () {
+      assert.deepEqual(this.result.coordinates, {});
     });
   });
 });
+
+// // DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
+// describe('A ridiculous amount of sprites', function () {
+//   var sprites = [],
+//       spritePath = path.join(spriteDir, '16.jpg'),
+//       i = 500;
+//   while (i--) { sprites.push(spritePath); }
+
+//   describe('when processed via spritesmith', function () {
+//     before(function (done) {
+//       var that = this;
+
+//       // Attempt to create a spritesheet
+//       smith({'src': sprites}, function (err, result) {
+//         // If there is an error, throw it
+//         if (err) { throw err; }
+
+//         // Save the result and callback
+//         that.result = result;
+//         done(err);
+//       });
+//     });
+
+//     it('does not crash', function () {
+//       // Would have thrown
+//     });
+
+//     it('returns an image', function () {
+//       assert.notEqual(this.result.image, '');
+//     });
+//   });
+// });
 
 function assertSpritesheet() {
   var result = this.result,

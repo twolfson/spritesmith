@@ -95,6 +95,7 @@ function Spritesmith(params, callback) {
     function exportCanvas (canvas, cb) {
       // If there are no items to pack, skip export
       var items = packedObj.items;
+      console.log('xxx', items.length);
       if (items.length === 0) {
         return cb(null, '');
       }
