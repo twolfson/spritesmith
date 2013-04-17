@@ -89,13 +89,10 @@ function Spritesmith(params, callback) {
     // Generate a canvas
       var width = packedObj.width,
           height = packedObj.height;
-      console.log('c');
       engine.createCanvas(width, height, cb);
-      console.log('d');
     },
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
-      console.log('e');
       // If there are no items to pack, skip export
       var items = packedObj.items;
       if (items.length === 0) {
