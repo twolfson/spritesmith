@@ -86,16 +86,20 @@ function Spritesmith(params, callback) {
     },
     // Then, generate a canvas
     function generateCanvas (cb) {
-    // Generate a canvas
-      var width = packedObj.width,
-          height = packedObj.height;
-      engine.createCanvas(width, height, cb);
+      // If there are items, generate the canvas
+      if (packedObj.items.length) {
+        var width = packedObj.width,
+            height = packedObj.height;
+        engine.createCanvas(width, height, cb);
+      } else {
+      // Otherwise, skip over potential errors/CPU
+        cb(null, '');
+      }
     },
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
-      // If there are no items to pack, skip export
-      var items = packedObj.items;
-      if (items.length === 0) {
+      // If there is no canvas, callback with an empty string
+      if (!canvas) {
         return cb(null, '');
       }
 
