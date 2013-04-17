@@ -69,33 +69,33 @@ describe('An array of sprites', function () {
   });
 });
 
-describe('An empty array', function () {
-  var sprites = [];
+// describe('An empty array', function () {
+//   var sprites = [];
 
-  describe('when processed via spritesmith', function () {
-    before(function (done) {
-      var that = this;
+//   describe('when processed via spritesmith', function () {
+//     before(function (done) {
+//       var that = this;
 
-      // Attempt to create a spritesheet
-      smith({'src': sprites}, function (err, result) {
-        // If there is an error, throw it
-        if (err) { throw err; }
+//       // Attempt to create a spritesheet
+//       smith({'src': sprites}, function (err, result) {
+//         // If there is an error, throw it
+//         if (err) { throw err; }
 
-        // Save the result and callback
-        that.result = result;
-        done(err);
-      });
-    });
+//         // Save the result and callback
+//         that.result = result;
+//         done(err);
+//       });
+//     });
 
-    it('renders an empty spritesheet', function () {
-      assert.strictEqual(this.result.image, '');
-    });
+//     it('renders an empty spritesheet', function () {
+//       assert.strictEqual(this.result.image, '');
+//     });
 
-    it('returns an empty coordinate mapping', function () {
-      assert.deepEqual(this.result.coordinates, {});
-    });
-  });
-});
+//     it('returns an empty coordinate mapping', function () {
+//       assert.deepEqual(this.result.coordinates, {});
+//     });
+//   });
+// });
 
 // DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
 describe('A ridiculous amount of sprites', function () {
