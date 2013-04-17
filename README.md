@@ -27,6 +27,8 @@ The alternative engine is [gm](https://github.com/aheckmann/gm) which runs on to
 
 I have found it is best to install from the site rather than through a package manager (e.g. `apt-get`) to get the latest as well as without transparency issues.
 
+This module has been developed and tested against `1.3.17`.
+
 Documentation
 -------------
 Spritesmith is a standalone function
