@@ -87,7 +87,8 @@ function Spritesmith(params, callback) {
     // Then, generate a canvas
     function generateCanvas (cb) {
       // If there are items, generate the canvas
-      if (packedObj.items.length) {
+      var items = packedObj.items;
+      if (items.length !== 0) {
         var width = packedObj.width,
             height = packedObj.height;
         engine.createCanvas(width, height, cb);
