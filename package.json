@@ -21,7 +21,8 @@
     "mocha": "~1.7.0"
   },
   "optionalDependencies": {
-    "gm": "1.4.2"
+    "canvas": "~0.13.0",
+    "gm": "~1.4.2"
   },
   "repository": {
     "type": "git",

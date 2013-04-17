@@ -87,8 +87,7 @@ function Spritesmith(params, callback) {
     // Then, generate a canvas
     function generateCanvas (cb) {
       // If there are items, generate the canvas
-      var items = packedObj.items;
-      if (items.length !== 0) {
+      if (packedObj.items.length) {
         var width = packedObj.width,
             height = packedObj.height;
         engine.createCanvas(width, height, cb);
@@ -100,6 +99,7 @@ function Spritesmith(params, callback) {
     // Then, export the canvas
     function exportCanvas (canvas, cb) {
       // If there is no canvas, callback with an empty string
+      var items = packedObj.items;
       if (!canvas) {
         return cb(null, '');
       }
