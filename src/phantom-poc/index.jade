@@ -14,6 +14,7 @@ html
       img1.src = '../../src-test/test_sprites/sprite1.png';
       img1.onload = function () {
         context.drawImage(img1, 0, 0);
+        console.log(canvas.toDataURL('image/png'));
       };
     img(src="../../src-test/test_sprites/sprite1.png")
     img(src="../../src-test/test_sprites/sprite2.jpg")
