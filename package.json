@@ -1,6 +1,6 @@
 {
   "name": "spritesmith",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "mocha": "~1.7.0"
   },
   "optionalDependencies": {
-    "canvas": "~0.13.0",
+    "canvas": "git://github.com/twolfson/node-canvas.git#bug/false.negative.for.jpeg",
     "gm": "~1.4.2"
   },
   "repository": {
