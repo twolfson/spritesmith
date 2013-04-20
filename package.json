@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "mocha src-test/smith.test.js"
+    "test": "doubleshot"
   },
   "keywords": [
     "sprite",
@@ -18,7 +18,7 @@
     "layout": "~1.2.1"
   },
   "devDependencies": {
-    "mocha": "~1.7.0"
+    "doubleshot": "~0.2.0"
   },
   "optionalDependencies": {
     "canvas": "git://github.com/twolfson/node-canvas.git#bug/false.negative.for.jpeg",
