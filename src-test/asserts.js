@@ -1,3 +1,6 @@
+var spriteDir = path.join(__dirname, 'test_sprites'),
+    expectedDir = __dirname + '/expected_files';
+
 function assertSpritesheet() {
   var result = this.result,
       namespace = this.namespace;
