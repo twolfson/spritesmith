@@ -1,4 +1,7 @@
-var spriteDir = path.join(__dirname, 'test_sprites'),
+var assert = require('assert'),
+    fs = require('fs'),
+    path = require('path'),
+    spriteDir = path.join(__dirname, 'test_sprites'),
     expectedDir = __dirname + '/expected_files';
 
 function assertSpritesheet() {
