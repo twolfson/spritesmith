@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "./src-test/run.sh smith"
+    "test": "cd src-test && ./run.sh smith && ./run.sh canvas && ./run.sh gm"
   },
   "keywords": [
     "sprite",
