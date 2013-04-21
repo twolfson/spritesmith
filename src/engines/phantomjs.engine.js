@@ -4,6 +4,7 @@ var assert = require('assert'),
     url = require('url'),
     cp = require('child_process'),
     exec = cp.exec,
+    spawn = cp.spawn,
     async = require('async'),
     exporters = {},
     engine = {};
@@ -106,39 +107,48 @@ function getPhantomjsExporter(ext) {
     // TODO: Execute process that takes JSON.stringify(this.images) and returns data/png:base64
     // TODO: Strip out `data/png;base64` and parse remainder into binary
 
-    async.waterfall([
-      // Stringify our parameters and call phantomjs
-      function writeOutCanvas (cb) {
-        // Convert over all image paths to url paths
-        var images = that.images;
-        images.forEach(function getUrlPath (img) {
-          img = img.img;
-          img._urlpath = path.relative(__dirname + '/phantomjs', img._filepath);
-        });
+    // Convert over all image paths to url paths
+    var images = that.images;
+    images.forEach(function getUrlPath (img) {
+      img = img.img;
+      img._urlpath = path.relative(__dirname + '/phantomjs', img._filepath);
+    });
 
-        // Collect our parameters
-        var params = that.params;
-        params.images = images;
-        params.options = options;
+    // Collect our parameters
+    var params = that.params;
+    params.images = images;
+    params.options = options;
 
-        // Stringify them and call phantomjs
-        var arg = JSON.stringify(params),
-            encodedArg = encodeURIComponent(arg);
-        console.log(encodedArg);
-        exec('phantomjs ' + __dirname + '/phantomjs/compose.js ' + encodedArg, cb);
-      },
-      // Read the file back in (in binary)
-      function readInCanvas (stdout, stderr, cb) {
-        console.log('hey');
-        // console.log('OUTPUT: ', stdout);
-      },
-      // // Destroy the file
-      // function destroyFile (retVal, cb) {
-      //   file.destroy(function () {
-      //     cb(null, retVal);
-      //   });
-      // }
-    ], cb);
+    // Stringify them and call phantomjs
+    var arg = JSON.stringify(params),
+        encodedArg = encodeURIComponent(arg),
+        child = spawn('phantomjs ' + __dirname + '/phantomjs/compose.js ' + encodedArg);
+
+    // When there is data, save it
+    child.stdout.on('data', function (buffer) {
+      console.log(buffer);
+    });
+
+    // async.waterfall([
+    //   // Stringify our parameters and call phantomjs
+    //   function writeOutCanvas (cb) {
+
+    //     // TODO: Will prob need to move to spawn over exec due to buffer issues =(
+    //     // TODO: Actually, it might just be chunking from compose.js itself
+    //   },
+    //   // Parse the results
+    //   function readInCanvas (stdout, stderr, cb) {
+    //     // Remove the data URL part
+    //     var base64Img = stdout.replace('data:image/png;base64,', '');
+    //     console.log('OUTPUT: ', base64Img.slice(0, 40));
+    //   },
+    //   // // Destroy the file
+    //   // function destroyFile (retVal, cb) {
+    //   //   file.destroy(function () {
+    //   //     cb(null, retVal);
+    //   //   });
+    //   // }
+    // ], cb);
   };
 }
 

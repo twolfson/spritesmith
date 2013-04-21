@@ -13,16 +13,13 @@ if (!encodedArg) {
 
 // Load the compose webpage
 var page = webpage.create();
-page.onResourceRequested = function (req) {
-  console.log('zzz', req.url);
-};
 page.open(phantom.libraryPath + '/compose.html?' + encodedArg, function (status) {
   // Pluck out the data png
-  console.log(status);
   var retStr = page.evaluate(function () {
     return window.retStr;
   });
-  console.log(retStr);
+  console.log('aaa');
+  // console.log(retStr);
 
   // Leave the program
   phantom.exit();
