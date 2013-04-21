@@ -1,10 +1,10 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    url = require('url'),
     cp = require('child_process'),
     exec = cp.exec,
     spawn = cp.spawn,
+    Stream = require('stream'),
     async = require('async'),
     exporters = {},
     engine = {};
@@ -121,14 +121,17 @@ function getPhantomjsExporter(ext) {
     params.images = images;
     params.options = options;
 
-    // Stringify them and call phantomjs
-    var arg = JSON.stringify(params),
-        encodedArg = encodeURIComponent(arg),
-        child = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', encodedArg]);
+    // Create a stream and child process for phantomjs
+    // DEV: If this stream business ceases to work, use fs x_x
+    var phantomStdin = new Stream();
+    phantomStdin.writable = true;
+    var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js'], {
+          stdio: [phantomStdin, 'pipe', 'pipe']
+        });
 
     // When there is data, save it
     var retVal = '';
-    child.stdout.on('data', function (buffer) {
+    phantomjs.stdout.on('data', function (buffer) {
       // Interpret the buffer into a string, parse it via base64, and into binary
       var str = buffer.toString(),
           base64Buffer = new Buffer(str, 'base64'),
@@ -140,12 +143,12 @@ function getPhantomjsExporter(ext) {
 
     // When there is an error, concatenate it
     var err = '';
-    child.stderr.on('data', function (buffer) {
+    phantomjs.stderr.on('data', function (buffer) {
       err += buffer;
     });
 
     // When we are done
-    child.on('close', function () {
+    phantomjs.on('close', function () {
       // If there was an error, callback with it
       if (err) {
         cb(new Error(err));
@@ -154,6 +157,12 @@ function getPhantomjsExporter(ext) {
       // Otherwise, callback with our retVal
       cb(null, retVal);
     });
+
+    // Write out stdin
+
+    // var arg = JSON.stringify(params),
+    //     encodedArg = encodeURIComponent(arg),
+    // encodedArg
   };
 }
 
