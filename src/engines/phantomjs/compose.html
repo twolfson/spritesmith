@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compose images</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      // Grab the canvas and its context
+      var canvas = document.getElementById('canvas'),
+          context = canvas.getContext('2d');
+
+       // Append our images to the canvas
+      var img1 = new Image();
+      img1.src = '../../src-test/test_sprites/sprite1.png';
+      img1.onload = function () {
+        context.drawImage(img1, 0, 0);
+        console.log(canvas.toDataURL('image/png'));
+      };
+    </script>
+    <img src="../../src-test/test_sprites/sprite1.png">
+    <img src="../../src-test/test_sprites/sprite2.jpg">
+    <img src="../../src-test/test_sprites/sprite3.png">
+  </body>
+</html>

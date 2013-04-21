@@ -68,16 +68,15 @@ function createImage(file, cb) {
       exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
-      console.log('OUTPUT: ', stdout);
-      // // Create a structure for preserving the height and width of the image
-      // var imgFile = {
-      //   'height': size.height,
-      //   'width': size.width,
-      //   'file': file
-      // };
+      // Parse the output
+      var dimensions = JSON.parse(stdout);
 
-      // // Callback with the imgFile
-      // cb(null, imgFile);
+      // Adjust the dimensions off of `px`
+      dimensions.height = +(dimensions.height.replace('px', ''));
+      dimensions.width = +(dimensions.width.replace('px', ''));
+
+      // Callback with the dimensions
+      cb(null, dimensions);
     }
   ], cb);
 }
@@ -110,10 +109,14 @@ function getPhantomjsExporter(ext) {
     async.waterfall([
       // Stringify our parameters and call phantomjs
       function writeOutCanvas (cb) {
+        // Collect our parameters
         var params = that.params;
         params.images = that.images;
         params.options = options;
-        exec('phantomjs ' + __dirname + '/phantomjs/index.js', cb);
+
+        // Stringify them and call phantomjs
+        var arg = JSON.stringify(params);
+        exec('phantomjs ' + __dirname + '/phantomjs/compose.js ' + arg, cb);
       },
       // Read the file back in (in binary)
       function readInCanvas (stdout, stderr, cb) {
