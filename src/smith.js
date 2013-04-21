@@ -154,8 +154,13 @@ try {
   gmEngine = require('./engines/gm.engine.js');
 } catch (e) {}
 
+try {
+  phatomjsEngine = require('./engines/phantomjs.engine.js');
+} catch (e) {}
+
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
+if (phatomjsEngine) { addEngine('phantomjs', phatomjsEngine); }
 
 // Expose utils
 Spritesmith.utils = require('./utils');
