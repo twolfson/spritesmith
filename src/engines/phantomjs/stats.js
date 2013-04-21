@@ -1,7 +1,8 @@
 // Load in modules
 var system = require('system'),
     fs = require('fs'),
-    webpage = require('webpage');
+    webpage = require('webpage'),
+    _  = require('./nimble.min.js');
 
 // Grab the arguments
 var args = system.args,
@@ -17,30 +18,39 @@ if (!imgsStr) {
 // Parse the image paths
 var imgs = JSON.parse(decodeURIComponent(imgsStr));
 
-phantom.exit();
+// In parallel
+_.map(imgs, function getStats (img, cb) {
+  // Load in the image
+  // DEV: If this fails, use data/html
+  var page = webpage.create();
+  page.open(img, function (status) {
+    // Pluck out the image dimensions
+    var dimensions = page.evaluate(function () {
+      // Grab the image
+      var img = document.getElementsByTagName('img')[0];
 
-// // Load in the image
-// // DEV: If this fails, use data/html
-// var page = webpage.create();
-// page.open(img, function (status) {
-//   // Pluck out the image dimensions
-//   var dimensions = page.evaluate(function () {
-//     // Grab the image
-//     var img = document.getElementsByTagName('img')[0];
+      // Get the dimensions of the image
+      var style = window.getComputedStyle(img),
+          dimensions = {
+            width: style.width,
+            height: style.height
+          };
+      return dimensions;
+    });
 
-//     // Get the dimensions of the image
-//     var style = window.getComputedStyle(img),
-//         dimensions = {
-//           width: style.width,
-//           height: style.height
-//         };
-//     return dimensions;
-//   });
+    // Adjust the dimensions off of `px`
+    dimensions.height = +(dimensions.height.replace('px', ''));
+    dimensions.width = +(dimensions.width.replace('px', ''));
 
-//   // Stringify and emit the dimensions
-//   var retStr = JSON.stringify(dimensions, null, 4);
-//   console.log(retStr);
+    // Callback with the dimensions
+    cb(null, dimensions);
+  });
+}, function handleStats (err, dimensionArr) {
+  // Stringify and emit the dimensions
+  var retStr = JSON.stringify(dimensionArr);
+  console.log(retStr);
 
-//   // Leave the program
-//   phantom.exit();
-// });
+  // Leave the program
+  phantom.exit();
+});
+

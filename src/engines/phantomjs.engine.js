@@ -92,20 +92,14 @@ function createImages(files, cb) {
     // Grab the stats via phantomjs
     function getImgSize (cb) {
       var filesStr = encodeURIComponent(JSON.stringify(files));
-      console.log(filesStr);
       exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + filesStr, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
-      console.log(stdout);
-      // // Parse the output
-      // var dimensions = JSON.parse(stdout);
+      // Parse the output
+      var dimensionArr = JSON.parse(stdout);
 
-      // // Adjust the dimensions off of `px`
-      // dimensions.height = +(dimensions.height.replace('px', ''));
-      // dimensions.width = +(dimensions.width.replace('px', ''));
-
-      // // Callback with the dimensions
-      // cb(null, dimensions);
+      // Callback with the dimensions
+      cb(null, dimensionArr);
     }
   ], cb);
 }
