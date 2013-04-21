@@ -8,8 +8,6 @@ function assertSpritesheet() {
   var result = this.result,
       namespace = this.namespace;
 
-  console.log(namespace);
-
   // DEV: Write out the result to a file
   // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
 

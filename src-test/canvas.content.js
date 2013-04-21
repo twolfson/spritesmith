@@ -18,15 +18,11 @@ module.exports = {
       path.join(spriteDir, 'sprite3.png')
     ];
 
-    console.log('aaa');
-
     // By default, write to the topDown namespace
     this.namespace = 'topDown.';
   },
   'when processed via spritesmith': function (done) {
     var that = this;
-
-    console.log(that);
 
     // TODO: These comments are no longer practical
     // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
