@@ -10,7 +10,7 @@ var async = require('async'),
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined via Spritesmith.addEngine)
+ * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down or user-defined via Spritesmith.addAlgorithm)
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
@@ -32,7 +32,7 @@ function Spritesmith(params, callback) {
     assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine \'' + enginePref + '\' could not be loaded. Please be sure you have installed it properly on your machine.');
 
     // Begin attempting to load the engines
-    engine = engines.canvas || engines.gm;
+    engine = engine.phantomjs || engines.canvas || engines.gm;
 
     // Assert there is an engine
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');

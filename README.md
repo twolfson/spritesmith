@@ -10,7 +10,12 @@ Requirements
 ------------
 Spritesmith supports multiple sprite engines however all of the current engines require external software to be installed.
 
-As a result, you must either have [Cairo](http://cairographics.org/) or [Graphics Magick](http://www.graphicsmagick.org/) installed for Spritesmith to run properly.
+As a result, you must either have [PhantomJS][phantomjs], [Cairo](http://cairographics.org/), or [Graphics Magick](http://www.graphicsmagick.org/) installed for Spritesmith to run properly.
+
+[phantomjs]: http://phantomjs.org/
+
+### PhantomJS
+This depends on having `phantomjs` installed on your machine. For installation instructions, visit [the website][phantomjs]. This module has been tested against `1.9.0`.
 
 ### Cairo (node-canvas)
 Due to dependance on [node-canvas](https://github.com/learnboost/node-canvas), you must install [Cairo](http://cairographics.org/).
@@ -23,7 +28,7 @@ sudo npm install -g node-gyp
 ```
 
 ### Graphics Magick (gm)
-The alternative engine is [gm](https://github.com/aheckmann/gm) which runs on top of [Graphics Magick](http://www.graphicsmagick.org/).
+[gm](https://github.com/aheckmann/gm) runs on top of (and depends on) [Graphics Magick](http://www.graphicsmagick.org/).
 
 I have found it is best to install from the site rather than through a package manager (e.g. `apt-get`) to get the latest as well as without transparency issues.
 
@@ -37,7 +42,7 @@ Spritesmith is a standalone function
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (canvas, gm, or user-defined via Spritesmith.addEngine)
+ * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down or user-defined via Spritesmith.addAlgorithm)
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
