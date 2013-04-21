@@ -116,6 +116,7 @@ function getPhantomjsExporter(ext) {
 
         // Stringify them and call phantomjs
         var arg = JSON.stringify(params);
+        console.log(arg);
         exec('phantomjs ' + __dirname + '/phantomjs/compose.js ' + arg, cb);
       },
       // Read the file back in (in binary)

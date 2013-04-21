@@ -10,16 +10,21 @@
       var canvas = document.getElementById('canvas'),
           context = canvas.getContext('2d');
 
-       // Append our images to the canvas
-      var img1 = new Image();
-      img1.src = '../../src-test/test_sprites/sprite1.png';
-      img1.onload = function () {
-        context.drawImage(img1, 0, 0);
-        console.log(canvas.toDataURL('image/png'));
-      };
+      //  // Append our images to the canvas
+      // var img1 = new Image();
+      // img1.src = '../../src-test/test_sprites/sprite1.png';
+      // img1.onload = function () {
+      //   context.drawImage(img1, 0, 0);
+      //   console.log(canvas.toDataURL('image/png'));
+      // };
+
+      // http://localhost:3000/src/engines/phantomjs/compose.html?{%22width%22:200,%22height%22:200,%22images%22:[{%22img%22:{%22height%22:50,%22width%22:50,%22_filepath%22:%22/home/todd/github/spritesmith/src-test/test_sprites/sprite1.png%22},%22x%22:0,%22y%22:0},{%22img%22:{%22height%22:50,%22width%22:50,%22_filepath%22:%22/home/todd/github/spritesmith/src-test/test_sprites/sprite2.jpg%22},%22x%22:50,%22y%22:0},{%22img%22:{%22height%22:200,%22width%22:100,%22_filepath%22:%22/home/todd/github/spritesmith/src-test/test_sprites/sprite3.png%22},%22x%22:100,%22y%22:0}],%22options%22:{}}
+
+      // Grab the arguments
+      var encodedArg = location.search.slice(1),
+          arg = decodeURIComponent(encodedArg),
+          params = JSON.parse(arg);
+      console.log(params);
     </script>
-    <img src="../../src-test/test_sprites/sprite1.png">
-    <img src="../../src-test/test_sprites/sprite2.jpg">
-    <img src="../../src-test/test_sprites/sprite3.png">
   </body>
 </html>
