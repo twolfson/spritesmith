@@ -65,7 +65,6 @@ function createImage(file, cb) {
   async.waterfall([
     // Grab the stats via phantomjs
     function getImgSize (cb) {
-      console.log('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file);
       exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
@@ -124,8 +123,7 @@ function getPhantomjsExporter(ext) {
 
         // Stringify them and call phantomjs
         var arg = JSON.stringify(params);
-        console.log(arg);
-        exec('phantomjs ' + __dirname + '/phantomjs/compose.js ' + arg, cb);
+        exec('cd ' + __dirname + '/phantomjs && phantomjs compose.js ' + arg, cb);
       },
       // Read the file back in (in binary)
       function readInCanvas (stdout, stderr, cb) {
