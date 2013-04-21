@@ -12,11 +12,20 @@ if (!img) {
 }
 
 // Load in the image
+// DEV: If this fails, use data/html
 var page = webpage.create();
 page.open(img, function (status) {
-  console.log(status);
+  console.log(page.evaluate(function () {
+    // Grab the image
+    var img = document.getElementsByTagName('img')[0];
+
+    // Get the dimensions of the image
+    var style = window.getComputedStyle(img),
+        retObj = {
+          width: style.width,
+          height: style.height
+        };
+    return JSON.stringify(retObj, null, 4);
+  }));
   phantom.exit();
 });
-// page.evaluateAsync(function (img) {
-
-// }, img);
