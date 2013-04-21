@@ -64,24 +64,14 @@ engine.createCanvas = createCanvas;
  * @note Must be guaranteed to integrate into own library via .addImage
  */
 function createImage(file, cb) {
-  // In series
-  async.waterfall([
-    // Grab the stats via phantomjs
-    function getImgSize (cb) {
-      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
-    },
-    function saveImgSize (stdout, stderr, cb) {
-      // Parse the output
-      var dimensions = JSON.parse(stdout);
+  // Call createImages with an array
+  createImages([file], function (err, dimensionArr) {
+    // Fallback dimensionArr
+    dimensionArr = dimensionArr || [];
 
-      // Adjust the dimensions off of `px`
-      dimensions.height = +(dimensions.height.replace('px', ''));
-      dimensions.width = +(dimensions.width.replace('px', ''));
-
-      // Callback with the dimensions
-      cb(null, dimensions);
-    }
-  ], cb);
+    // Pluck out dimension and callback
+    cb(err, dimensionArr[0]);
+  });
 }
 engine.createImage = createImage;
 
@@ -91,8 +81,12 @@ function createImages(files, cb) {
   async.waterfall([
     // Grab the stats via phantomjs
     function getImgSize (cb) {
-      var filesStr = encodeURIComponent(JSON.stringify(files));
-      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + filesStr, cb);
+      // Stringify and escape (for CLI quote issues)
+      var filesStr = JSON.stringify(files),
+          encodedFilesStr = encodeURIComponent(filesStr);
+
+      // Call the stats phantomjs
+      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + encodedFilesStr, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
       // Parse the output

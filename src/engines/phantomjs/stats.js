@@ -6,17 +6,16 @@ var system = require('system'),
 
 // Grab the arguments
 var args = system.args,
-    // filepath = args[1],
-    // imgs = require(filepath);
-    imgsStr = args[1];
+    encodedFilesStr = args[1];
 
 // If there is no image, throw an error
-if (!imgsStr) {
+if (!encodedFilesStr) {
   throw new Error('No images specified to grab stats from.');
 }
 
 // Parse the image paths
-var imgs = JSON.parse(decodeURIComponent(imgsStr));
+var imgsStr = decodeURIComponent(encodedFilesStr),
+    imgs = JSON.parse(imgsStr);
 
 // In parallel
 _.map(imgs, function getStats (img, cb) {
