@@ -1,38 +1,46 @@
 // Load in modules
 var system = require('system'),
+    fs = require('fs'),
     webpage = require('webpage');
 
 // Grab the arguments
 var args = system.args,
-    img = args[1];
+    // filepath = args[1],
+    // imgs = require(filepath);
+    imgsStr = args[1];
 
 // If there is no image, throw an error
-if (!img) {
-  throw new Error('No image specified to grab stats from.');
+if (!imgsStr) {
+  throw new Error('No images specified to grab stats from.');
 }
 
-// Load in the image
-// DEV: If this fails, use data/html
-var page = webpage.create();
-page.open(img, function (status) {
-  // Pluck out the image dimensions
-  var dimensions = page.evaluate(function () {
-    // Grab the image
-    var img = document.getElementsByTagName('img')[0];
+// Parse the image paths
+var imgs = JSON.parse(decodeURIComponent(imgsStr));
 
-    // Get the dimensions of the image
-    var style = window.getComputedStyle(img),
-        dimensions = {
-          width: style.width,
-          height: style.height
-        };
-    return dimensions;
-  });
+phantom.exit();
 
-  // Stringify and emit the dimensions
-  var retStr = JSON.stringify(dimensions, null, 4);
-  console.log(retStr);
+// // Load in the image
+// // DEV: If this fails, use data/html
+// var page = webpage.create();
+// page.open(img, function (status) {
+//   // Pluck out the image dimensions
+//   var dimensions = page.evaluate(function () {
+//     // Grab the image
+//     var img = document.getElementsByTagName('img')[0];
 
-  // Leave the program
-  phantom.exit();
-});
+//     // Get the dimensions of the image
+//     var style = window.getComputedStyle(img),
+//         dimensions = {
+//           width: style.width,
+//           height: style.height
+//         };
+//     return dimensions;
+//   });
+
+//   // Stringify and emit the dimensions
+//   var retStr = JSON.stringify(dimensions, null, 4);
+//   console.log(retStr);
+
+//   // Leave the program
+//   phantom.exit();
+// });

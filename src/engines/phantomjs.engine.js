@@ -85,6 +85,32 @@ function createImage(file, cb) {
 }
 engine.createImage = createImage;
 
+// Mass image creation
+function createImages(files, cb) {
+  // In series
+  async.waterfall([
+    // Grab the stats via phantomjs
+    function getImgSize (cb) {
+      var filesStr = encodeURIComponent(JSON.stringify(files));
+      console.log(filesStr);
+      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + filesStr, cb);
+    },
+    function saveImgSize (stdout, stderr, cb) {
+      console.log(stdout);
+      // // Parse the output
+      // var dimensions = JSON.parse(stdout);
+
+      // // Adjust the dimensions off of `px`
+      // dimensions.height = +(dimensions.height.replace('px', ''));
+      // dimensions.width = +(dimensions.width.replace('px', ''));
+
+      // // Callback with the dimensions
+      // cb(null, dimensions);
+    }
+  ], cb);
+}
+engine.createImages = createImages;
+
 // Function to add new exporters
 function addExporter(name, exporter) {
   exporters[name] = exporter;
