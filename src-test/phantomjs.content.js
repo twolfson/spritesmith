@@ -12,6 +12,9 @@ module.exports = _.defaults({
 
     // Save reference
     this.options = options;
+
+    // Bump the timeout for extreme tests
+    this.timeout(20000);
   },
   'when processed via spritesmith': ['using phantomjs engine', '_when processed via spritesmith'],
   'when converted from left to right': [function () {
