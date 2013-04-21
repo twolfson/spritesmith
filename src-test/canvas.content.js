@@ -10,7 +10,6 @@ module.exports = _.defaults({
     // Add `canvas` as engine
     options.engine = 'canvas';
 
-    console.log('aaa', options.engine);
     // Save reference
     this.options = options;
   },
