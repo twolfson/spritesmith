@@ -141,6 +141,7 @@ function getPhantomjsExporter(ext) {
     // When there is an error, concatenate it
     var err = '';
     phantomjs.stderr.on('data', function (buffer) {
+      console.log(buffer + '');
       err += buffer;
     });
 
@@ -156,9 +157,11 @@ function getPhantomjsExporter(ext) {
     });
 
     // Write out our argument to phantomjs
+    setTimeout(function () {
     var arg = JSON.stringify(params),
         encodedArg = encodeURIComponent(arg);
-    phantomjs.stdin.write(encodedArg);
+    phantomjs.stdin.write(encodedArg.slice(0, 20));
+  }, 100);
   };
 }
 
