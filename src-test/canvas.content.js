@@ -13,8 +13,9 @@ module.exports = _.defaults({
     // Save reference
     this.options = options;
   },
-  'An array of sprites': ['_An array of sprites', 'using canvas engine'],
-  'when converted from left to right': ['_when converted from left to right', 'using canvas engine'],
-  'An empty array': ['_An empty array', 'using canvas engine'],
-  'A ridiculous amount of sprites': ['_A ridiculous amount of sprites', 'using canvas engine']
+  'when processed via spritesmith': ['using canvas engine', '_when processed via spritesmith'],
+  'when converted from left to right': [function () {
+    this.namespace = 'leftRight.';
+    this.options = {'algorithm': 'left-right'};
+  }, 'using canvas engine', '_when processed via spritesmith']
 }, common);

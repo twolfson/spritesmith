@@ -8,8 +8,7 @@ var assert = require('assert'),
     expectedDir = __dirname + '/expected_files';
 
 module.exports = {
-  'An array of sprites': '_An array of sprites',
-  '_An array of sprites': function () {
+  'An array of sprites': function () {
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
       path.join(spriteDir, 'sprite2.jpg'),
@@ -19,7 +18,8 @@ module.exports = {
     // By default, write to the topDown namespace
     this.namespace = 'topDown.';
   },
-  'when processed via spritesmith': function (done) {
+  'when processed via spritesmith': '_when processed via spritesmith',
+  '_when processed via spritesmith': function (done) {
     var that = this;
 
     // TODO: These comments are no longer practical
@@ -46,15 +46,13 @@ module.exports = {
   },
   'renders a top-down spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
-  'when converted from left to right': '_when converted from left to right',
-  '_when converted from left to right': [function () {
+  'when converted from left to right': [function () {
     this.namespace = 'leftRight.';
     this.options = {'algorithm': 'left-right'};
   }, 'when processed via spritesmith'],
   'renders a left-right spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
-  'An empty array': '_An empty array',
-  '_An empty array': function () {
+  'An empty array': function () {
     this.sprites = [];
   },
   'renders an empty spritesheet': function () {
@@ -63,8 +61,7 @@ module.exports = {
   'returns an empty coordinate mapping': function () {
     assert.deepEqual(this.result.coordinates, {});
   },
-  'A ridiculous amount of sprites': '_A ridiculous amount of sprites',
-  '_A ridiculous amount of sprites': function () {
+  'A ridiculous amount of sprites': function () {
     // Create and save an array of 500 sprites
     var sprites = [],
         spritePath = path.join(spriteDir, '16.jpg'),
