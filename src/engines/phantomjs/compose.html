@@ -33,7 +33,8 @@
       // Load the images in parallel
       var imageObjs = params.images,
           imagePaths = imageObjs.map(function getImagePth (image) {
-            return 'file://' + image.img._filepath;
+            // return 'file://' + image.img._filepath;
+            return image.img._filepath;
           });
       _.each(imagePaths, function (imagePath, cb) {
         // Create an image and specify the source

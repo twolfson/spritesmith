@@ -1,9 +1,10 @@
-var fs = require('fs'),
+var assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
-    async = require('async'),
-    assert = require('assert'),
+    url = require('url'),
     cp = require('child_process'),
     exec = cp.exec,
+    async = require('async'),
     exporters = {},
     engine = {};
 
@@ -109,9 +110,16 @@ function getPhantomjsExporter(ext) {
     async.waterfall([
       // Stringify our parameters and call phantomjs
       function writeOutCanvas (cb) {
+        // Convert over all image paths to url paths
+        var images = that.images;
+        images.forEach(function getUrlPath (img) {
+          img = img.img;
+          img._urlpath = url.resolve(__dirname + '/phantomjs', img._filepath);
+        });
+
         // Collect our parameters
         var params = that.params;
-        params.images = that.images;
+        params.images = images;
         params.options = options;
 
         // Stringify them and call phantomjs
