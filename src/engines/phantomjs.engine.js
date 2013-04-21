@@ -138,7 +138,7 @@ function getPhantomjsExporter(ext) {
     // When there is data, save it
     var retVal = '';
     phantomjs.stdout.on('data', function (buffer) {
-      console.log(buffer + '');
+      // console.log(buffer + '');
       // Interpret the buffer into a string, parse it via base64, and into binary
       var str = buffer.toString(),
           base64Buffer = new Buffer(str, 'base64'),
@@ -151,7 +151,7 @@ function getPhantomjsExporter(ext) {
     // When there is an error, concatenate it
     var err = '';
     phantomjs.stderr.on('data', function (buffer) {
-      console.log(buffer + '');
+      // console.log(buffer + '');
       err += buffer;
     });
 
