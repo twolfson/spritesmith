@@ -61,19 +61,18 @@ engine.createCanvas = createCanvas;
  * @prop {Number} image.height
  * @note Must be guaranteed to integrate into own library via .addImage
  */
-var i = 0;
 function createImage(file, cb) {
   // In series
   async.waterfall([
     // Grab the stats via phantomjs
     function getImgSize (cb) {
-      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
+      // TODO: Move me back
+      // exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
+      cb(null, '{"height": "16px","width": "16px"}', '');
     },
     function saveImgSize (stdout, stderr, cb) {
       // Parse the output
       var dimensions = JSON.parse(stdout);
-
-      console.log('aaa', ++i);
 
       // Adjust the dimensions off of `px`
       dimensions.height = +(dimensions.height.replace('px', ''));
@@ -122,12 +121,9 @@ function getPhantomjsExporter(ext) {
     params.images = images;
     params.options = options;
 
-    console.log('hey');
-
     // Stringify them and call phantomjs
     var arg = JSON.stringify(params),
         encodedArg = encodeURIComponent(arg),
-    c = console.log(encodedArg),
         child = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', encodedArg]);
 
     // When there is data, save it
