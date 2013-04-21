@@ -68,7 +68,7 @@ function createImage(file, cb) {
       exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
-      console.log('OUTPUT: ', output);
+      console.log('OUTPUT: ', stdout);
       // // Create a structure for preserving the height and width of the image
       // var imgFile = {
       //   'height': size.height,
