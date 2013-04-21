@@ -122,33 +122,36 @@ function getPhantomjsExporter(ext) {
     // Stringify them and call phantomjs
     var arg = JSON.stringify(params),
         encodedArg = encodeURIComponent(arg),
-        child = spawn('phantomjs ' + __dirname + '/phantomjs/compose.js ' + encodedArg);
+        child = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', encodedArg]);
 
     // When there is data, save it
+    var dataPngBinaryStr = new Buffer('data:image/png;base64,').toString('binary'),
+        retVal = '';
     child.stdout.on('data', function (buffer) {
-      console.log(buffer);
+      // Coerce the buffer to a binary string
+      var binaryStr = buffer.toString('binary');
+
+      // Remove 'data/png' if it exists
+      var retStr = binaryStr.replace(dataPngBinaryStr, '');
+      retVal += retStr;
     });
 
-    // async.waterfall([
-    //   // Stringify our parameters and call phantomjs
-    //   function writeOutCanvas (cb) {
+    // When there is an error, concatenate it
+    var err = '';
+    child.stderr.on('data', function (buffer) {
+      err += buffer;
+    });
 
-    //     // TODO: Will prob need to move to spawn over exec due to buffer issues =(
-    //     // TODO: Actually, it might just be chunking from compose.js itself
-    //   },
-    //   // Parse the results
-    //   function readInCanvas (stdout, stderr, cb) {
-    //     // Remove the data URL part
-    //     var base64Img = stdout.replace('data:image/png;base64,', '');
-    //     console.log('OUTPUT: ', base64Img.slice(0, 40));
-    //   },
-    //   // // Destroy the file
-    //   // function destroyFile (retVal, cb) {
-    //   //   file.destroy(function () {
-    //   //     cb(null, retVal);
-    //   //   });
-    //   // }
-    // ], cb);
+    // When we are done
+    child.on('close', function () {
+      // If there was an error, callback with it
+      if (err) {
+        cb(new Error(err));
+      }
+
+      // Otherwise, callback with our retVal
+      cb(null, retVal);
+    });
   };
 }
 

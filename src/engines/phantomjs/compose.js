@@ -18,8 +18,7 @@ page.open(phantom.libraryPath + '/compose.html?' + encodedArg, function (status)
   var retStr = page.evaluate(function () {
     return window.retStr;
   });
-  console.log('aaa');
-  // console.log(retStr);
+  console.log(retStr);
 
   // Leave the program
   phantom.exit();
