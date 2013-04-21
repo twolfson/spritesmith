@@ -4,40 +4,32 @@ var fs = require('fs'),
     assert = require('assert'),
     utils = require('../utils'),
     ScratchFile = utils.ScratchFile,
-    gm = require('gm'),
     exporters = {},
     engine = {};
 
-function Canvas() {
-  var canvas = gm(1, 1, 'transparent');
+function Canvas(params) {
+  // Save the options for later
+  this.params = params;
 
-  // Override the -size options (won't work otherwise)
-  canvas._in = ['-background', 'transparent'];
-
-  // Save the canvas
-  this.canvas = canvas;
+  // Create a store for images
+  this.images = [];
 }
 Canvas.prototype = {
   'addImage': function addImage (img, x, y, cb) {
-    // Add the image
-    var canvas = this.canvas;
-
-    // TODO: Pull request this in to gm
-    canvas.out('-page');
-    canvas.out('+' + x + '+' + y);
-    canvas.out(img.file);
+    // Save the image for later
+    this.images.push({
+      img: img,
+      x: x,
+      y: y
+    });
   },
   'export': function exportFn (options, cb) {
     // Grab the exporter
-    var canvas = this.canvas,
-        format = options.format || 'png',
+    var format = options.format || 'png',
         exporter = exporters[format];
 
     // Assert it exists
-    assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s gm engine');
-
-    // Flatten the image (with transparency)
-    canvas.mosaic();
+    assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s canvas engine');
 
     // Render the item
     exporter.call(this, options, cb);
@@ -47,33 +39,13 @@ Canvas.prototype = {
 // Expose Canvas to engine
 engine.Canvas = Canvas;
 
-// Create paths for the scratch directory and transparent pixel
 function createCanvas(width, height, cb) {
-  // Generate a scratch file
-  var scratchFile = new ScratchFile('png'),
-      filepath = scratchFile.filepath;
-  async.waterfall([
-    function generateCanvas (cb) {
-      // Generate a transparent canvas
-      var base = gm(width, height, 'transparent');
-
-      // Write out the base file
-      base.write(filepath, cb);
-    },
-    function destroyScratchFile (x, y, z, cb) {
-      // Ignore destory errors
-      scratchFile.destroy(function () {
-        cb(null);
+  // Create a new canvas and callback
+  var canvas = new Canvas({
+        width: width,
+        height: height
       });
-    },
-    function loadBackCanvas (cb) {
-      // Create a canvas
-      var canvas = new Canvas();
-
-      // Callback with it
-      cb(null, canvas);
-    }
-  ], cb);
+  cb(null, canvas);
 }
 
 // Expose createCanvas to engine
@@ -122,7 +94,7 @@ engine.exporters = exporters;
 engine.addExporter = addExporter;
 
 // Helper to create gm exporters (could be a class for better abstraction)
-function getGmExporter(ext) {
+function getPhantomjsExporter(ext) {
   /**
    * Generic gm exporter
    * @param {Object} options Options to export with
@@ -130,15 +102,10 @@ function getGmExporter(ext) {
    * @param {Function} cb Error-first callback to return binary image string to
    */
   return function gmExporterFn (options, cb) {
-    var canvas = this.canvas,
-        file = new ScratchFile(ext),
-        filepath = file.filepath;
+    var canvas = this.canvas;
 
-    // Update the quality of the canvas (if specified)
-    var quality = options.quality;
-    if (quality !== undefined) {
-      canvas.quality(quality);
-    }
+    // TODO: Spawn process that takes JSON.stringify(this.images) and returns data/png:base64
+    // TODO: Strip out `data/png;base64` and parse remainder into binary
 
     async.waterfall([
       // Write to file
@@ -160,22 +127,9 @@ function getGmExporter(ext) {
 }
 
 // Generate the png exporter
-var gmPngExporter = getGmExporter('png');
-addExporter('png', gmPngExporter);
-addExporter('image/png', gmPngExporter);
-
-// Generate the jpeg exporter
-var gmJpegExporter = getGmExporter('jpeg');
-addExporter('jpg', gmJpegExporter);
-addExporter('jpeg', gmJpegExporter);
-addExporter('image/jpg', gmJpegExporter);
-addExporter('image/jpeg', gmJpegExporter);
-
-// This does not seem to be working at the moment
-// // Generate the tiff exporter
-// var gmTiffExporter = getGmExporter('tiff');
-// addExporter('tiff', gmTiffExporter);
-// addExporter('image/tiff', gmTiffExporter);
+var phantomjsPngExporter = getPhantomjsExporter('png');
+addExporter('png', phantomjsPngExporter);
+addExporter('image/png', phantomjsPngExporter);
 
 // Export the canvas
 module.exports = engine;
