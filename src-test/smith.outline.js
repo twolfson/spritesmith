@@ -1,24 +1,20 @@
 module.exports = [{
-  "noop": {
   "An array of sprites": {
-      "when processed via spritesmith": {
-        "renders a top-down spritesheet": true,
-        "has the proper coordinates": true
-      // },
-      // "when converted from left to right": {
-      //   "renders a left-right spritesheet": true,
-      //   "has the proper coordinates": true
-      }
-  }
+    "when processed via spritesmith": {
+      "renders a top-down spritesheet": true,
+      "has the proper coordinates": true
+    // },
+    // "when converted from left to right": {
+    //   "renders a left-right spritesheet": true,
+    //   "has the proper coordinates": true
+    }
   }
 }, {
-  "noop": {
   "An empty array": {
-      "when processed via spritesmith": {
-        "renders an empty spritesheet": true,
-        "returns an empty coordinate mapping": true
-      }
-  }
+    "when processed via spritesmith": {
+      "renders an empty spritesheet": true,
+      "returns an empty coordinate mapping": true
+    }
   }
 // }, {
 //   // DEV: This only tests the used engine -- this was specific to `gm` + file descriptors

@@ -11,7 +11,6 @@ var assertSpritesheet = asserts.assertSpritesheet,
     assertCoordinates = asserts.assertCoordinates;
 
 module.exports = {
-  'noop': function () {},
   'An array of sprites': function () {
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
@@ -27,7 +26,7 @@ module.exports = {
   'when processed via spritesmith': function (done) {
     var that = this;
 
-    console.log('processing', that);
+    console.log(that);
 
     // TODO: These comments are no longer practical
     // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
@@ -46,7 +45,6 @@ module.exports = {
       } else {
       // Otherwise, save the result
         that.result = result;
-        console.log('processed', result);
       }
 
       // Callback
@@ -63,7 +61,6 @@ module.exports = {
   'has the proper coordinates': assertCoordinates,
   'An empty array': function () {
     this.sprites = [];
-    console.log('bbb');
   },
   'renders an empty spritesheet': function () {
     assert.strictEqual(this.result.image, '');
