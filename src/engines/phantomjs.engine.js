@@ -125,15 +125,13 @@ function getPhantomjsExporter(ext) {
         child = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', encodedArg]);
 
     // When there is data, save it
-    var dataPngBinaryStr = new Buffer('data:image/png;base64,').toString('binary'),
-        retVal = '';
+    var retVal = '';
     child.stdout.on('data', function (buffer) {
       // Coerce the buffer to a binary string
       var binaryStr = buffer.toString('binary');
 
-      // Remove 'data/png' if it exists
-      var retStr = binaryStr.replace(dataPngBinaryStr, '');
-      retVal += retStr;
+      // Save the binary chunk
+      retVal += binaryStr;
     });
 
     // When there is an error, concatenate it

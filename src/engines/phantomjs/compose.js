@@ -15,9 +15,12 @@ if (!encodedArg) {
 var page = webpage.create();
 page.open(phantom.libraryPath + '/compose.html?' + encodedArg, function (status) {
   // Pluck out the data png
-  var retStr = page.evaluate(function () {
+  var dataUrl = page.evaluate(function () {
     return window.retStr;
   });
+
+  // Remove the data/png
+  var retStr = dataUrl.replace('data:image/png;base64,', '');
   console.log(retStr);
 
   // Leave the program
