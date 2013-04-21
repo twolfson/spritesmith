@@ -35,8 +35,28 @@
           imagePaths = imageObjs.map(function getImagePth (image) {
             return 'file://' + image.img._filepath;
           });
-      ('<img src="' + imagePaths[0] + '"/');
-      console.log(document.getElementsByTagName('img').length);
+      _.each(imagePaths, function (imagePath, cb) {
+        // Create an image and specify the source
+        var img = new Image();
+        img.src = imagePath;
+        console.log(imagePath);
+
+        // Once the image loads, callback with it
+        img.onload = function () {
+          cb(null, img);
+        };
+
+        // If there is an error, callback with it
+        img.onerror = function (err) {
+          cb(err);
+        };
+      }, function imagesLoaded (err, imgs) {
+        // If there was an error, throw it
+        if (err) {
+          console.error('Error loading image ', err);
+          throw err;
+        }
+      });
     </script>
   </body>
 </html>
