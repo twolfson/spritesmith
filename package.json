@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "doubleshot --outline src-test/smith.outline.js --content src-test/canvas.content.js"
+    "test": "doubleshot --outline src-test/smith.outline.js --content src-test/smith.content.js"
   },
   "keywords": [
     "sprite",
