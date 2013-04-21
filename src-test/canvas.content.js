@@ -10,18 +10,6 @@ var smith = require('../src/smith.js'),
 var assertSpritesheet = asserts.assertSpritesheet,
     assertCoordinates = asserts.assertCoordinates;
 
-// TODO: How practical would it be to have `this` also access the content properties?
-// TODO: The reprocussions would require a default value system which means cleaning up
-// the batch context as discussed in GitHub issues
-/*
-'addParam': function (name, val) {
-  this.params[name] = val;
-},
-'when converted from left to right': function () {
-  this.addParam('layout', 'left-right');
-}
-*/
-
 module.exports = {
   'An array of sprites': function () {
     this.sprites = [
