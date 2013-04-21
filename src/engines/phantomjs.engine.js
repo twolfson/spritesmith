@@ -68,9 +68,7 @@ function createImage(file, cb) {
   async.waterfall([
     // Grab the stats via phantomjs
     function getImgSize (cb) {
-      // TODO: Move me back
-      // exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
-      cb(null, '{"height": "16px","width": "16px"}', '');
+      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
       // Parse the output
