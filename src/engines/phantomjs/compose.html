@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Compose images</title>
+    <script src="nimble.min.js"></script>
   </head>
   <body>
     <canvas id="canvas"></canvas>
@@ -24,7 +25,18 @@
       var encodedArg = location.search.slice(1),
           arg = decodeURIComponent(encodedArg),
           params = JSON.parse(arg);
-      console.log(params);
+
+      // Set the canvas dimensions
+      canvas.width = params.width;
+      canvas.height = params.height;
+
+      // Load the images in parallel
+      var imageObjs = params.images,
+          imagePaths = imageObjs.map(function getImagePth (image) {
+            return 'file://' + image.img._filepath;
+          });
+      ('<img src="' + imagePaths[0] + '"/');
+      console.log(document.getElementsByTagName('img').length);
     </script>
   </body>
 </html>
