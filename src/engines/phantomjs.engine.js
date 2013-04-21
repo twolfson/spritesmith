@@ -114,7 +114,7 @@ function getPhantomjsExporter(ext) {
         var images = that.images;
         images.forEach(function getUrlPath (img) {
           img = img.img;
-          img._urlpath = url.resolve(__dirname + '/phantomjs', img._filepath);
+          img._urlpath = path.relative(__dirname + '/phantomjs', img._filepath);
         });
 
         // Collect our parameters
