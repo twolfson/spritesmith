@@ -123,10 +123,14 @@ function getPhantomjsExporter(ext) {
     params.images = images;
     params.options = options;
 
+    // Stringify our argument for phantomjs
+    var arg = JSON.stringify(params),
+        encodedArg = encodeURIComponent(arg);
+
     // Write out argument to temporary file -- streams weren't cutting it
     var scratchFile = new ScratchFile('txt'),
         filepath = scratchFile.filepath;
-    fs.writeFileSync(filepath, 'a', 'utf8');
+    fs.writeFileSync(filepath, encodedArg, 'utf8');
 
     // Create a child process for phantomjs
     var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', filepath]);
