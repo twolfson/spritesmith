@@ -1,14 +1,11 @@
-// Load in modules
+// Load in modules and set up routes
 var smith = require('../src/smith.js'),
     assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
     _ = require('underscore'),
-    asserts = require('./asserts'),
-    spriteDir = path.join(__dirname, 'test_sprites');
-
-// Localize common assertions
-var assertSpritesheet = asserts.assertSpritesheet,
-    assertCoordinates = asserts.assertCoordinates;
+    spriteDir = path.join(__dirname, 'test_sprites'),
+    expectedDir = __dirname + '/expected_files';
 
 module.exports = {
   'An array of sprites': function () {
@@ -25,8 +22,7 @@ module.exports = {
     var that = this;
 
     // TODO: These comments are no longer practical
-    // smith({'src': sprites, 'algorithm': 'right-left'}, function (err, result) {
-    // smith({'src': sprites, 'engine': 'gm', 'exportOpts': {'format': 'jpg', 'quality': 20}}, function (err, result) {
+    // smith({'src': sprites, 'engine': 'gm'}, function (err, result) {
     // TODO: MUST specify `gm` engine
 
     // Load in params and add on to src
@@ -47,14 +43,14 @@ module.exports = {
       done(err);
     });
   },
-  'renders a top-down spritesheet': assertSpritesheet,
-  'has the proper coordinates': assertCoordinates,
+  'renders a top-down spritesheet': 'assertSpritesheet',
+  'has the proper coordinates': 'assertCoordinates',
   'when converted from left to right': [function () {
     this.namespace = 'leftRight.';
     this.options = {'algorithm': 'left-right'};
   }, 'when processed via spritesmith'],
-  'renders a left-right spritesheet': assertSpritesheet,
-  'has the proper coordinates': assertCoordinates,
+  'renders a left-right spritesheet': 'assertSpritesheet',
+  'has the proper coordinates': 'assertCoordinates',
   'An empty array': function () {
     this.sprites = [];
   },
@@ -77,5 +73,57 @@ module.exports = {
   },
   'returns an image': function () {
     assert.notEqual(this.result.image, '');
+  },
+  assertSpritesheet: function () {
+    var result = this.result,
+        namespace = this.namespace;
+
+    // DEV: Write out the result to a file
+    // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
+
+    // DEV: Write out to actual_files
+    // if (true) {
+    if (false) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.tiff', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
+    }
+
+    // Assert the actual image is the same expected
+    var actualImage = result.image,
+        expectedCanvasFile = path.join(expectedDir, namespace + 'canvas.png'),
+        expectedGmFile = path.join(expectedDir, namespace + 'gm.png'),
+        expectedGm2File = path.join(expectedDir, namespace + 'gm2.png'),
+        expectedCanvasImage = fs.readFileSync(expectedCanvasFile, 'binary'),
+        // expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
+        expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
+        expectedGm2Image = fs.readFileSync(expectedGm2File, 'binary'),
+        matchesCanvas = expectedCanvasImage === actualImage,
+        matchesGm = expectedGmImage === actualImage,
+        matchesGm2 = expectedGm2Image === actualImage,
+        matchesAnImage = matchesCanvas || matchesGm || matchesGm2;
+
+    assert(matchesAnImage, "Actual image does not match expected image");
+  },
+  assertCoordinates: function () {
+    // Load in the coordinates
+    var result = this.result,
+        expectedCoords = require(expectedDir + '/' + this.namespace + 'coordinates.json');
+
+    // Normalize the actual coordinates
+    // TODO: Normalize dir should be an option
+    var actualCoords = result.coordinates,
+        normCoords = {};
+    assert(actualCoords, "Result does not have a coordinates property");
+
+    Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
+      var file = path.relative(spriteDir, filepath);
+      normCoords[file] = actualCoords[filepath];
+    });
+
+    // Assert that the returned coordinates deep equal those in the coordinates.json
+    assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
   }
 };
