@@ -71,6 +71,13 @@ module.exports = {
     // Would have thrown
   },
   'returns an image': function () {
+    // DEV: Write out to actual_files
+    if (true) {
+    // if (false) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
+    }
+
     assert.notEqual(this.result.image, '');
   },
   assertSpritesheet: function () {
