@@ -6,6 +6,8 @@ var assert = require('assert'),
     spawn = cp.spawn,
     Stream = require('stream'),
     async = require('async'),
+    utils = require('../utils'),
+    ScratchFile = utils.ScratchFile,
     exporters = {},
     engine = {};
 
@@ -121,9 +123,13 @@ function getPhantomjsExporter(ext) {
     params.images = images;
     params.options = options;
 
-    // Create a stream and child process for phantomjs
-    // DEV: If this stream business ceases to work, use fs x_x
-    var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js']);
+    // Write out argument to temporary file -- streams weren't cutting it
+    var scratchFile = new ScratchFile('txt'),
+        filepath = scratchFile.filepath;
+    fs.writeFileSync(filepath, 'a', 'utf8');
+
+    // Create a child process for phantomjs
+    var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', filepath]);
 
     // When there is data, save it
     var retVal = '';
@@ -147,21 +153,17 @@ function getPhantomjsExporter(ext) {
 
     // When we are done
     phantomjs.on('close', function () {
-      // If there was an error, callback with it
-      if (err) {
-        cb(new Error(err));
-      }
+      // Destroy the temporary file
+      scratchFile.destroy(function () {
+        // If there was an error in phantom, callback with it
+        if (err) {
+          cb(new Error(err));
+        }
 
-      // Otherwise, callback with our retVal
-      cb(null, retVal);
+        // Otherwise, callback with our retVal
+        cb(null, retVal);
+      });
     });
-
-    // Write out our argument to phantomjs
-    setTimeout(function () {
-    var arg = JSON.stringify(params),
-        encodedArg = encodeURIComponent(arg);
-    phantomjs.stdin.write(encodedArg.slice(0, 20));
-  }, 100);
   };
 }
 
