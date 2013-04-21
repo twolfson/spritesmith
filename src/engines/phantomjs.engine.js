@@ -2,8 +2,6 @@ var fs = require('fs'),
     path = require('path'),
     async = require('async'),
     assert = require('assert'),
-    utils = require('../utils'),
-    ScratchFile = utils.ScratchFile,
     exporters = {},
     engine = {};
 
@@ -60,27 +58,28 @@ engine.createCanvas = createCanvas;
  * @note Must be guaranteed to integrate into own library via .addImage
  */
 function createImage(file, cb) {
-  // Create the image
-  var img = gm(file);
+  // TODO: Am I required to provide image dimensions? x_x
+  // // Create the image
+  // var img = gm(file);
 
-  // In series...
-  async.waterfall([
-    // Grab the size
-    function getImgSize (cb) {
-      img.size(cb);
-    },
-    function saveImgSize (size, cb) {
-      // Create a structure for preserving the height and width of the image
-      var imgFile = {
-        'height': size.height,
-        'width': size.width,
-        'file': file
-      };
+  // // In series...
+  // async.waterfall([
+  //   // Grab the size
+  //   function getImgSize (cb) {
+  //     img.size(cb);
+  //   },
+  //   function saveImgSize (size, cb) {
+  //     // Create a structure for preserving the height and width of the image
+  //     var imgFile = {
+  //       'height': size.height,
+  //       'width': size.width,
+  //       'file': file
+  //     };
 
-      // Callback with the imgFile
-      cb(null, imgFile);
-    }
-  ], cb);
+  //     // Callback with the imgFile
+  //     cb(null, imgFile);
+  //   }
+  // ], cb);
 }
 engine.createImage = createImage;
 
@@ -93,35 +92,39 @@ function addExporter(name, exporter) {
 engine.exporters = exporters;
 engine.addExporter = addExporter;
 
-// Helper to create gm exporters (could be a class for better abstraction)
+// Helper to create exporters (could be a class for better abstraction)
 function getPhantomjsExporter(ext) {
   /**
-   * Generic gm exporter
+   * Generic exporter
    * @param {Object} options Options to export with
    * @param {Number} [options.quality] Quality of the exported item
    * @param {Function} cb Error-first callback to return binary image string to
    */
-  return function gmExporterFn (options, cb) {
-    var canvas = this.canvas;
+  return function phantomjsExporterFn (options, cb) {
+    var canvas = this.canvas,
+        that = this;
 
     // TODO: Spawn process that takes JSON.stringify(this.images) and returns data/png:base64
     // TODO: Strip out `data/png;base64` and parse remainder into binary
 
     async.waterfall([
-      // Write to file
+      // Stringify our parameters and call phantomjs
       function writeOutCanvas (cb) {
-        canvas.write(filepath, cb);
+        var params = that.params;
+        params.images = that.images;
+        params.options = options;
+        spawn('phantomjs ' + __dirname + '/phantomjs/index.js', cb);
       },
       // Read the file back in (in binary)
-      function readInCanvas (x, y, z, cb) {
-       fs.readFile(filepath, 'binary', cb);
+      function readInCanvas (stdout, stderr, cb) {
+        console.log('OUTPUT: ', stdout);
       },
-      // Destroy the file
-      function destroyFile (retVal, cb) {
-        file.destroy(function () {
-          cb(null, retVal);
-        });
-      }
+      // // Destroy the file
+      // function destroyFile (retVal, cb) {
+      //   file.destroy(function () {
+      //     cb(null, retVal);
+      //   });
+      // }
     ], cb);
   };
 }
@@ -130,6 +133,9 @@ function getPhantomjsExporter(ext) {
 var phantomjsPngExporter = getPhantomjsExporter('png');
 addExporter('png', phantomjsPngExporter);
 addExporter('image/png', phantomjsPngExporter);
+
+// TODO: It seems we can export jpg and webp images
+// https://developer.mozilla.org/en-US/docs/DOM/HTMLCanvasElement#Methods
 
 // Export the canvas
 module.exports = engine;
