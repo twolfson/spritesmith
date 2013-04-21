@@ -22,10 +22,6 @@ module.exports = {
   '_when processed via spritesmith': function (done) {
     var that = this;
 
-    // TODO: These comments are no longer practical
-    // smith({'src': sprites, 'engine': 'gm'}, function (err, result) {
-    // TODO: MUST specify `gm` engine
-
     // Load in params and add on to src
     var options = this.options || {},
         params = _.extend({'src': this.sprites}, options);
@@ -53,6 +49,7 @@ module.exports = {
   'renders a left-right spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
   'An empty array': function () {
+    this.namespace = 'empty.';
     this.sprites = [];
   },
   'renders an empty spritesheet': function () {
@@ -68,6 +65,7 @@ module.exports = {
         i = 500;
     while (i--) { sprites.push(spritePath); }
     this.sprites = sprites;
+    this.namespace = 'ridiculous.';
   },
   'does not crash': function () {
     // Would have thrown
@@ -78,9 +76,6 @@ module.exports = {
   assertSpritesheet: function () {
     var result = this.result,
         namespace = this.namespace;
-
-    // DEV: Write out the result to a file
-    // fs.writeFileSync(expectedDir + '/gm.png', result.image, 'binary');
 
     // DEV: Write out to actual_files
     // if (true) {
