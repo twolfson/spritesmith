@@ -2,6 +2,8 @@ var fs = require('fs'),
     path = require('path'),
     async = require('async'),
     assert = require('assert'),
+    cp = require('child_process'),
+    spawn = cp.spawn,
     exporters = {},
     engine = {};
 
@@ -58,28 +60,25 @@ engine.createCanvas = createCanvas;
  * @note Must be guaranteed to integrate into own library via .addImage
  */
 function createImage(file, cb) {
-  // TODO: Am I required to provide image dimensions? x_x
-  // // Create the image
-  // var img = gm(file);
+  // In series
+  async.waterfall([
+    // Grab the stats via phantomjs
+    function getImgSize (cb) {
+      spawn('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
+    },
+    function saveImgSize (stdout, stderr, cb) {
+      console.log('OUTPUT: ', output);
+      // // Create a structure for preserving the height and width of the image
+      // var imgFile = {
+      //   'height': size.height,
+      //   'width': size.width,
+      //   'file': file
+      // };
 
-  // // In series...
-  // async.waterfall([
-  //   // Grab the size
-  //   function getImgSize (cb) {
-  //     img.size(cb);
-  //   },
-  //   function saveImgSize (size, cb) {
-  //     // Create a structure for preserving the height and width of the image
-  //     var imgFile = {
-  //       'height': size.height,
-  //       'width': size.width,
-  //       'file': file
-  //     };
-
-  //     // Callback with the imgFile
-  //     cb(null, imgFile);
-  //   }
-  // ], cb);
+      // // Callback with the imgFile
+      // cb(null, imgFile);
+    }
+  ], cb);
 }
 engine.createImage = createImage;
 
