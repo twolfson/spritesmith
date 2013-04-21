@@ -31,16 +31,14 @@
       canvas.height = params.height;
 
       // Load the images in parallel
-      var imageObjs = params.images,
-          imagePaths = imageObjs.map(function getImagePth (image) {
-            // return 'file://' + image.img._filepath;
-            return image.img._urlpath;
-          });
-      _.map(imagePaths, function (imagePath, cb) {
+      var imageObjs = params.images;
+      _.each(imageObjs, function (imageObj, cb) {
         // Create an image and specify the source
         var img = new Image();
-        img.src = imagePath;
-        console.log(imagePath);
+        img.src = imageObj.img._urlpath;
+
+        // Save the image for later
+        imageObj._img = img;
 
         // Once the image loads, callback with it
         img.onload = function () {
@@ -51,13 +49,21 @@
         img.onerror = function (err) {
           cb(err);
         };
-      }, function imagesLoaded (err, imgs) {
+      }, function imagesLoaded (err) {
         // If there was an error, throw it
         if (err) {
           console.error('Error loading image ', err);
           throw err;
         }
-        console.log(imgs);
+
+        // Draw the images on the canvas
+        imageObjs.forEach(function drawImage (img) {
+          context.drawImage(img._img, img.x, img.y);
+        });
+
+        // Capture the data url and save it for later
+        var retStr = canvas.toDataURL('image/png');
+        window.retStr = retStr;
       });
     </script>
   </body>
