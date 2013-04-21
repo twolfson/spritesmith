@@ -11,26 +11,17 @@ if (!arg) {
   throw new Error('No argument was specified.');
 }
 
-// Load in the image
-// DEV: If this fails, use data/html
+// Load the compose webpage
 var page = webpage.create();
-page.open(img, function (status) {
-  // Pluck out the image dimensions
-  var dimensions = page.evaluate(function () {
-    // Grab the image
-    var img = document.getElementsByTagName('img')[0];
-
-    // Get the dimensions of the image
-    var style = window.getComputedStyle(img),
-        dimensions = {
-          width: style.width,
-          height: style.height
-        };
-    return dimensions;
+page.onResourceRequested = function (req) {
+  console.log('zzz', req.url);
+};
+page.open('compose.html', function (status) {
+  // Pluck out the data png
+  console.log(status);
+  var retStr = page.evaluate(function () {
+    return window.retStr;
   });
-
-  // Stringify and emit the dimensions
-  var retStr = JSON.stringify(dimensions, null, 4);
   console.log(retStr);
 
   // Leave the program
