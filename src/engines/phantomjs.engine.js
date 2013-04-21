@@ -3,7 +3,7 @@ var fs = require('fs'),
     async = require('async'),
     assert = require('assert'),
     cp = require('child_process'),
-    spawn = cp.spawn,
+    exec = cp.exec,
     exporters = {},
     engine = {};
 
@@ -64,7 +64,8 @@ function createImage(file, cb) {
   async.waterfall([
     // Grab the stats via phantomjs
     function getImgSize (cb) {
-      spawn('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
+      console.log('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file);
+      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + file, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
       console.log('OUTPUT: ', output);
@@ -103,7 +104,7 @@ function getPhantomjsExporter(ext) {
     var canvas = this.canvas,
         that = this;
 
-    // TODO: Spawn process that takes JSON.stringify(this.images) and returns data/png:base64
+    // TODO: Execute process that takes JSON.stringify(this.images) and returns data/png:base64
     // TODO: Strip out `data/png;base64` and parse remainder into binary
 
     async.waterfall([
@@ -112,7 +113,7 @@ function getPhantomjsExporter(ext) {
         var params = that.params;
         params.images = that.images;
         params.options = options;
-        spawn('phantomjs ' + __dirname + '/phantomjs/index.js', cb);
+        exec('phantomjs ' + __dirname + '/phantomjs/index.js', cb);
       },
       // Read the file back in (in binary)
       function readInCanvas (stdout, stderr, cb) {
