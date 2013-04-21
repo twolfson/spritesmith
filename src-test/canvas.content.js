@@ -1,7 +1,10 @@
 // Load in modules
 var smith = require('../src/smith.js'),
+    assert = require('assert'),
     path = require('path'),
-    asserts = require('./asserts');
+    _ = require('underscore'),
+    asserts = require('./asserts'),
+    spriteDir = path.join(__dirname, 'test_sprites');
 
 // Localize common assertions
 var assertSpritesheet = asserts.assertSpritesheet,

@@ -18,7 +18,8 @@
     "layout": "~1.2.1"
   },
   "devDependencies": {
-    "doubleshot": "~0.2.0"
+    "doubleshot": "~0.3.0",
+    "underscore": "~1.4.4"
   },
   "optionalDependencies": {
     "canvas": "git://github.com/twolfson/node-canvas.git#bug/false.negative.for.jpeg",
