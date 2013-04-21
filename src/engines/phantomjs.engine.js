@@ -123,15 +123,12 @@ function getPhantomjsExporter(ext) {
 
     // Create a stream and child process for phantomjs
     // DEV: If this stream business ceases to work, use fs x_x
-    var phantomStdin = new Stream();
-    phantomStdin.writable = true;
-    var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js'], {
-          stdio: [phantomStdin, 'pipe', 'pipe']
-        });
+    var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js']);
 
     // When there is data, save it
     var retVal = '';
     phantomjs.stdout.on('data', function (buffer) {
+      console.log(buffer + '');
       // Interpret the buffer into a string, parse it via base64, and into binary
       var str = buffer.toString(),
           base64Buffer = new Buffer(str, 'base64'),
@@ -158,11 +155,10 @@ function getPhantomjsExporter(ext) {
       cb(null, retVal);
     });
 
-    // Write out stdin
-
-    // var arg = JSON.stringify(params),
-    //     encodedArg = encodeURIComponent(arg),
-    // encodedArg
+    // Write out our argument to phantomjs
+    var arg = JSON.stringify(params),
+        encodedArg = encodeURIComponent(arg);
+    phantomjs.stdin.write(encodedArg);
   };
 }
 

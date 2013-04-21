@@ -2,9 +2,11 @@
 var system = require('system'),
     webpage = require('webpage');
 
+console.log('hebbby');
 // Grab the arguments
-var args = system.args,
-    encodedArg = args[1];
+var encodedArg = system.stdin.readLine();
+
+console.log('hey');
 
 // If there is no image, throw an error
 if (!encodedArg) {
