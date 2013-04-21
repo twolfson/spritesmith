@@ -1,12 +1,14 @@
 // Load in modules
 var system = require('system'),
+    fs = require('fs'),
     webpage = require('webpage');
 
-console.log('hebbby');
 // Grab the arguments
-var encodedArg = system.stdin.readLine();
+var args = system.args,
+    filepath = args[1],
+    encodedArg = fs.read(filepath);
 
-console.log('hey');
+console.log(encodedArg);
 
 // If there is no image, throw an error
 if (!encodedArg) {
