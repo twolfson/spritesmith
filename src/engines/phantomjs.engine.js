@@ -127,10 +127,10 @@ function getPhantomjsExporter(ext) {
     // When there is data, save it
     var retVal = '';
     child.stdout.on('data', function (buffer) {
-      // // Coerce the buffer to a binary string
-      // var binaryStr = buffer.toString('binary');
-      var str = buffer.toString()
-          binaryStr = (new Buffer(str, 'base64')).toString('binary');
+      // Interpret the buffer into a string, parse it via base64, and into binary
+      var str = buffer.toString(),
+          base64Buffer = new Buffer(str, 'base64'),
+          binaryStr = base64Buffer.toString('binary');
 
       // Save the binary chunk
       retVal += binaryStr;
