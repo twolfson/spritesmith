@@ -122,12 +122,15 @@ function getPhantomjsExporter(ext) {
         params.options = options;
 
         // Stringify them and call phantomjs
-        var arg = JSON.stringify(params);
-        exec('cd ' + __dirname + '/phantomjs && phantomjs compose.js ' + arg, cb);
+        var arg = JSON.stringify(params),
+            encodedArg = encodeURIComponent(arg);
+        console.log(encodedArg);
+        exec('phantomjs ' + __dirname + '/phantomjs/compose.js ' + encodedArg, cb);
       },
       // Read the file back in (in binary)
       function readInCanvas (stdout, stderr, cb) {
-        console.log('OUTPUT: ', stdout);
+        console.log('hey');
+        // console.log('OUTPUT: ', stdout);
       },
       // // Destroy the file
       // function destroyFile (retVal, cb) {
