@@ -24,8 +24,9 @@ module.exports = {
 
     // Load in params and add on to src
     var options = this.options || {},
-        params = _.extend({'src': this.sprites, 'algorithm': 'binary-tree'}, options);
+        params = _.extend({'src': this.sprites}, options);
 
+    params.algorithm = 'binary-tree';
     // Attempt to smith out the sprites
     smith(params, function (err, result) {
       // If there is an error, throw it
