@@ -24,7 +24,7 @@ module.exports = {
 
     // Load in params and add on to src
     var options = this.options || {},
-        params = _.extend({'src': this.sprites}, options);
+        params = _.extend({'src': this.sprites, 'algorithm': 'binary-tree'}, options);
 
     // Attempt to smith out the sprites
     smith(params, function (err, result) {
@@ -72,8 +72,8 @@ module.exports = {
   },
   'returns an image': function () {
     // DEV: Write out to actual_files
-    // if (true) {
-    if (false) {
+    if (true) {
+    // if (false) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
     }
@@ -85,8 +85,8 @@ module.exports = {
         namespace = this.namespace;
 
     // DEV: Write out to actual_files
-    // if (true) {
-    if (false) {
+    if (true) {
+    // if (false) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');

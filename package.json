@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "~0.2.6",
-    "layout": "~1.2.1",
+    "layout": "~1.3.0",
     "tmp": "0.0.18"
   },
   "devDependencies": {
