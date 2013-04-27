@@ -96,7 +96,7 @@ module.exports = {
 
     // Assert the actual image is the same expected
     var actualImage = result.image,
-        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png'],
+        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'],
         matchesAnImage = false;
 
     // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
