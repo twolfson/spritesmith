@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 
 // Copied from https://github.com/visionmedia/mocha/blob/e224188798cd1e871f364631115458dec59a1516/bin/mocha
+// TODO: Would like to use 'doubleshot' over 'node' but path resolution seems to be failing
 var spawn = require('child_process').spawn,
     args = ['../node_modules/doubleshot/bin/doubleshot', '--outline', 'smith.outline.js', '--content', process.argv[2] + '.content.js'];
 
-console.log('hey');
-var path = require('path');
-    // doubleshot = ;
-// console.log(doubleshot, args);
 var proc = spawn('node', args, { customFds: [0,1,2], env: process.env});
 proc.on('exit', function (code, signal) {
   process.on('exit', function(){
