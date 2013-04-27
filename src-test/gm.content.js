@@ -30,7 +30,7 @@ module.exports = _.defaults({
     // Load in params and add on to src
     var options = this.options || {},
         params = _.extend({'src': this.sprites}, options);
-    this.timeout(20000);
+    this.timeout(60000);
 
     // Attempt to smith out the sprites
     smith(params, function (err, result) {
