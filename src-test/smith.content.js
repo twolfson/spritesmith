@@ -85,8 +85,8 @@ module.exports = {
         namespace = this.namespace;
 
     // DEV: Write out to actual_files
-    // if (true) {
-    if (false) {
+    if (true) {
+    // if (false) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
@@ -96,20 +96,17 @@ module.exports = {
 
     // Assert the actual image is the same expected
     var actualImage = result.image,
-        expectedCanvasFile = path.join(expectedDir, namespace + 'canvas.png'),
-        expectedGmFile = path.join(expectedDir, namespace + 'gm.png'),
-        expectedGm2File = path.join(expectedDir, namespace + 'gm2.png'),
-        expectedPhantomjsFile = path.join(expectedDir, namespace + 'phantomjs.png'),
-        expectedCanvasImage = fs.readFileSync(expectedCanvasFile, 'binary'),
-        // expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
-        expectedGmImage = fs.readFileSync(expectedGmFile, 'binary'),
-        expectedGm2Image = fs.readFileSync(expectedGm2File, 'binary'),
-        expectedPhantomjsImage = fs.readFileSync(expectedPhantomjsFile, 'binary'),
-        matchesCanvas = expectedCanvasImage === actualImage,
-        matchesGm = expectedGmImage === actualImage,
-        matchesGm2 = expectedGm2Image === actualImage,
-        matchesPhantomjs = expectedPhantomjsImage === actualImage,
-        matchesAnImage = matchesCanvas || matchesGm || matchesGm2 || matchesPhantomjs;
+        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png'],
+        matchesAnImage = false;
+
+    // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
+    expectedFilenames.forEach(function testAgainstExpected (filename) {
+      if (!matchesAnImage) {
+        var filepath = path.join(expectedDir, namespace + filename),
+            expectedImage = fs.readFileSync(filepath, 'binary');
+        matchesAnImage = actualImage === expectedImage;
+      }
+    });
 
     assert(matchesAnImage, "Actual image does not match expected image");
   },
