@@ -7,7 +7,7 @@ var fs = require('fs'),
     gm = require('gm'),
     exporters = {},
     engine = {};
-var i = 0;
+
 function Canvas() {
   var canvas = gm(1, 1, 'transparent');
 
@@ -32,7 +32,7 @@ Canvas.prototype = {
     var canvas = this.canvas,
         format = options.format || 'png',
         exporter = exporters[format];
-        console.log('expoooort');
+
     // Assert it exists
     assert(exporter, 'Exporter ' + format + ' does not exist for spritesmith\'s gm engine');
 
@@ -90,7 +90,7 @@ engine.createCanvas = createCanvas;
 function createImage(file, cb) {
   // Create the image
   var img = gm(file);
-  console.log(i++);
+
   // In series...
   async.waterfall([
     // Grab the size
