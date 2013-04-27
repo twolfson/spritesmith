@@ -5,9 +5,9 @@ var assert = require('assert'),
     exec = cp.exec,
     spawn = cp.spawn,
     Stream = require('stream'),
+    Tempfile = require('temporary/lib/file'),
     async = require('async'),
     utils = require('../utils'),
-    ScratchFile = utils.ScratchFile,
     exporters = {},
     engine = {};
 
@@ -77,6 +77,9 @@ engine.createImage = createImage;
 
 // Mass image creation
 function createImages(files, cb) {
+  var tmp = new Tempfile(),
+      filepath = tmp.path;
+
   // In series
   async.waterfall([
     // Grab the stats via phantomjs
@@ -85,14 +88,18 @@ function createImages(files, cb) {
       var filesStr = JSON.stringify(files),
           encodedFilesStr = encodeURIComponent(filesStr);
 
-      console.log('heeey', filesStr);
+      // Create a file and save to it
+      tmp.writeFileSync(encodedFilesStr, 'utf8');
+
       // Call the stats phantomjs
-      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + encodedFilesStr, cb);
+      exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + filepath, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
-      console.log('yoooo');
       // Parse the output
       var dimensionArr = JSON.parse(stdout);
+
+      // Clean up the temporary file
+      try { tmp.unlinkSync(); } catch (e) {}
 
       // Callback with the dimensions
       cb(null, dimensionArr);
@@ -142,9 +149,9 @@ function getPhantomjsExporter(ext) {
         encodedArg = encodeURIComponent(arg);
 
     // Write out argument to temporary file -- streams weren't cutting it
-    var scratchFile = new ScratchFile('txt'),
-        filepath = scratchFile.filepath;
-    fs.writeFileSync(filepath, encodedArg, 'utf8');
+    var tmp = new Tempfile(),
+        filepath = tmp.path;
+    tmp.writeFileSync(encodedArg, 'utf8');
 
     // Create a child process for phantomjs
     var phantomjs = spawn('phantomjs', [__dirname + '/phantomjs/compose.js', filepath]);
@@ -172,15 +179,15 @@ function getPhantomjsExporter(ext) {
     // When we are done
     phantomjs.on('close', function () {
       // Destroy the temporary file
-      scratchFile.destroy(function () {
-        // If there was an error in phantom, callback with it
-        if (err) {
-          cb(new Error(err));
-        }
+      try { tmp.unlinkSync(); } catch (e) {}
 
-        // Otherwise, callback with our retVal
-        cb(null, retVal);
-      });
+      // If there was an error in phantom, callback with it
+      if (err) {
+        cb(new Error(err));
+      }
+
+      // Otherwise, callback with our retVal
+      cb(null, retVal);
     });
   };
 }
