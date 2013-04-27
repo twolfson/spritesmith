@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "cd src-test && node run smith; node run canvas; node run gm; node run phantomjs"
+    "test": "cd src-test && node run smith ; node run canvas ; node run gm ; node run phantomjs"
   },
   "keywords": [
     "sprite",
