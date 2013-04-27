@@ -6,7 +6,8 @@ var system = require('system'),
 
 // Grab the arguments
 var args = system.args,
-    encodedFilesStr = args[1];
+    filepath = args[1],
+    encodedFilesStr = fs.read(filepath);
 
 // If there is no image, throw an error
 if (!encodedFilesStr) {
