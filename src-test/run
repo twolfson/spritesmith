@@ -4,7 +4,7 @@
 var spawn = require('child_process').spawn,
     args = ['--outline', 'smith.outline.js', '--content', process.argv[2] + '.content.js'];
 
-var proc = spawn('doubleshot', args, { customFds: [0,1,2] });
+var proc = spawn('doubleshot', args, { customFds: [0,1,2], env: process.env });
 proc.on('exit', function (code, signal) {
   process.on('exit', function(){
     if (signal) {
