@@ -85,10 +85,12 @@ function createImages(files, cb) {
       var filesStr = JSON.stringify(files),
           encodedFilesStr = encodeURIComponent(filesStr);
 
+      console.log('heeey', filesStr);
       // Call the stats phantomjs
       exec('phantomjs ' + __dirname + '/phantomjs/stats.js ' + encodedFilesStr, cb);
     },
     function saveImgSize (stdout, stderr, cb) {
+      console.log('yoooo');
       // Parse the output
       var dimensionArr = JSON.parse(stdout);
 
