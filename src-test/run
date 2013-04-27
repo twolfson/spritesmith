@@ -2,9 +2,9 @@
 
 // Copied from https://github.com/visionmedia/mocha/blob/e224188798cd1e871f364631115458dec59a1516/bin/mocha
 var spawn = require('child_process').spawn,
-    args = [ 'doubleshot', '--outline', 'smith.outline.js', '--content', process.argv[0] + '.content.js'];
+    args = ['--outline', 'smith.outline.js', '--content', process.argv[2] + '.content.js'];
 
-var proc = spawn(process.argv[0], args, { customFds: [0,1,2] });
+var proc = spawn('doubleshot', args, { customFds: [0,1,2] });
 proc.on('exit', function (code, signal) {
   process.on('exit', function(){
     if (signal) {
