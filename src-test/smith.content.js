@@ -58,28 +58,28 @@ module.exports = {
   'returns an empty coordinate mapping': function () {
     assert.deepEqual(this.result.coordinates, {});
   },
-  'A ridiculous amount of sprites': function () {
-    // Create and save an array of 500 sprites
-    var sprites = [],
-        spritePath = path.join(spriteDir, '16.jpg'),
-        i = 500;
-    while (i--) { sprites.push(spritePath); }
-    this.sprites = sprites;
-    this.namespace = 'ridiculous.';
-  },
-  'does not crash': function () {
-    // Would have thrown
-  },
-  'returns an image': function () {
-    // DEV: Write out to actual_files
-    // if (true) {
-    if (false) {
-      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
-    }
+  // 'A ridiculous amount of sprites': function () {
+  //   // Create and save an array of 500 sprites
+  //   var sprites = [],
+  //       spritePath = path.join(spriteDir, '16.jpg'),
+  //       i = 500;
+  //   while (i--) { sprites.push(spritePath); }
+  //   this.sprites = sprites;
+  //   this.namespace = 'ridiculous.';
+  // },
+  // 'does not crash': function () {
+  //   // Would have thrown
+  // },
+  // 'returns an image': function () {
+  //   // DEV: Write out to actual_files
+  //   // if (true) {
+  //   if (false) {
+  //     try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+  //     fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
+  //   }
 
-    assert.notEqual(this.result.image, '');
-  },
+  //   assert.notEqual(this.result.image, '');
+  // },
   assertSpritesheet: function () {
     var result = this.result,
         namespace = this.namespace;

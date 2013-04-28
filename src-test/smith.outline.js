@@ -16,12 +16,13 @@ module.exports = [{
       "returns an empty coordinate mapping": true
     }
   }
-}, {
-  // DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
-  "A ridiculous amount of sprites": {
-    "when processed via spritesmith": {
-      "does not crash": true,
-      "returns an image": true
-    }
-  }
+// Relocated to specific engines
+// }, {
+//   // DEV: This only tests the used engine -- this was specific to `gm` + file descriptors
+//   "A ridiculous amount of sprites": {
+//     "when processed via spritesmith": {
+//       "does not crash": true,
+//       "returns an image": true
+//     }
+//   }
 }];
