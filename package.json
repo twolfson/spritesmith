@@ -17,18 +17,16 @@
     "async": "~0.2.6",
     "layout": "~1.3.0",
     "tmp": "0.0.18",
-    "temporary": "0.0.5",
-    "phantomjssmith": "~0.1.2",
-    "gmsmith": "~0.1.0",
-    "canvassmith": "~0.1.0"
+    "temporary": "0.0.5"
   },
   "devDependencies": {
     "doubleshot": "~1.0.1",
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {
-    "canvas": "git://github.com/twolfson/node-canvas.git#bug/false.negative.for.jpeg",
-    "gm": "~1.4.2"
+    "phantomjssmith": "~0.1.2",
+    "gmsmith": "~0.1.0",
+    "canvassmith": "~0.1.0"
   },
   "repository": {
     "type": "git",
