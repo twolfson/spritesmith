@@ -147,7 +147,7 @@ Spritesmith.engines = engines;
 var canvasEngine,
     gmEngine;
 try {
-  canvasEngine = require('./engines/canvas.engine.js');
+  canvasEngine = require('canvassmith');
 } catch (e) {}
 
 try {
@@ -161,9 +161,6 @@ try {
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
 if (phatomjsEngine) { addEngine('phantomjs', phatomjsEngine); }
-
-// Expose utils
-Spritesmith.utils = require('./utils');
 
 // Export Spritesmith
 module.exports = Spritesmith;

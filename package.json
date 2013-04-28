@@ -19,7 +19,8 @@
     "tmp": "0.0.18",
     "temporary": "0.0.5",
     "phantomjssmith": "~0.1.2",
-    "gmsmith": "~0.1.0"
+    "gmsmith": "~0.1.0",
+    "canvassmith": "~0.1.0"
   },
   "devDependencies": {
     "doubleshot": "~1.0.1",
