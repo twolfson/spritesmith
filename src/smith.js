@@ -155,7 +155,7 @@ try {
 } catch (e) {}
 
 try {
-  phatomjsEngine = require('./engines/phantomjs.engine.js');
+  phatomjsEngine = require('phantomjssmith');
 } catch (e) {}
 
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
