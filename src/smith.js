@@ -151,7 +151,7 @@ try {
 } catch (e) {}
 
 try {
-  gmEngine = require('./engines/gm.engine.js');
+  gmEngine = require('gmsmith');
 } catch (e) {}
 
 try {
