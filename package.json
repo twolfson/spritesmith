@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "cd src-test && node run smith ; node run canvas ; node run gm ; node run phantomjs"
+    "test": "cd src-test && doubleshot --timeout 60000 --outline smith.outline.js --content smith.content.js"
   },
   "keywords": [
     "sprite",
@@ -15,9 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "~0.2.6",
-    "layout": "~1.3.0",
-    "tmp": "0.0.18",
-    "temporary": "0.0.5"
+    "layout": "~1.3.0"
   },
   "devDependencies": {
     "doubleshot": "~1.0.1",
