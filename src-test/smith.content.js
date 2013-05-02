@@ -57,18 +57,18 @@ module.exports = {
   'returns an empty coordinate mapping': function () {
     assert.deepEqual(this.result.coordinates, {});
   },
-  'phantomjssmith': function () {
+  'phantomjssmith': ['An array of sprites', function () {
     this.namespace = 'phantomjs.';
     this.options = {'engine': 'phantomjs'};
-  },
-  'gmsmith': function () {
+  }],
+  'gmsmith': ['An array of sprites', function () {
     this.namespace = 'gm.';
     this.options = {'engine': 'gm'};
-  },
-  'canvassmith': function () {
+  }],
+  'canvassmith': ['An array of sprites', function () {
     this.namespace = 'canvas.';
     this.options = {'engine': 'canvas'};
-  },
+  }],
   'returns an image': function () {
     // DEV: Write out to actual_files
     // if (true) {
