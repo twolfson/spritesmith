@@ -47,7 +47,6 @@ module.exports = {
     this.options = {'algorithm': 'left-right'};
   }, 'when processed via spritesmith'],
   'renders a left-right spritesheet': 'assertSpritesheet',
-  'has the proper coordinates': 'assertCoordinates',
   'An empty array': function () {
     this.namespace = 'empty.';
     this.sprites = [];
