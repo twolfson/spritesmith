@@ -38,9 +38,9 @@ function addEngineTest(engine) {
 }
 
 // Test specific engines
-addEngineTest('phantomjssmith');
-addEngineTest('gmsmith');
-addEngineTest('canvassmith');
+// addEngineTest('phantomjssmith');
+// addEngineTest('gmsmith');
+// addEngineTest('canvassmith');
 
 // Export the outlines
 module.exports = outlines;
