@@ -59,15 +59,15 @@ module.exports = {
   },
   'phantomjssmith': function () {
     this.namespace = 'phantomjs.';
-    this.options = {'algorithm': 'phantomjs'};
+    this.options = {'engine': 'phantomjs'};
   },
   'gmsmith': function () {
     this.namespace = 'gm.';
-    this.options = {'algorithm': 'gm'};
+    this.options = {'engine': 'gm'};
   },
   'canvassmith': function () {
     this.namespace = 'canvas.';
-    this.options = {'algorithm': 'canvas'};
+    this.options = {'engine': 'canvas'};
   },
   'returns an image': function () {
     // DEV: Write out to actual_files

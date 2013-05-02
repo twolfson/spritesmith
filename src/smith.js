@@ -145,7 +145,8 @@ Spritesmith.engines = engines;
 
 // Attempt to load canvas and imagemagick
 var canvasEngine,
-    gmEngine;
+    gmEngine,
+    phantomjsEngine;
 try {
   canvasEngine = require('canvassmith');
 } catch (e) {}
@@ -155,12 +156,12 @@ try {
 } catch (e) {}
 
 try {
-  phatomjsEngine = require('phantomjssmith');
+  phantomjsEngine = require('phantomjssmith');
 } catch (e) {}
 
 if (canvasEngine) { addEngine('canvas', canvasEngine); }
 if (gmEngine) { addEngine('gm', gmEngine); }
-if (phatomjsEngine) { addEngine('phantomjs', phatomjsEngine); }
+if (phantomjsEngine) { addEngine('phantomjs', phantomjsEngine); }
 
 // Export Spritesmith
 module.exports = Spritesmith;
