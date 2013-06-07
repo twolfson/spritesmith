@@ -3,11 +3,13 @@ var outlines = [{
   "An array of sprites": {
     "when processed via spritesmith": {
       "renders a top-down spritesheet": true,
-      "has the proper coordinates": true
+      "has the proper coordinates": true,
+      "has the proper size": true
     },
     "when converted from left to right": {
       "renders a left-right spritesheet": true,
-      "has the proper coordinates": true
+      "has the proper coordinates": true,
+      "has the proper size": true
     }
   }
 }, {
