@@ -12,6 +12,7 @@
     "css"
   ],
   "author": "Todd Wolfson <todd@twolfson.com>",
+  "contributors": "Alex Bain <alex@alexba.in",
   "license": "MIT",
   "dependencies": {
     "async": "~0.2.6",

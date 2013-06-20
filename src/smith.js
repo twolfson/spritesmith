@@ -96,6 +96,13 @@ function Spritesmith(params, callback) {
       if (packedObj.items.length) {
         var width = packedObj.width,
             height = packedObj.height;
+
+        // Include the total width and height of the generated canvas
+        retObj.size = {
+            width: width,
+            height: height
+        };
+
         engine.createCanvas(width, height, cb);
       } else {
       // Otherwise, skip over potential errors/CPU
