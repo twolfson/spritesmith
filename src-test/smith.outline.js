@@ -4,19 +4,20 @@ var outlines = [{
     "when processed via spritesmith": {
       "renders a top-down spritesheet": true,
       "has the proper coordinates": true,
-      "has the proper size": true
+      "has the proper properties": true
     },
     "when converted from left to right": {
       "renders a left-right spritesheet": true,
       "has the proper coordinates": true,
-      "has the proper size": true
+      "has the proper properties": true
     }
   }
 }, {
   "An empty array": {
     "when processed via spritesmith": {
       "renders an empty spritesheet": true,
-      "returns an empty coordinate mapping": true
+      "returns an empty coordinate mapping": true,
+      "has the proper properties": true
     }
   }
 }];

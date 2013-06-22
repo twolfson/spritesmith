@@ -42,7 +42,7 @@ module.exports = {
   },
   'renders a top-down spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
-  'has the proper size': 'assertSize',
+  'has the proper properties': 'assertProps',
   'when converted from left to right': [function () {
     this.namespace = 'leftRight.';
     this.options = {'algorithm': 'left-right'};
@@ -92,7 +92,7 @@ module.exports = {
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.tiff', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'size.json', JSON.stringify(result.size, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
     }
 
     // Assert the actual image is the same expected
@@ -130,19 +130,12 @@ module.exports = {
     // Assert that the returned coordinates deep equal those in the coordinates.json
     assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
   },
-  assertSize: function () {
-    // Load in the size
-    var result = this.result,
-        expectedSize = require(expectedDir + '/' + this.namespace + 'size.json');
+  assertProps: function () {
+    // Load in the properties
+    var actualProps = this.result.properties,
+        expectedProps = require(expectedDir + '/' + this.namespace + 'properties.json');
 
-    var actualWidth = result.size.width,
-        actualHeight = result.size.height;
-
-    assert(actualWidth, "Result does not have a width property");
-    assert(actualHeight, "Result does not have a height property");
-
-    // Assert that the returned size equals the expected size
-    assert.equal(expectedSize.height, actualHeight, "Actual height does not match expected height");
-    assert.equal(expectedSize.width, actualWidth, "Actual width does not match expected width");
+    // Assert that the returned properties equals the expected properties
+    assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
   }
 };

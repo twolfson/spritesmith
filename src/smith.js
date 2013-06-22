@@ -92,17 +92,18 @@ function Spritesmith(params, callback) {
     },
     // Then, generate a canvas
     function generateCanvas (cb) {
+      // Grab and fallback the width/height
+      var width = Math.max(packedObj.width || 0, 0),
+          height = Math.max(packedObj.height || 0, 0);
+
+      // Export the total width and height of the generated canvas
+      retObj.properties = {
+          width: width,
+          height: height
+      };
+
       // If there are items, generate the canvas
       if (packedObj.items.length) {
-        var width = packedObj.width,
-            height = packedObj.height;
-
-        // Include the total width and height of the generated canvas
-        retObj.size = {
-            width: width,
-            height: height
-        };
-
         engine.createCanvas(width, height, cb);
       } else {
       // Otherwise, skip over potential errors/CPU
