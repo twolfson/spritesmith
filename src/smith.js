@@ -38,6 +38,12 @@ function Spritesmith(params, callback) {
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
   }
 
+  // If there is a set parameter for the engine, use it
+  if (engine.set) {
+    var engineOpts = params.engineOpts || {};
+    engine.set(engineOpts);
+  }
+
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
       layer = new Layout(algorithmPref),
