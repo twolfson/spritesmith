@@ -51,6 +51,9 @@ Spritesmith is a standalone function
  * @returns {Object} callback[1] result Result object of spritesmith
  * @returns {String} callback[1].image Binary string representation of image
  * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height, and width information about the source image
+ * @returns {Object} callback[1].properties Properties about the spritesheet itself
+ * @returns {Object} callback[1].properties.width Width of the spritesheet
+ * @returns {Object} callback[1].properties.height Height of the spritesheet
  */
 ```
 
@@ -93,6 +96,7 @@ var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
 spritesmith({'src': sprites}, function (err, result) {
   result.image; // Binary string representation of image
   result.coordinates; // Object mapping filename to {x, y, width, height} of image
+  result.properties; // Object with metadata about spritesheet {width, height}
 });
 ```
 
