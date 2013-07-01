@@ -47,6 +47,7 @@ function Spritesmith(params, callback) {
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
       layer = new Layout(algorithmPref),
+      padding = params.padding || 0,
       exportOpts = params.exportOpts || {},
       packedObj;
 
@@ -59,7 +60,13 @@ function Spritesmith(params, callback) {
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
       images.forEach(function (img) {
-        layer.addItem({'width': img.width, 'height': img.height, 'meta': img});
+        // Save the non-padded properties as meta data
+        var width = img.width,
+            height = img.height,
+            meta = {'img': img, 'actualWidth': width, 'actualHeight': height};
+
+        // Add the item with padding to our layer
+        layer.addItem({'width': width + padding, 'height': height + padding, 'meta': meta});
       });
 
       // Callback with nothing
@@ -74,13 +81,14 @@ function Spritesmith(params, callback) {
       var coordinates = {},
           packedItems = packedObj.items;
       packedItems.forEach(function (item) {
-        var img = item.meta,
+        var meta = item.meta,
+            img = meta.img,
             name = img._filepath;
         coordinates[name] = {
           'x': item.x,
           'y': item.y,
-          'width': item.width,
-          'height': item.height
+          'width': meta.actualWidth,
+          'height': meta.actualHeight
         };
       });
 
