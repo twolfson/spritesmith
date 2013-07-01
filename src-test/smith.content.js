@@ -8,6 +8,7 @@ var assert = require('assert'),
     expectedDir = __dirname + '/expected_files';
 
 module.exports = {
+  // Setup
   'An array of sprites': function () {
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
@@ -18,6 +19,12 @@ module.exports = {
     // By default, write to the topDown namespace
     this.namespace = 'topDown.';
   },
+  'An empty array': function () {
+    this.namespace = 'empty.';
+    this.sprites = [];
+  },
+
+  // Processing
   'when processed via spritesmith': '_when processed via spritesmith',
   '_when processed via spritesmith': function (done) {
     var that = this;
@@ -40,24 +47,12 @@ module.exports = {
       done(err);
     });
   },
-  'renders a top-down spritesheet': 'assertSpritesheet',
-  'has the proper coordinates': 'assertCoordinates',
-  'has the proper properties': 'assertProps',
   'when converted from left to right': [function () {
     this.namespace = 'leftRight.';
     this.options = {'algorithm': 'left-right'};
   }, 'when processed via spritesmith'],
-  'renders a left-right spritesheet': 'assertSpritesheet',
-  'An empty array': function () {
-    this.namespace = 'empty.';
-    this.sprites = [];
-  },
-  'renders an empty spritesheet': function () {
-    assert.strictEqual(this.result.image, '');
-  },
-  'returns an empty coordinate mapping': function () {
-    assert.deepEqual(this.result.coordinates, {});
-  },
+
+  // Engine-specific setups
   'phantomjssmith': ['An array of sprites', function () {
     this.namespace = 'phantomjs.';
     this.options = {'engine': 'phantomjs'};
@@ -70,6 +65,13 @@ module.exports = {
     this.namespace = 'canvas.';
     this.options = {'engine': 'canvas'};
   }],
+
+
+  // Assertions
+  'renders a top-down spritesheet': 'assertSpritesheet',
+  'has the proper coordinates': 'assertCoordinates',
+  'has the proper properties': 'assertProps',
+  'renders a left-right spritesheet': 'assertSpritesheet',
   'returns an image': function () {
     // DEV: Write out to actual_files
     // if (true) {
@@ -80,6 +82,14 @@ module.exports = {
 
     assert.notEqual(this.result.image, '');
   },
+  'renders an empty spritesheet': function () {
+    assert.strictEqual(this.result.image, '');
+  },
+  'returns an empty coordinate mapping': function () {
+    assert.deepEqual(this.result.coordinates, {});
+  },
+
+  // Bulky assertions
   assertSpritesheet: function () {
     var result = this.result,
         namespace = this.namespace;
