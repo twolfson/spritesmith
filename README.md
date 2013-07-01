@@ -44,6 +44,7 @@ Spritesmith is a standalone function
  * @param {String[]} [params.src] Images to generate into sprite sheet
  * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
+ * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
