@@ -51,6 +51,10 @@ module.exports = {
     this.namespace = 'leftRight.';
     this.options = {'algorithm': 'left-right'};
   }, 'when processed via spritesmith'],
+  'when provided with a padding parameter': [function () {
+    this.namespace = 'padding.';
+    this.options = {'algorithm': 'binary-tree', 'padding': 2};
+  }, 'when processed via spritesmith'],
 
   // Engine-specific setups
   'phantomjssmith': ['An array of sprites', function () {
@@ -69,9 +73,10 @@ module.exports = {
 
   // Assertions
   'renders a top-down spritesheet': 'assertSpritesheet',
+  'renders a left-right spritesheet': 'assertSpritesheet',
+  'renders a padded spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
   'has the proper properties': 'assertProps',
-  'renders a left-right spritesheet': 'assertSpritesheet',
   'returns an image': function () {
     // DEV: Write out to actual_files
     // if (true) {

@@ -10,6 +10,11 @@ var outlines = [{
       "renders a left-right spritesheet": true,
       "has the proper coordinates": true,
       "has the proper properties": true
+    },
+    "when provided with a padding parameter": {
+      "renders a padded spritesheet": true,
+      "has the proper coordinates": true,
+      "has the proper properties": true
     }
   }
 }, {
