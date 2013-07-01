@@ -143,7 +143,6 @@ module.exports = {
     });
 
     // Assert that the returned coordinates deep equal those in the coordinates.json
-    console.log(expectedCoords, normCoords);
     assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
   },
   assertProps: function () {
