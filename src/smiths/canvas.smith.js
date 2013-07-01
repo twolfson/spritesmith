@@ -3,7 +3,7 @@ function CanvasSmith(canvas) {
 }
 CanvasSmith.prototype = {
   'addImage': function (imgObj) {
-    var img = imgObj.meta,
+    var img = imgObj.meta.img,
         x = imgObj.x,
         y = imgObj.y,
         canvas = this.canvas;

@@ -100,8 +100,8 @@ module.exports = {
         namespace = this.namespace;
 
     // DEV: Write out to actual_files
-    // if (true) {
-    if (false) {
+    if (true) {
+    // if (false) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
@@ -143,6 +143,7 @@ module.exports = {
     });
 
     // Assert that the returned coordinates deep equal those in the coordinates.json
+    console.log(expectedCoords, normCoords);
     assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
   },
   assertProps: function () {
