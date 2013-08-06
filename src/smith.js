@@ -105,14 +105,22 @@ function Spritesmith(params, callback) {
       var width = Math.max(packedObj.width || 0, 0),
           height = Math.max(packedObj.height || 0, 0);
 
+      // If there are items
+      var itemsExist = packedObj.items.length;
+      if (itemsExist) {
+        // Remove the last item's padding
+        width -= padding;
+        height -= padding;
+      }
+
       // Export the total width and height of the generated canvas
       retObj.properties = {
-          width: width,
-          height: height
+        width: width,
+        height: height
       };
 
       // If there are items, generate the canvas
-      if (packedObj.items.length) {
+      if (itemsExist) {
         engine.createCanvas(width, height, cb);
       } else {
       // Otherwise, skip over potential errors/CPU
