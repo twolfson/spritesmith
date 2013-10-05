@@ -17,7 +17,7 @@ spritesmith({'src': sprites}, function (err, result) {
 ## Installation
 `spritesmith` can be installed via npm: `npm install spritesmith`
 
-spritesmith` has system level depedencies for each engine. Visit the [requirements section][requirements] for more information.
+Each engine has system level depedencies. Visit the [requirements section][requirements] for more information.
 
 [requirements]: #requirements
 
