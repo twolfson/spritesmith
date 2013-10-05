@@ -21,7 +21,7 @@ Each engine has system level depedencies. Visit the [requirements section][requi
 
 [requirements]: #requirements
 
-During installation, you may see errors for other engines. You should ignore these unless `npm` exits abnormally.
+During installation, you may see errors for other engines. These should be ignored unless `npm` exits abnormally.
 
 ## Documentation
 Spritesmith is a standalone function
