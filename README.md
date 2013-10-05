@@ -1,13 +1,12 @@
-Spritesmith [![Donate on Gittip](http://badgr.co/gittip/twolfson.png)](https://www.gittip.com/twolfson/)
-===========
+# Spritesmith
 Utility that takes image files and generates [spritesheets](http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS) and coordinate maps.
 
 Once you have satisfied the [requirements](#requirements), spritesmith can be installed via `npm install spritesmith`.
 
 Spritesmith is also available as a [grunt plugin](https://github.com/Ensighten/grunt-spritesmith).
 
-Requirements
-------------
+## Requirements
+
 Spritesmith supports multiple sprite engines however all of the current engines require external software to be installed.
 
 As a result, you must either have [PhantomJS][phantomjs], [Cairo](http://cairographics.org/), or [Graphics Magick](http://www.graphicsmagick.org/) installed for Spritesmith to run properly.
@@ -34,10 +33,10 @@ I have found it is best to install from the site rather than through a package m
 
 This module has been developed and tested against `1.3.17`.
 
-Documentation
--------------
+## Documentation
 Spritesmith is a standalone function
-```
+
+```js
 /**
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
@@ -60,7 +59,8 @@ Spritesmith is a standalone function
 
 ### Canvas export options
 For the `canvas` engine, the current output options are:
-```
+
+```js
 {
   'format': 'png' // Format to export the canvas to (png or jpeg)
 }
@@ -68,7 +68,8 @@ For the `canvas` engine, the current output options are:
 
 ### gm export options
 For the `gm` engine, the current output options are:
-```
+
+```js
 {
   'format': 'png', // Format to export the canvas to (png or jpeg)
   'quality': 75 // Quality of the output image
@@ -90,9 +91,8 @@ Algorithms are maintained inside of [twolfson/layout](https://github.com/twolfso
 
 New algorithms can be added via `Spritesmith.Layout.addAlgorithm(name, algorithm);`.
 
-Examples
---------
-```
+## Examples
+```js
 var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
 spritesmith({'src': sprites}, function (err, result) {
   result.image; // Binary string representation of image
@@ -101,12 +101,18 @@ spritesmith({'src': sprites}, function (err, result) {
 });
 ```
 
-Contributing
-------------
+## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via [grunt](https://github.com/gruntjs/grunt/) and test via `npm test`.
 
-License
--------
-Copyright (c) 2012 Ensighten
+## Donating
+Support this project and [others by twolfson][gittip] via [gittip][].
+
+[![Support via Gittip][gittip-badge]][gittip]
+
+[gittip-badge]: https://rawgithub.com/twolfson/gittip-badge/master/dist/gittip.png
+[gittip]: https://www.gittip.com/twolfson/
+
+## License
+Copyright (c) 2012 - 2013 Ensighten
 
 Licensed under the MIT license.
