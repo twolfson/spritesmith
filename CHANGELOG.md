@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.11.1 - Rearranged README and added notes about engines
+
 0.11.0 - Optimize padded spritesheets to ignore trailing padding
 
 0.10.0 - Adding `padding` parameter to `params`
