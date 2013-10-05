@@ -19,6 +19,8 @@ spritesmith({'src': sprites}, function (err, result) {
 
 #### `spritesmith` has system level depedencies for each engine. Please visit the [requirements section][requirements]. ####
 
+[requirements]: #requirements
+
 ## Documentation
 Spritesmith is a standalone function
 
