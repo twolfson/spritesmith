@@ -6,32 +6,55 @@ Once you have satisfied the [requirements](#requirements), spritesmith can be in
 Spritesmith is also available as a [grunt plugin](https://github.com/Ensighten/grunt-spritesmith).
 
 ## Requirements
+For cross-platform accessibility, `spritesmith` has and supports multiple sprite engines. However, each of these current engines has a different set of external dependencies.
 
-Spritesmith supports multiple sprite engines however all of the current engines require external software to be installed.
+### phantomjs
+The `phantomjs` engine relies on having [phantomjs][] installed on your machine. Visit [the phantomjs website][phantomjs] for installation instructions.
 
-As a result, you must either have [PhantomJS][phantomjs], [Cairo](http://cairographics.org/), or [Graphics Magick](http://www.graphicsmagick.org/) installed for Spritesmith to run properly.
+**Key differences:** `phantomjs` is the most accessible engine.
+
+`spritesmith` has been tested against `phantomjs@1.9.0`.
 
 [phantomjs]: http://phantomjs.org/
 
-### PhantomJS
-This depends on having `phantomjs` installed on your machine. For installation instructions, visit [the website][phantomjs]. This module has been tested against `1.9.0`.
+### canvas
+The `canvas` engine uses [node-canvas][] which has a dependency on [Cairo][cairo].
 
-### Cairo (node-canvas)
-Due to dependance on [node-canvas](https://github.com/learnboost/node-canvas), you must install [Cairo](http://cairographics.org/).
+**Key differences:** `canvas` has the best performance (useful for over 100 sprites). However, it is `UNIX` only.
 
-Instructions on how to do this are provided in the [node-canvas wiki](https://github.com/LearnBoost/node-canvas/wiki/_pages).
+Instructions on how to install [Cairo][cairo] are provided in the [node-canvas wiki][node-canvas-wiki].
 
-Additionally, you will need to install [node-gyp](https://github.com/TooTallNate/node-gyp/)
+Additionally, you will need to install [node-gyp][] for the C++ bindings.
 ```shell
 sudo npm install -g node-gyp
 ```
 
-### Graphics Magick (gm)
-[gm](https://github.com/aheckmann/gm) runs on top of (and depends on) [Graphics Magick](http://www.graphicsmagick.org/).
+[node-canvas]: https://github.com/learnboost/node-canvas
+[cairo]: http://cairographics.org/
+[node-canvas-wiki]: (https://github.com/LearnBoost/node-canvas/wiki/_pages
+[node-gyp]: https://github.com/TooTallNate/node-gyp/
 
-I have found it is best to install from the site rather than through a package manager (e.g. `apt-get`) to get the latest as well as without transparency issues.
+### gm (Graphics Magick / Image Magick)
+The `gm` engine depends on [Graphics Magick][graphics-magick] or [Image Magick][image-magick].
 
-This module has been developed and tested against `1.3.17`.
+**Key differences:** `gm` has the most options for export via `imgOpts`.
+
+[graphics-magick]: http://www.graphicsmagick.org/
+[image-magick]: http://imagemagick.org/
+
+For the best results, install from the site rather than through a package manager (e.g. `apt-get`). This avoids potential transparency issues which have been reported.
+
+`spritesmith` has been developed and tested against `1.3.17`.
+
+If you are using [Image Magick][image-magick], you must specify it in `engineOpts`
+
+```js
+{
+  'engineOpts': {
+    'imagemagick': true
+  }
+}
+```
 
 ## Documentation
 Spritesmith is a standalone function
