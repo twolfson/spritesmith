@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.12.1 - Fixed up test files
+
 0.12.0 - Moved to latest `phantomjssmith` for reduced file size output
 
 0.11.1 - Rearranged README and added notes about engines
