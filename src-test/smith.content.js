@@ -118,9 +118,11 @@ module.exports = {
     // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
     expectedFilenames.forEach(function testAgainstExpected (filename) {
       if (!matchesAnImage) {
-        var filepath = path.join(expectedDir, namespace + filename),
-            expectedImage = fs.readFileSync(filepath, 'binary');
-        matchesAnImage = actualImage === expectedImage;
+        var filepath = path.join(expectedDir, namespace + filename);
+        if (fs.existsSync(filepath)) {
+          var expectedImage = fs.readFileSync(filepath, 'binary');
+          matchesAnImage = actualImage === expectedImage;
+        }
       }
     });
 
