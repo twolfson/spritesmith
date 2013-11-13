@@ -23,7 +23,7 @@
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {
-    "phantomjssmith": "~0.1.2",
+    "phantomjssmith": "~0.2.0",
     "gmsmith": "~0.2.0",
     "canvassmith": "~0.1.0"
   },
