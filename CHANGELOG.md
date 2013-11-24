@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.13.0 - Moved to `phantomjssmith@0.3.0` and fixed bad expected sprite
+
 0.12.1 - Fixed up test files
 
 0.12.0 - Moved to latest `phantomjssmith` for reduced file size output
