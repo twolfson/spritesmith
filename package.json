@@ -24,7 +24,7 @@
   },
   "optionalDependencies": {
     "phantomjssmith": "~0.3.0",
-    "gmsmith": "~0.2.0",
+    "gmsmith": "~0.3.0",
     "canvassmith": "~0.1.0"
   },
   "repository": {
