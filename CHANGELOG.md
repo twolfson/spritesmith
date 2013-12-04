@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.15.0 - Moved to `phantomjssmith@0.4.0` and added `timeout` option
+
 0.14.0 - Moved to `gmsmith@0.3.0` for detection of imagemagick
 
 0.13.0 - Moved to `phantomjssmith@0.3.0` and fixed bad expected sprite
