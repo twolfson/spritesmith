@@ -47,6 +47,15 @@ Spritesmith is a standalone function
  */
 ```
 
+### PhantomJS export options
+For the `phantomjs` engine, the current output options are:
+
+```js
+{
+  'timeout': 10000 // Milliseconds to wait until terminating PhantomJS script
+}
+```
+
 ### Canvas export options
 For the `canvas` engine, the current output options are:
 
