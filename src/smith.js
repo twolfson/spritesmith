@@ -32,8 +32,8 @@ function Spritesmith(params, callback) {
     // If the engine was not auto, inform the user
     assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine \'' + enginePref + '\' could not be loaded. Please be sure you have installed it properly on your machine.');
 
-    // Begin attempting to load the engines
-    engine = engines.phantomjs || engines.canvas || engines.gm;
+    // Begin attempting to load the engines (in order of hardest to easiest)
+    engine = engines.canvas || engines.gm || engines.phantomjs || engine['png-engine'];
 
     // Assert there is an engine
     assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
