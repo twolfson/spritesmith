@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.17.0 - Added `pngsmith` as an engine, allowing external dependency-free installation
+
 0.16.0 - Moved to `canvassmith@0.2.0` for `giflib` support
 
 0.15.0 - Moved to `phantomjssmith@0.4.0` and added `timeout` option
