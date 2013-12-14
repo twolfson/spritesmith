@@ -31,7 +31,8 @@ Spritesmith is a standalone function
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, or user-defined via Spritesmith.addEngine)
+ * @param {String} [params.engine="auto"] Engine to use
+      (phantomjs, canvas, gm, pngsmith or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
@@ -93,10 +94,15 @@ New algorithms can be added via `Spritesmith.Layout.addAlgorithm(name, algorithm
 ## Requirements
 For cross-platform accessibility, `spritesmith` has and supports multiple sprite engines. However, each of these current engines has a different set of external dependencies.
 
+### pngsmith
+The `pngsmith` engine uses [`pngparse`][], an JavaScript `png` parser, to interpret images into [`ndarrays`][]. This requires no additional steps before installation.
+
+**Key differences:** It requires no additional installation steps but you are limited to `.png` files for your source files.
+
 ### phantomjs
 The `phantomjs` engine relies on having [phantomjs][] installed on your machine. Visit [the phantomjs website][phantomjs] for installation instructions.
 
-**Key differences:** `phantomjs` is the most accessible engine.
+**Key differences:** `phantomjs` is the easiest engine to install that supports all image formats.
 
 `spritesmith` has been tested against `phantomjs@1.9.0`.
 
