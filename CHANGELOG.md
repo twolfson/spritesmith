@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.17.2 - Integrated Travis CI
+
 0.17.1 - Fixed missing links in README
 
 0.17.0 - Added `pngsmith` as an engine, allowing external dependency-free installation
