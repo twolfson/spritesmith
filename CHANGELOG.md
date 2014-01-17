@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.17.3 - Fixed bad fallback chain. Fixes Ensighten/grunt-spritesmith#62
+
 0.17.2 - Integrated Travis CI
 
 0.17.1 - Fixed missing links in README
