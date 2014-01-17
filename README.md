@@ -1,4 +1,5 @@
-# Spritesmith
+# Spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith)
+
 Utility that takes image files and generates [spritesheets](http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS) and coordinate maps.
 
 Once you have satisfied the [requirements](#requirements), spritesmith can be installed via `npm install spritesmith`.
