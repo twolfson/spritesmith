@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.18.0 - Upgraded `gmsmith` to implicitly find `imagemagick`
+
 0.17.5 - Upgraded doubleshot to latest for proper exit codes
 
 0.17.4 - Fixed bad name for pngsmith in fallback chain
