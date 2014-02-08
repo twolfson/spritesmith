@@ -1,6 +1,6 @@
 {
   "name": "spritesmith",
-  "version": "0.17.4",
+  "version": "0.17.5",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "layout": "~1.3.0"
   },
   "devDependencies": {
-    "doubleshot": "~1.0.1",
+    "doubleshot": "~2.13.1",
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {

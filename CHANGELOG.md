@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.17.5 - Upgraded doubleshot to latest for proper exit codes
+
 0.17.4 - Fixed bad name for pngsmith in fallback chain
 
 0.17.3 - Fixed bad fallback chain. Fixes Ensighten/grunt-spritesmith#62

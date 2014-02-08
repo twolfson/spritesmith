@@ -1,30 +1,32 @@
 // Generate basic outlines
 var outlines = [{
-  "An array of sprites": {
-    "when processed via spritesmith": {
-      "renders a top-down spritesheet": true,
-      "has the proper coordinates": true,
-      "has the proper properties": true
-    },
-    "when converted from left to right": {
-      "renders a left-right spritesheet": true,
-      "has the proper coordinates": true,
-      "has the proper properties": true
-    },
-    "when provided with a padding parameter": {
-      "renders a padded spritesheet": true,
-      "has the proper coordinates": true,
-      "has the proper properties": true
-    }
-  }
+  'An array of sprites': [{
+    'when processed via spritesmith': [
+      'renders a top-down spritesheet',
+      'has the proper coordinates',
+      'has the proper properties'
+    ]
+  }, {
+    'when converted from left to right': [
+      'renders a left-right spritesheet',
+      'has the proper coordinates',
+      'has the proper properties'
+    ]
+  }, {
+    'when provided with a padding parameter': [
+      'renders a padded spritesheet',
+      'has the proper coordinates',
+      'has the proper properties'
+    ]
+  }]
 }, {
-  "An empty array": {
-    "when processed via spritesmith": {
-      "renders an empty spritesheet": true,
-      "returns an empty coordinate mapping": true,
-      "has the proper properties": true
-    }
-  }
+  'An empty array': [{
+    'when processed via spritesmith': [
+      'renders an empty spritesheet',
+      'returns an empty coordinate mapping',
+      'has the proper properties'
+    ]
+  }]
 }];
 
 function addEngineTest(engine) {
@@ -35,11 +37,11 @@ function addEngineTest(engine) {
 
   // Create an engine-specific test
   var outline = {};
-  outline[engine] = {
-    'when processed via spritesmith': {
-      'returns an image': true
-    }
-  };
+  outline[engine] = [{
+    'when processed via spritesmith': [
+      'returns an image'
+    ]
+  }];
 
   // Add it to our list
   outlines.push(outline);
