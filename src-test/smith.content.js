@@ -12,8 +12,8 @@ module.exports = {
   'An array of sprites': function () {
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
-      path.join(spriteDir, 'sprite2.jpg'),
-      path.join(spriteDir, 'sprite3.png')
+      path.join(spriteDir, 'sprite3.png'),
+      path.join(spriteDir, 'sprite2.jpg')
     ];
 
     // By default, write to the topDown namespace
@@ -56,7 +56,7 @@ module.exports = {
     this.options = {'algorithm': 'binary-tree', 'padding': 2};
   }, 'when processed via spritesmith'],
   'when told not to sort': [function () {
-    this.namespace = 'unsort.';
+    this.namespace = 'unsorted.';
     this.options = {'algorithm': 'top-down', 'algorithmOpts': {'sort': false}};
   }, 'when processed via spritesmith'],
 
