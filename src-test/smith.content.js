@@ -10,6 +10,7 @@ var assert = require('assert'),
 module.exports = {
   // Setup
   'An array of sprites': function () {
+    // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
       path.join(spriteDir, 'sprite3.png'),
