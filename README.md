@@ -37,6 +37,7 @@ Spritesmith is a standalone function
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
+ * @param {Mixed} [params.algorithmOpts] Options to pass through to algorithm for layout
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
  * @returns {Mixed} callback[0] err If an error was encountered, this will be returned to callback
@@ -79,6 +80,15 @@ For the `gm` engine, the current output options are:
 
 ### Available packing algorithms
 The available packing algorithms are: `top-down`, `left-right`, `diagonal` (\\ format), `alt-diagonal` (/ format), `binary-tree` (best packing possible).
+
+#### `algorithmOpts`
+All algorithms provide the current options:
+
+```js
+{
+  'sort': false // Stops sorting of images (default for all algorithms)
+}
+```
 
 ### Adding new engines
 Example engines can be found in [src/engines](tree/master/src/engines).
