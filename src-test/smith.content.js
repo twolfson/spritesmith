@@ -55,6 +55,10 @@ module.exports = {
     this.namespace = 'padding.';
     this.options = {'algorithm': 'binary-tree', 'padding': 2};
   }, 'when processed via spritesmith'],
+  'when told not to sort': [function () {
+    this.namespace = 'unsort.';
+    this.options = {'algorithm': 'top-down', 'algorithmOpts': {'sort': false}};
+  }, 'when processed via spritesmith'],
 
   // Engine-specific setups
   'phantomjssmith': ['An array of sprites', function () {
@@ -75,6 +79,7 @@ module.exports = {
   'renders a top-down spritesheet': 'assertSpritesheet',
   'renders a left-right spritesheet': 'assertSpritesheet',
   'renders a padded spritesheet': 'assertSpritesheet',
+  'renders an unsorted spritesheet': 'assertSpritesheet',
   'has the proper coordinates': 'assertCoordinates',
   'has the proper properties': 'assertProps',
   'returns an image': function () {
