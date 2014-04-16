@@ -47,7 +47,7 @@ function Spritesmith(params, callback) {
 
   // Create our smiths
   var engineSmith = new EngineSmith(engine),
-      layer = new Layout(algorithmPref),
+      layer = new Layout(algorithmPref, params.algorithmOpts),
       padding = params.padding || 0,
       exportOpts = params.exportOpts || {},
       packedObj;
