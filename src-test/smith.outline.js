@@ -18,6 +18,12 @@ var outlines = [{
       'has the proper coordinates',
       'has the proper properties'
     ]
+  }, {
+    'when told not to sort': [
+      'renders an unsorted spritesheet',
+      'has the proper coordinates',
+      'has the proper properties'
+    ]
   }]
 }, {
   'An empty array': [{
