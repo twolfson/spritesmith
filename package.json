@@ -20,7 +20,11 @@
   },
   "devDependencies": {
     "doubleshot": "~2.13.1",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "phantomjssmith": "~0.4.0",
+    "gmsmith": "~0.4.1",
+    "canvassmith": "~0.2.0",
+    "pngsmith": "~0.1.0"
   },
   "repository": {
     "type": "git",
