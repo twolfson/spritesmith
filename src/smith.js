@@ -23,20 +23,13 @@ var async = require('async'),
 function Spritesmith(params, callback) {
   var retObj = {},
       files = params.src,
-      enginePref = params.engine || 'auto',
-      engine = engines[enginePref],
+      engine = params.engine,
       algorithmPref = params.algorithm || 'top-down';
 
   // If the engine is not defined
   if (engine === undefined) {
-    // If the engine was not auto, inform the user
-    assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine \'' + enginePref + '\' could not be loaded. Please be sure you have installed it properly on your machine.');
-
-    // Begin attempting to load the engines (in order of hardest to easiest)
-    engine = engines.canvas || engines.gm || engines.phantomjs || engines.pngsmith;
-
     // Assert there is an engine
-    assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
+    assert(engine, 'Sorry, no spritesmith engine has been provided. Please pass a valid engine in the engine parameter.');
   }
 
   // If there is a set parameter for the engine, use it
@@ -162,43 +155,6 @@ function Spritesmith(params, callback) {
 Spritesmith.EngineSmith = EngineSmith;
 Spritesmith.Layout = Layout;
 Spritesmith.CanvasSmith = CanvasSmith;
-
-/**
- * Method to add new engines via
- * @param {String} name Name of engine
- * @param {Function} engine Engine to bind under name
- */
-function addEngine(name, engine) {
-  engines[name] = engine;
-}
-Spritesmith.addEngine = addEngine;
-Spritesmith.engines = engines;
-
-// Attempt to load canvas and imagemagick
-var canvasEngine,
-    gmEngine,
-    phantomjsEngine,
-    pngEngine;
-try {
-  canvasEngine = require('canvassmith');
-} catch (e) {}
-
-try {
-  gmEngine = require('gmsmith');
-} catch (e) {}
-
-try {
-  phantomjsEngine = require('phantomjssmith');
-} catch (e) {}
-
-try {
-  pngEngine = require('pngsmith');
-} catch (e) {}
-
-if (canvasEngine) { addEngine('canvas', canvasEngine); }
-if (gmEngine) { addEngine('gm', gmEngine); }
-if (phantomjsEngine) { addEngine('phantomjs', phantomjsEngine); }
-if (pngEngine) { addEngine('pngsmith', pngEngine); }
 
 // Export Spritesmith
 module.exports = Spritesmith;

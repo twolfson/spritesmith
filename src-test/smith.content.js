@@ -32,7 +32,7 @@ module.exports = {
 
     // Load in params and add on to src
     var options = this.options || {},
-        params = _.extend({'src': this.sprites}, options);
+        params = _.extend({'src': this.sprites, 'engine': require('phantomjssmith')}, options);
 
     // Attempt to smith out the sprites
     smith(params, function (err, result) {
@@ -64,15 +64,15 @@ module.exports = {
   // Engine-specific setups
   'phantomjssmith': ['An array of sprites', function () {
     this.namespace = 'phantomjs.';
-    this.options = {'engine': 'phantomjs'};
+    this.options = {'engine': require('phantomjssmith')};
   }],
   'gmsmith': ['An array of sprites', function () {
     this.namespace = 'gm.';
-    this.options = {'engine': 'gm'};
+    this.options = {'engine': require('gmsmith')};
   }],
   'canvassmith': ['An array of sprites', function () {
     this.namespace = 'canvas.';
-    this.options = {'engine': 'canvas'};
+    this.options = {'engine': require('canvassmith')};
   }],
 
 
