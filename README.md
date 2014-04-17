@@ -22,7 +22,9 @@ Each engine has system level depedencies. Visit the [requirements section][requi
 
 [requirements]: #requirements
 
-During installation, you may see errors for other engines. These should be ignored unless `npm` crashes.
+You'll also need to install the engine for the image processing library you choose, for example:
+
+    npm install --save gmsmith
 
 ## Documentation
 Spritesmith is a standalone function
