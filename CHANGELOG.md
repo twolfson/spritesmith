@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.19.1 - Added link to `gulp.spritesmith` via @hitautodestruct in #40
+
 0.19.0 - Added ability to turn off image sorting via `imageOpts`
 
 0.18.0 - Upgraded `gmsmith` to implicitly find `imagemagick`
