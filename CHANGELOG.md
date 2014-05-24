@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.19.2 - Updated documentation for adding new engines. Fixes #44
+
 0.19.1 - Added link to `gulp.spritesmith` via @hitautodestruct in #40
 
 0.19.0 - Added ability to turn off image sorting via `imageOpts`
