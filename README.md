@@ -91,11 +91,18 @@ All algorithms provide the current options:
 ```
 
 ### Adding new engines
-Example engines can be found in [src/engines](tree/master/src/engines).
+Engine specifications can be found in [spritesmith-engine-test][].
+
+[spritesmith-engine-test]: https://github.com/twolfson/spritesmith-engine-test
 
 New engines can be added via `Spritesmith.addEngine(name, engine);`.
 
-If you decide to build a new engine, there are some utilities in [src/utils](tree/master/src/utils) which may be helpful.
+Some existing engines are:
+
+- [canvassmith](https://github.com/twolfson/canvassmith)
+- [pngsmith](https://github.com/twolfson/pngsmith)
+- [phantomjssmith](https://github.com/twolfson/phantomjssmith)
+- [gmsmith](https://github.com/twolfson/gmsmith)
 
 ### Adding new packing algorithms
 Algorithms are maintained inside of [twolfson/layout](https://github.com/twolfson/layout/). Example algorithms can be found in [twolfson/layout/lib/algorithms](https://github.com/twolfson/layout/tree/master/lib/algorithms).
