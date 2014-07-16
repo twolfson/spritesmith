@@ -14,7 +14,7 @@ module.exports = {
     this.sprites = [
       path.join(spriteDir, 'sprite1.png'),
       path.join(spriteDir, 'sprite3.png'),
-      path.join(spriteDir, 'sprite2.jpg')
+      path.join(spriteDir, 'sprite2.png')
     ];
 
     // By default, write to the topDown namespace
@@ -61,21 +61,6 @@ module.exports = {
     this.options = {'algorithm': 'top-down', 'algorithmOpts': {'sort': false}};
   }, 'when processed via spritesmith'],
 
-  // Engine-specific setups
-  'phantomjssmith': ['An array of sprites', function () {
-    this.namespace = 'phantomjs.';
-    this.options = {'engine': 'phantomjs'};
-  }],
-  'gmsmith': ['An array of sprites', function () {
-    this.namespace = 'gm.';
-    this.options = {'engine': 'gm'};
-  }],
-  'canvassmith': ['An array of sprites', function () {
-    this.namespace = 'canvas.';
-    this.options = {'engine': 'canvas'};
-  }],
-
-
   // Assertions
   'renders a top-down spritesheet': 'assertSpritesheet',
   'renders a left-right spritesheet': 'assertSpritesheet',
@@ -108,29 +93,21 @@ module.exports = {
     if (process.env.TEST_DEBUG) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.tiff', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
     }
 
     // Assert the actual image is the same expected
-    var actualImage = result.image,
-        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'],
-        matchesAnImage = false;
+    var matchesImage = false,
+        filepath = path.join(expectedDir, namespace + 'sprite.png');
 
-    // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
-    expectedFilenames.forEach(function testAgainstExpected (filename) {
-      if (!matchesAnImage) {
-        var filepath = path.join(expectedDir, namespace + filename);
-        if (fs.existsSync(filepath)) {
-          var expectedImage = fs.readFileSync(filepath, 'binary');
-          matchesAnImage = actualImage === expectedImage;
-        }
-      }
-    });
+    if (fs.existsSync(filepath)) {
+      var expectedImage = fs.readFileSync(filepath, 'binary');
+      matchesImage = result.image === expectedImage;
+    }
 
-    assert(matchesAnImage, "Actual image does not match expected image");
+    assert(matchesImage, "Actual image does not match expected image");
   },
   assertCoordinates: function () {
     // Load in the coordinates

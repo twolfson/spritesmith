@@ -35,28 +35,5 @@ var outlines = [{
   }]
 }];
 
-function addEngineTest(engine) {
-  // Attempt to load the engine
-  try {
-    require(engine);
-  } catch (e) {}
-
-  // Create an engine-specific test
-  var outline = {};
-  outline[engine] = [{
-    'when processed via spritesmith': [
-      'returns an image'
-    ]
-  }];
-
-  // Add it to our list
-  outlines.push(outline);
-}
-
-// Test specific engines
-addEngineTest('phantomjssmith');
-addEngineTest('gmsmith');
-addEngineTest('canvassmith');
-
 // Export the outlines
 module.exports = outlines;
