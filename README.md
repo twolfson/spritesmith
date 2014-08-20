@@ -4,7 +4,7 @@ Utility that takes image files and generates [spritesheets](http://en.wikipedia.
 
 Once you have satisfied the [requirements](#requirements), spritesmith can be installed via `npm install spritesmith`.
 
-Spritesmith is also available as a [grunt](https://github.com/Ensighten/grunt-spritesmith) and [gulp](https://github.com/twolfson/gulp.spritesmith) plugin.
+Spritesmith is also available as a [grunt](https://github.com/Ensighten/grunt-spritesmith) and [gulp](https://github.com/twolfson/gulp.spritesmith) plugin, and there's a [CLI](https://github.com/bevacqua/spritesmith-cli) available as well.
 
 ```js
 var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
