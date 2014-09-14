@@ -7,6 +7,10 @@ matrix:
   allow_failures:
     - node_js: "0.11"
 
+before_install:
+  # Upgrade npm to avoid semver issues
+  - sudo npm install npm@latest -g
+
 install:
   # Install gmsmith dependencies
   - wget http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/1.3.17/GraphicsMagick-1.3.17.tar.xz/download --output-document GraphicsMagick-1.3.17.tar.xz
