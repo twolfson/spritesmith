@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.19.3 - Added link to CLI utility via @bevacqua in #46
+
 0.19.2 - Updated documentation for adding new engines. Fixes #44
 
 0.19.1 - Added link to `gulp.spritesmith` via @hitautodestruct in #40
