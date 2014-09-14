@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.19.4 - Added `npm` upgrade to Travis CI to fix `node@0.8` issues
+
 0.19.3 - Added link to CLI utility via @bevacqua in #46
 
 0.19.2 - Updated documentation for adding new engines. Fixes #44
