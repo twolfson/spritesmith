@@ -9,7 +9,7 @@ matrix:
 
 before_install:
   # Upgrade npm to avoid semver issues
-  - sudo npm install npm@latest -g
+  - npm install npm@latest -g
 
 install:
   # Install gmsmith dependencies
