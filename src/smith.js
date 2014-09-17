@@ -174,31 +174,13 @@ function addEngine(name, engine) {
 Spritesmith.addEngine = addEngine;
 Spritesmith.engines = engines;
 
-// Attempt to load canvas and imagemagick
-var canvasEngine,
-    gmEngine,
-    phantomjsEngine,
-    pngEngine;
-try {
-  canvasEngine = require('canvassmith');
-} catch (e) {}
-
-try {
-  gmEngine = require('gmsmith');
-} catch (e) {}
-
-try {
-  phantomjsEngine = require('phantomjssmith');
-} catch (e) {}
-
-try {
-  pngEngine = require('pngsmith');
-} catch (e) {}
-
-if (canvasEngine) { addEngine('canvas', canvasEngine); }
-if (gmEngine) { addEngine('gm', gmEngine); }
-if (phantomjsEngine) { addEngine('phantomjs', phantomjsEngine); }
-if (pngEngine) { addEngine('pngsmith', pngEngine); }
+['canvas', 'gm', 'phantomjs', 'png'].forEach(function(library){
+  var engine,
+      moduleName = library+'smith';
+  try { engine = require(moduleName); } 
+  catch (e) {}
+  finally { addEngine(moduleName, engine) }
+});
 
 // Export Spritesmith
 module.exports = Spritesmith;
