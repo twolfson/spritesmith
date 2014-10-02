@@ -160,10 +160,10 @@ describe('An empty array', function () {
 
   describe('when processed via spritesmith', function () {
     it('renders an empty spritesheet', function () {
-
+      assert.strictEqual(this.result.image, '');
     });
     it('returns an empty coordinate mapping', function () {
-
+      assert.deepEqual(this.result.coordinates, {});
     });
     it('has the proper properties', assertProps);
   });
@@ -207,9 +207,6 @@ function addEngineTest(engine) {
   //   this.options = {'engine': 'canvas'};
   // }],
 
-
-  // Assertions
-  'has the proper properties': 'assertProps',
   'returns an image': function () {
     // DEV: Write out to actual_files
     if (process.env.TEST_DEBUG) {
@@ -218,11 +215,5 @@ function addEngineTest(engine) {
     }
 
     assert.notEqual(this.result.image, '');
-  },
-  'renders an empty spritesheet': function () {
-    assert.strictEqual(this.result.image, '');
-  },
-  'returns an empty coordinate mapping': function () {
-    assert.deepEqual(this.result.coordinates, {});
   },
 };
