@@ -7,6 +7,94 @@ var assert = require('assert'),
     spriteDir = path.join(__dirname, 'test_sprites'),
     expectedDir = __dirname + '/expected_files';
 
+describe('An array of sprites', function () {
+  describe('when processed via spritesmith', function () {
+    it('renders a top-down spritesheet', function () {
+
+    });
+    it('has the proper coordinates', function () {
+
+    });
+    it('has the proper properties', function () {
+
+    });
+  });
+
+  describe('when converted from left to right', function () {
+    it('renders a left-right spritesheet', function () {
+
+    });
+    it('has the proper coordinates', function () {
+
+    });
+    it('has the proper properties', function () {
+
+    });
+  });
+
+  describe('when provided with a padding parameter', function () {
+    it('renders a padded spritesheet', function () {
+
+    });
+    it('has the proper coordinates', function () {
+
+    });
+    it('has the proper properties', function () {
+
+    });
+  });
+
+  describe('when told not to sort', function () {
+    it('renders an unsorted spritesheet', function () {
+
+    });
+    it('has the proper coordinates', function () {
+
+    });
+    it('has the proper properties', function () {
+
+    });
+  });
+});
+
+describe('An empty array', function () {
+  describe('when processed via spritesmith', function () {
+    it('renders an empty spritesheet', function () {
+
+    });
+    it('returns an empty coordinate mapping', function () {
+
+    });
+    it('has the proper properties', function () {
+
+    });
+  });
+});
+
+function addEngineTest(engine) {
+  // Attempt to load the engine
+  try {
+    require(engine);
+  } catch (e) {}
+
+  // Create an engine-specific test
+  var outline = {};
+  outline[engine] = [{
+    'when processed via spritesmith': [
+      'returns an image'
+    ]
+  }];
+
+  // Add it to our list
+  outlines.push(outline);
+}
+
+// TODO: Add this back
+// // Test specific engines
+// addEngineTest('phantomjssmith');
+// addEngineTest('gmsmith');
+// addEngineTest('canvassmith');
+
 module.exports = {
   // Setup
   'An array of sprites': function () {
