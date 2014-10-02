@@ -4,7 +4,7 @@
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "main": "src/smith.js",
   "scripts": {
-    "test": "cd src-test && doubleshot --timeout 60000 --outline smith.outline.js --content smith.content.js"
+    "test": "mocha src-test/ --timeout 60000"
   },
   "keywords": [
     "sprite",
@@ -19,7 +19,7 @@
     "layout": "~2.0.0"
   },
   "devDependencies": {
-    "doubleshot": "~2.13.1",
+    "mocha": "~1.21.4",
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {
