@@ -159,6 +159,8 @@ describe('An empty array', function () {
   });
 
   describe('when processed via spritesmith', function () {
+    processViaSpritesmith();
+
     it('renders an empty spritesheet', function () {
       assert.strictEqual(this.result.image, '');
     });
