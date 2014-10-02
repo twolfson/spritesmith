@@ -176,44 +176,37 @@ function addEngineTest(engine) {
   } catch (e) {}
 
   // Create an engine-specific test
-  var outline = {};
-  outline[engine] = [{
-    'when processed via spritesmith': [
-      'returns an image'
-    ]
-  }];
+  describe(engine, function () {
+    before(function setupSprites () {
+      // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
+      this.sprites = [
+        path.join(spriteDir, 'sprite1.png'),
+        path.join(spriteDir, 'sprite3.png'),
+        path.join(spriteDir, 'sprite2.jpg')
+      ];
 
-  // Add it to our list
-  outlines.push(outline);
+      // Use engine as namespace (e.g. `phantomjs.`)
+      this.namespace = engine + '.';
+      this.options = {'engine': engine};
+    });
+
+    describe('when processed via spritesmith', function () {
+      processViaSpritesmith();
+
+      it('returns an image', function () {
+        // DEV: Write out to actual_files
+        if (process.env.TEST_DEBUG) {
+          try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+          fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
+        }
+
+        assert.notEqual(this.result.image, '');
+      });
+    });
+  });
 }
 
-// TODO: Add this back
-// // Test specific engines
-// addEngineTest('phantomjssmith');
-// addEngineTest('gmsmith');
-// addEngineTest('canvassmith');
-
-  // // Engine-specific setups
-  // 'phantomjssmith': ['An array of sprites', function () {
-  //   this.namespace = 'phantomjs.';
-  //   this.options = {'engine': 'phantomjs'};
-  // }],
-  // 'gmsmith': ['An array of sprites', function () {
-  //   this.namespace = 'gm.';
-  //   this.options = {'engine': 'gm'};
-  // }],
-  // 'canvassmith': ['An array of sprites', function () {
-  //   this.namespace = 'canvas.';
-  //   this.options = {'engine': 'canvas'};
-  // }],
-
-  'returns an image': function () {
-    // DEV: Write out to actual_files
-    if (process.env.TEST_DEBUG) {
-      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
-    }
-
-    assert.notEqual(this.result.image, '');
-  },
-};
+// Test specific engines
+addEngineTest('phantomjssmith');
+addEngineTest('gmsmith');
+addEngineTest('canvassmith');
