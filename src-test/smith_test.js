@@ -169,14 +169,14 @@ describe('An empty array', function () {
   });
 });
 
-function addEngineTest(engine) {
+function addEngineTest(params) {
   // Attempt to load the engine
   try {
-    require(engine);
+    require(params.module);
   } catch (e) {}
 
   // Create an engine-specific test
-  describe(engine, function () {
+  describe(params.engineName , function () {
     before(function setupSprites () {
       // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
       this.sprites = [
@@ -186,8 +186,8 @@ function addEngineTest(engine) {
       ];
 
       // Use engine as namespace (e.g. `phantomjs.`)
-      this.namespace = engine + '.';
-      this.options = {'engine': engine};
+      this.namespace = params.engineName + '.';
+      this.options = {'engine': params.engineName};
     });
 
     describe('when processed via spritesmith', function () {
@@ -207,6 +207,15 @@ function addEngineTest(engine) {
 }
 
 // Test specific engines
-addEngineTest('phantomjssmith');
-addEngineTest('gmsmith');
-addEngineTest('canvassmith');
+addEngineTest({
+  engineName: 'phantomjs',
+  module: 'phantomjssmith'
+});
+addEngineTest({
+  engineName: 'gm',
+  module: 'gmsmith'
+});
+addEngineTest({
+  engineName: 'canvas',
+  module: 'canvassmith'
+});
