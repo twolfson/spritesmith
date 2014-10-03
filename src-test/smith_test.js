@@ -49,7 +49,6 @@ function assertSpritesheet() {
     try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
     fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
     fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
-    fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.tiff', result.image, 'binary');
     fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
     fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
   }
