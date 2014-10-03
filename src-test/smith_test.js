@@ -16,87 +16,93 @@ var multipleSprites = [
   path.join(spriteDir, 'sprite2.jpg')
 ];
 
-function processViaSpritesmith(sprites, options) {
-  before(function processViaSpritesmithFn (done) {
-    // Load in params and add on to src
-    options = options || {};
-    var params = _.extend({'src': sprites}, options);
+// Define common utilities
+var spritesmithUtils = {
+  process: function (params) {
+    before(function processViaSpritesmithFn (done) {
+      // Require and save namespace for later
+      this.namespace = params.namespace;
+      assert(this.namespace, '`params.namespace` was not defined for `spritesmithUtils.process`, please define it');
 
-    // Attempt to spritesmith out the sprites
-    var that = this;
-    spritesmith(params, function saveResult (err, result) {
-      // Save the result and callback
-      that.result = result;
-      done(err);
+      // Load in params and add on to src
+      var options = params.options || {},
+          spritesmithParams = _.extend({'src': params.sprites}, options);
+
+      // Attempt to spritesmith out the sprites
+      var that = this;
+      spritesmith(spritesmithParams, function saveResult (err, result) {
+        // Save the result and callback
+        that.result = result;
+        done(err);
+      });
     });
-  });
-  after(function cleanupResult () {
-    delete this.result;
-  });
-}
+    after(function cleanupResult () {
+      delete this.namespace;
+      delete this.result;
+    });
+  },
 
-function assertSpritesheet() {
-  var result = this.result,
-      namespace = this.namespace;
-  assert(namespace, '`namespace` not defined for test');
+  assertCoordinates: function () {
+    // Load in the coordinates
+    var result = this.result,
+        expectedCoords = require(expectedDir + '/' + this.namespace + 'coordinates.json');
 
-  // DEV: Write out to actual_files
-  if (process.env.TEST_DEBUG) {
-    try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-    fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
-    fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
-    fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
-    fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
-  }
+    // Normalize the actual coordinates
+    var actualCoords = result.coordinates,
+        normCoords = {};
+    assert(actualCoords, "Result does not have a coordinates property");
 
-  // Assert the actual image is the same expected
-  var actualImage = result.image,
-      expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'],
-      matchesAnImage = false;
+    Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
+      var file = path.relative(spriteDir, filepath);
+      normCoords[file] = actualCoords[filepath];
+    });
 
-  // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
-  expectedFilenames.forEach(function testAgainstExpected (filename) {
-    if (!matchesAnImage) {
-      var filepath = path.join(expectedDir, namespace + filename);
-      if (fs.existsSync(filepath)) {
-        var expectedImage = fs.readFileSync(filepath, 'binary');
-        matchesAnImage = actualImage === expectedImage;
-      }
+    // Assert that the returned coordinates deep equal those in the coordinates.json
+    assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
+  },
+
+  assertProps: function() {
+    // Load in the properties
+    var actualProps = this.result.properties,
+        expectedProps = require(expectedDir + '/' + this.namespace + 'properties.json');
+    assert(namespace, '`namespace` not defined for test');
+
+    // Assert that the returned properties equals the expected properties
+    assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
+  },
+
+  assertSpritesheet: function () {
+    var result = this.result,
+        namespace = this.namespace;
+
+    // DEV: Write out to actual_files
+    if (process.env.TEST_DEBUG) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
     }
-  });
 
-  assert(matchesAnImage, "Actual image does not match expected image");
-}
+    // Assert the actual image is the same expected
+    var actualImage = result.image,
+        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'],
+        matchesAnImage = false;
 
-function assertCoordinates() {
-  // Load in the coordinates
-  var result = this.result,
-      expectedCoords = require(expectedDir + '/' + this.namespace + 'coordinates.json');
-  assert(this.namespace, '`namespace` not defined for test');
+    // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
+    expectedFilenames.forEach(function testAgainstExpected (filename) {
+      if (!matchesAnImage) {
+        var filepath = path.join(expectedDir, namespace + filename);
+        if (fs.existsSync(filepath)) {
+          var expectedImage = fs.readFileSync(filepath, 'binary');
+          matchesAnImage = actualImage === expectedImage;
+        }
+      }
+    });
 
-  // Normalize the actual coordinates
-  var actualCoords = result.coordinates,
-      normCoords = {};
-  assert(actualCoords, "Result does not have a coordinates property");
-
-  Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
-    var file = path.relative(spriteDir, filepath);
-    normCoords[file] = actualCoords[filepath];
-  });
-
-  // Assert that the returned coordinates deep equal those in the coordinates.json
-  assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
-}
-
-function assertProps() {
-  // Load in the properties
-  var actualProps = this.result.properties,
-      expectedProps = require(expectedDir + '/' + this.namespace + 'properties.json');
-  assert(namespace, '`namespace` not defined for test');
-
-  // Assert that the returned properties equals the expected properties
-  assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
-}
+    assert(matchesAnImage, "Actual image does not match expected image");
+  }
+};
 
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
