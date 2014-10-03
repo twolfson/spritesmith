@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.19.6 - Replaced `doubleshot` with `mocha` and cleaned up test suite
+
 0.19.5 - Moved to `npm@1.x.x` in Travis CI to fix `node@0.8` issues
 
 0.19.4 - Added `npm` upgrade to Travis CI to fix `node@0.8` issues
