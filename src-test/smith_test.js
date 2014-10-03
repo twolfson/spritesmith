@@ -50,7 +50,7 @@ var spritesmithUtils = {
     // Normalize the actual coordinates
     var actualCoords = result.coordinates,
         normCoords = {};
-    assert(actualCoords, "Result does not have a coordinates property");
+    assert(actualCoords, 'Result does not have a coordinates property');
 
     Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
       var file = path.relative(spriteDir, filepath);
@@ -58,7 +58,7 @@ var spritesmithUtils = {
     });
 
     // Assert that the returned coordinates deep equal those in the coordinates.json
-    assert.deepEqual(expectedCoords, normCoords, "Actual coordinates do not match expected coordinates");
+    assert.deepEqual(expectedCoords, normCoords, 'Actual coordinates do not match expected coordinates');
   },
 
   assertProps: function() {
@@ -67,7 +67,7 @@ var spritesmithUtils = {
         expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
 
     // Assert that the returned properties equals the expected properties
-    assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
+    assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
   },
 
   assertSpritesheet: function () {
@@ -99,7 +99,7 @@ var spritesmithUtils = {
       }
     });
 
-    assert(matchesAnImage, "Actual image does not match expected image");
+    assert(matchesAnImage, 'Actual image does not match expected image');
   }
 };
 
