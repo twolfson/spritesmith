@@ -1,22 +1,31 @@
-// Load in modules and set up routes
+// Load in modules
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
     _ = require('underscore'),
-    smith = require('../src/smith.js'),
-    spriteDir = path.join(__dirname, 'test_sprites'),
+    spritesmith = require('../src/smith.js');
+
+// Set up paths
+var spriteDir = path.join(__dirname, 'test_sprites'),
     expectedDir = __dirname + '/expected_files';
 
-function processViaSpritesmith() {
+// DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
+var multipleSprites = [
+  path.join(spriteDir, 'sprite1.png'),
+  path.join(spriteDir, 'sprite3.png'),
+  path.join(spriteDir, 'sprite2.jpg')
+];
+
+function processViaSpritesmith(sprites) {
   before(function processViaSpritesmithFn (done) {
     var that = this;
 
     // Load in params and add on to src
     var options = this.options || {},
-        params = _.extend({'src': this.sprites}, options);
+        params = _.extend({'src': sprites}, options);
 
-    // Attempt to smith out the sprites
-    smith(params, function (err, result) {
+    // Attempt to spritesmith out the sprites
+    spritesmith(params, function (err, result) {
       // If there is an error, throw it
       if (err) {
         throw err;
@@ -94,21 +103,12 @@ function assertProps() {
 }
 
 describe('An array of sprites', function () {
-  before(function setupSprites () {
-    // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
-    this.sprites = [
-      path.join(spriteDir, 'sprite1.png'),
-      path.join(spriteDir, 'sprite3.png'),
-      path.join(spriteDir, 'sprite2.jpg')
-    ];
-
-    // TODO: Namespace should be define in first item again to make tests randomizable
-    // By default, write to the topDown namespace
-    this.namespace = 'topDown.';
-  });
-
   describe('when processed via spritesmith', function () {
-    processViaSpritesmith();
+    before(function defineBasicCase () {
+      // By default, write to the topDown namespace
+      this.namespace = 'topDown.';
+    });
+    processViaSpritesmith(multipleSprites);
 
     it('renders a top-down spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -120,7 +120,7 @@ describe('An array of sprites', function () {
       this.namespace = 'leftRight.';
       this.options = {'algorithm': 'left-right'};
     });
-    processViaSpritesmith();
+    processViaSpritesmith(multipleSprites);
 
     it('renders a left-right spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -132,7 +132,7 @@ describe('An array of sprites', function () {
       this.namespace = 'padding.';
       this.options = {'algorithm': 'binary-tree', 'padding': 2};
     });
-    processViaSpritesmith();
+    processViaSpritesmith(multipleSprites);
 
     it('renders a padded spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -144,7 +144,7 @@ describe('An array of sprites', function () {
       this.namespace = 'unsorted.';
       this.options = {'algorithm': 'top-down', 'algorithmOpts': {'sort': false}};
     });
-    processViaSpritesmith();
+    processViaSpritesmith(multipleSprites);
 
     it('renders an unsorted spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -155,11 +155,10 @@ describe('An array of sprites', function () {
 describe('An empty array', function () {
   before(function setupEmptySprites () {
     this.namespace = 'empty.';
-    this.sprites = [];
   });
 
   describe('when processed via spritesmith', function () {
-    processViaSpritesmith();
+    processViaSpritesmith([]);
 
     it('renders an empty spritesheet', function () {
       assert.strictEqual(this.result.image, '');
@@ -180,20 +179,13 @@ function addEngineTest(params) {
   // Create an engine-specific test
   describe(params.engineName , function () {
     before(function setupSprites () {
-      // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
-      this.sprites = [
-        path.join(spriteDir, 'sprite1.png'),
-        path.join(spriteDir, 'sprite3.png'),
-        path.join(spriteDir, 'sprite2.jpg')
-      ];
-
       // Use engine as namespace (e.g. `phantomjs.`)
       this.namespace = params.engineName + '.';
       this.options = {'engine': params.engineName};
     });
 
     describe('when processed via spritesmith', function () {
-      processViaSpritesmith();
+      processViaSpritesmith(multipleSprites);
 
       it('returns an image', function () {
         // DEV: Write out to actual_files
