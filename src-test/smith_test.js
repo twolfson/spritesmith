@@ -18,25 +18,20 @@ var multipleSprites = [
 
 function processViaSpritesmith(sprites, options) {
   before(function processViaSpritesmithFn (done) {
-    var that = this;
-
     // Load in params and add on to src
     options = options || {};
     var params = _.extend({'src': sprites}, options);
 
     // Attempt to spritesmith out the sprites
-    spritesmith(params, function (err, result) {
-      // If there is an error, throw it
-      if (err) {
-        throw err;
-      } else {
-      // Otherwise, save the result
-        that.result = result;
-      }
-
-      // Callback
+    var that = this;
+    spritesmith(params, function saveResult (err, result) {
+      // Save the result and callback
+      that.result = result;
       done(err);
     });
+  });
+  after(function cleanupResult () {
+    delete this.result;
   });
 }
 
@@ -78,7 +73,6 @@ function assertCoordinates() {
       expectedCoords = require(expectedDir + '/' + this.namespace + 'coordinates.json');
 
   // Normalize the actual coordinates
-  // TODO: Normalize dir should be an option
   var actualCoords = result.coordinates,
       normCoords = {};
   assert(actualCoords, "Result does not have a coordinates property");
