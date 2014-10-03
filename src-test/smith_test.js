@@ -45,7 +45,7 @@ var spritesmithUtils = {
   assertCoordinates: function () {
     // Load in the coordinates
     var result = this.result,
-        expectedCoords = require(expectedDir + '/' + this.namespace + 'coordinates.json');
+        expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
 
     // Normalize the actual coordinates
     var actualCoords = result.coordinates,
@@ -64,7 +64,7 @@ var spritesmithUtils = {
   assertProps: function() {
     // Load in the properties
     var actualProps = this.result.properties,
-        expectedProps = require(expectedDir + '/' + this.namespace + 'properties.json');
+        expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
 
     // Assert that the returned properties equals the expected properties
     assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
@@ -77,10 +77,10 @@ var spritesmithUtils = {
     // DEV: Write out to actual_files
     if (process.env.TEST_DEBUG) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.png', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'sprite.jpg', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'coordinates.json', JSON.stringify(result.coordinates, null, 4));
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + 'properties.json', JSON.stringify(result.properties, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.png', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.jpg', result.image, 'binary');
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.coordinates.json', JSON.stringify(result.coordinates, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.properties.json', JSON.stringify(result.properties, null, 4));
     }
 
     // Assert the actual image is the same expected
@@ -91,7 +91,7 @@ var spritesmithUtils = {
     // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
     expectedFilenames.forEach(function testAgainstExpected (filename) {
       if (!matchesAnImage) {
-        var filepath = path.join(expectedDir, namespace + filename);
+        var filepath = path.join(expectedDir, namespace + '.' + filename);
         if (fs.existsSync(filepath)) {
           var expectedImage = fs.readFileSync(filepath, 'binary');
           matchesAnImage = actualImage === expectedImage;
@@ -106,7 +106,7 @@ var spritesmithUtils = {
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
-      namespace: 'topDown.',
+      namespace: 'topDown',
       sprites: multipleSprites
     });
 
@@ -117,7 +117,7 @@ describe('An array of sprites', function () {
 
   describe('when converted from left to right', function () {
     spritesmithUtils.process({
-      'namespace': 'leftRight.',
+      'namespace': 'leftRight',
       'sprites': multipleSprites,
       'options': {
         'algorithm': 'left-right'
@@ -131,7 +131,7 @@ describe('An array of sprites', function () {
 
   describe('when provided with a padding parameter', function () {
     spritesmithUtils.process({
-      'namespace': 'padding.',
+      'namespace': 'padding',
       'sprites': multipleSprites,
       'options': {
         'algorithm': 'binary-tree',
@@ -146,7 +146,7 @@ describe('An array of sprites', function () {
 
   describe('when told not to sort', function () {
     spritesmithUtils.process({
-      'namespace': 'unsorted.',
+      'namespace': 'unsorted',
       'sprites': multipleSprites,
       'options': {
         'algorithm': 'top-down',
@@ -165,7 +165,7 @@ describe('An empty array', function () {
 
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
-      'namespace': 'empty.',
+      'namespace': 'empty',
       'sprites': emptySprites
     });
 
@@ -189,8 +189,8 @@ function addEngineTest(params) {
   describe(params.engineName , function () {
     describe('when processed via spritesmith', function () {
       spritesmithUtils.process({
-        // Use engine as namespace (e.g. `phantomjs.`)
-        'namespace': params.engineName + '.',
+        // Use engine as namespace (e.g. `phantomjs`)
+        'namespace': params.engineName,
         'sprites': multipleSprites,
         'options': {
           'engine': params.engineName
@@ -201,7 +201,7 @@ function addEngineTest(params) {
         // DEV: Write out to actual_files
         if (process.env.TEST_DEBUG) {
           try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-          fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + 'sprite.png', this.result.image, 'binary');
+          fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.sprite.png', this.result.image, 'binary');
         }
 
         assert.notEqual(this.result.image, '');
