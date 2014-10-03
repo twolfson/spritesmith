@@ -106,11 +106,10 @@ var spritesmithUtils = {
 
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
-    before(function defineBasicCase () {
-      // By default, write to the topDown namespace
-      this.namespace = 'topDown.';
+    processViaSpritesmith({
+      namespace: 'topDown.',
+      sprites: multipleSprites
     });
-    processViaSpritesmith(multipleSprites);
 
     it('renders a top-down spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -118,11 +117,12 @@ describe('An array of sprites', function () {
   });
 
   describe('when converted from left to right', function () {
-    before(function adjustToLeftRight () {
-      this.namespace = 'leftRight.';
-    });
-    processViaSpritesmith(multipleSprites, {
-      'algorithm': 'left-right'
+    processViaSpritesmith({
+      'namespace': 'leftRight.',
+      'sprites': multipleSprites,
+      'options': {
+        'algorithm': 'left-right'
+      }
     });
 
     it('renders a left-right spritesheet', assertSpritesheet);
@@ -131,12 +131,13 @@ describe('An array of sprites', function () {
   });
 
   describe('when provided with a padding parameter', function () {
-    before(function addPaddingParams () {
-      this.namespace = 'padding.';
-    });
-    processViaSpritesmith(multipleSprites, {
-      'algorithm': 'binary-tree',
-      'padding': 2
+    processViaSpritesmith({
+      'namespace': 'padding.',
+      'sprites': multipleSprites,
+      'options': {
+        'algorithm': 'binary-tree',
+        'padding': 2
+      }
     });
 
     it('renders a padded spritesheet', assertSpritesheet);
@@ -145,12 +146,13 @@ describe('An array of sprites', function () {
   });
 
   describe('when told not to sort', function () {
-    before(function removeSorting () {
-      this.namespace = 'unsorted.';
-    });
-    processViaSpritesmith(multipleSprites, {
-      'algorithm': 'top-down',
-      'algorithmOpts': {'sort': false}
+    processViaSpritesmith({
+      'namespace': 'unsorted.',
+      'sprites': multipleSprites,
+      'options': {
+        'algorithm': 'top-down',
+        'algorithmOpts': {'sort': false}
+      }
     });
 
     it('renders an unsorted spritesheet', assertSpritesheet);
@@ -160,12 +162,13 @@ describe('An array of sprites', function () {
 });
 
 describe('An empty array', function () {
-  before(function setupEmptySprites () {
-    this.namespace = 'empty.';
-  });
+  var emptySprites = [];
 
   describe('when processed via spritesmith', function () {
-    processViaSpritesmith([]);
+    processViaSpritesmith({
+      'namespace': 'empty.',
+      'sprites': emptySprites
+    });
 
     it('renders an empty spritesheet', function () {
       assert.strictEqual(this.result.image, '');
@@ -185,14 +188,14 @@ function addEngineTest(params) {
 
   // Create an engine-specific test
   describe(params.engineName , function () {
-    before(function setupSprites () {
-      // Use engine as namespace (e.g. `phantomjs.`)
-      this.namespace = params.engineName + '.';
-    });
-
     describe('when processed via spritesmith', function () {
-      processViaSpritesmith(multipleSprites, {
-        'engine': params.engineName
+      processViaSpritesmith({
+        // Use engine as namespace (e.g. `phantomjs.`)
+        'namespace': params.engineName + '.',
+        'sprites': multipleSprites,
+        'options': {
+          'engine': params.engineName
+        }
       });
 
       it('returns an image', function () {
