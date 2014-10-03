@@ -106,18 +106,18 @@ var spritesmithUtils = {
 
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
-    processViaSpritesmith({
+    spritesmithUtils.process({
       namespace: 'topDown.',
       sprites: multipleSprites
     });
 
-    it('renders a top-down spritesheet', assertSpritesheet);
-    it('has the proper coordinates', assertCoordinates);
-    it('has the proper properties', assertProps);
+    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet);
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
+    it('has the proper properties', spritesmithUtils.assertProps);
   });
 
   describe('when converted from left to right', function () {
-    processViaSpritesmith({
+    spritesmithUtils.process({
       'namespace': 'leftRight.',
       'sprites': multipleSprites,
       'options': {
@@ -125,13 +125,13 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('renders a left-right spritesheet', assertSpritesheet);
-    it('has the proper coordinates', assertCoordinates);
-    it('has the proper properties', assertProps);
+    it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet);
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
+    it('has the proper properties', spritesmithUtils.assertProps);
   });
 
   describe('when provided with a padding parameter', function () {
-    processViaSpritesmith({
+    spritesmithUtils.process({
       'namespace': 'padding.',
       'sprites': multipleSprites,
       'options': {
@@ -140,13 +140,13 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('renders a padded spritesheet', assertSpritesheet);
-    it('has the proper coordinates', assertCoordinates);
-    it('has the proper properties', assertProps);
+    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet);
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
+    it('has the proper properties', spritesmithUtils.assertProps);
   });
 
   describe('when told not to sort', function () {
-    processViaSpritesmith({
+    spritesmithUtils.process({
       'namespace': 'unsorted.',
       'sprites': multipleSprites,
       'options': {
@@ -155,9 +155,9 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('renders an unsorted spritesheet', assertSpritesheet);
-    it('has the proper coordinates', assertCoordinates);
-    it('has the proper properties', assertProps);
+    it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet);
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
+    it('has the proper properties', spritesmithUtils.assertProps);
   });
 });
 
@@ -165,7 +165,7 @@ describe('An empty array', function () {
   var emptySprites = [];
 
   describe('when processed via spritesmith', function () {
-    processViaSpritesmith({
+    spritesmithUtils.process({
       'namespace': 'empty.',
       'sprites': emptySprites
     });
@@ -176,7 +176,7 @@ describe('An empty array', function () {
     it('returns an empty coordinate mapping', function () {
       assert.deepEqual(this.result.coordinates, {});
     });
-    it('has the proper properties', assertProps);
+    it('has the proper properties', spritesmithUtils.assertProps);
   });
 });
 
@@ -189,7 +189,7 @@ function addEngineTest(params) {
   // Create an engine-specific test
   describe(params.engineName , function () {
     describe('when processed via spritesmith', function () {
-      processViaSpritesmith({
+      spritesmithUtils.process({
         // Use engine as namespace (e.g. `phantomjs.`)
         'namespace': params.engineName + '.',
         'sprites': multipleSprites,
