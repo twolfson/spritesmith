@@ -65,7 +65,6 @@ var spritesmithUtils = {
     // Load in the properties
     var actualProps = this.result.properties,
         expectedProps = require(expectedDir + '/' + this.namespace + 'properties.json');
-    assert(namespace, '`namespace` not defined for test');
 
     // Assert that the returned properties equals the expected properties
     assert.deepEqual(expectedProps, actualProps, "Actual properties do not match expected properties");
