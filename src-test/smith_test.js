@@ -16,13 +16,13 @@ var multipleSprites = [
   path.join(spriteDir, 'sprite2.jpg')
 ];
 
-function processViaSpritesmith(sprites) {
+function processViaSpritesmith(sprites, options) {
   before(function processViaSpritesmithFn (done) {
     var that = this;
 
     // Load in params and add on to src
-    var options = this.options || {},
-        params = _.extend({'src': sprites}, options);
+    options = options || {};
+    var params = _.extend({'src': sprites}, options);
 
     // Attempt to spritesmith out the sprites
     spritesmith(params, function (err, result) {
@@ -117,9 +117,10 @@ describe('An array of sprites', function () {
   describe('when converted from left to right', function () {
     before(function adjustToLeftRight () {
       this.namespace = 'leftRight.';
-      this.options = {'algorithm': 'left-right'};
     });
-    processViaSpritesmith(multipleSprites);
+    processViaSpritesmith(multipleSprites, {
+      'algorithm': 'left-right'
+    });
 
     it('renders a left-right spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -129,9 +130,11 @@ describe('An array of sprites', function () {
   describe('when provided with a padding parameter', function () {
     before(function addPaddingParams () {
       this.namespace = 'padding.';
-      this.options = {'algorithm': 'binary-tree', 'padding': 2};
     });
-    processViaSpritesmith(multipleSprites);
+    processViaSpritesmith(multipleSprites, {
+      'algorithm': 'binary-tree',
+      'padding': 2
+    });
 
     it('renders a padded spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -141,9 +144,11 @@ describe('An array of sprites', function () {
   describe('when told not to sort', function () {
     before(function removeSorting () {
       this.namespace = 'unsorted.';
-      this.options = {'algorithm': 'top-down', 'algorithmOpts': {'sort': false}};
     });
-    processViaSpritesmith(multipleSprites);
+    processViaSpritesmith(multipleSprites, {
+      'algorithm': 'top-down',
+      'algorithmOpts': {'sort': false}
+    });
 
     it('renders an unsorted spritesheet', assertSpritesheet);
     it('has the proper coordinates', assertCoordinates);
@@ -180,11 +185,12 @@ function addEngineTest(params) {
     before(function setupSprites () {
       // Use engine as namespace (e.g. `phantomjs.`)
       this.namespace = params.engineName + '.';
-      this.options = {'engine': params.engineName};
     });
 
     describe('when processed via spritesmith', function () {
-      processViaSpritesmith(multipleSprites);
+      processViaSpritesmith(multipleSprites, {
+        'engine': params.engineName
+      });
 
       it('returns an image', function () {
         // DEV: Write out to actual_files
