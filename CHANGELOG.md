@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.20.1 - Fixed bad image handling
+
 0.20.0 - Upgraded to `phantomjssmith@0.5.0` to pick up JPEG support
 
 0.19.6 - Replaced `doubleshot` with `mocha` and cleaned up test suite
