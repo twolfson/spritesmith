@@ -32,14 +32,19 @@ var spritesmithUtils = {
       var that = this;
       spritesmith(spritesmithParams, function saveResult (err, result) {
         // Save the result and callback
+        that.err = err;
         that.result = result;
-        done(err);
+        done();
       });
     });
     after(function cleanupResult () {
       delete this.namespace;
       delete this.result;
     });
+  },
+
+  assertNoError: function () {
+    assert.strictEqual(this.err, null);
   },
 
   assertCoordinates: function () {
@@ -110,6 +115,7 @@ describe('An array of sprites', function () {
       sprites: multipleSprites
     });
 
+    it('has no errors', spritesmithUtils.assertNoError);
     it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet);
     it('has the proper coordinates', spritesmithUtils.assertCoordinates);
     it('has the proper properties', spritesmithUtils.assertProps);
@@ -124,6 +130,7 @@ describe('An array of sprites', function () {
       }
     });
 
+    it('has no errors', spritesmithUtils.assertNoError);
     it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet);
     it('has the proper coordinates', spritesmithUtils.assertCoordinates);
     it('has the proper properties', spritesmithUtils.assertProps);
@@ -139,6 +146,7 @@ describe('An array of sprites', function () {
       }
     });
 
+    it('has no errors', spritesmithUtils.assertNoError);
     it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet);
     it('has the proper coordinates', spritesmithUtils.assertCoordinates);
     it('has the proper properties', spritesmithUtils.assertProps);
@@ -154,6 +162,7 @@ describe('An array of sprites', function () {
       }
     });
 
+    it('has no errors', spritesmithUtils.assertNoError);
     it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet);
     it('has the proper coordinates', spritesmithUtils.assertCoordinates);
     it('has the proper properties', spritesmithUtils.assertProps);
@@ -169,6 +178,7 @@ describe('An empty array', function () {
       'sprites': emptySprites
     });
 
+    it('has no errors', spritesmithUtils.assertNoError);
     it('renders an empty spritesheet', function () {
       assert.strictEqual(this.result.image, '');
     });
@@ -197,6 +207,7 @@ function addEngineTest(params) {
         }
       });
 
+      it('has no errors', spritesmithUtils.assertNoError);
       it('returns an image', function () {
         // DEV: Write out to actual_files
         if (process.env.TEST_DEBUG) {
@@ -205,6 +216,21 @@ function addEngineTest(params) {
         }
 
         assert.notEqual(this.result.image, '');
+      });
+    });
+
+    describe('processing a bad image', function () {
+      spritesmithUtils.process({
+        // Use engine as namespace (e.g. `phantomjs`)
+        'namespace': params.engineName + '-error',
+        'sprites': [path.join(spriteDir, 'malformed.png')],
+        'options': {
+          'engine': params.engineName
+        }
+      });
+
+      it('calls back with an error', function () {
+        assert.notEqual(this.err, null);
       });
     });
   });
