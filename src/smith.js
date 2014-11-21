@@ -139,7 +139,11 @@ function Spritesmith(params, callback) {
       var canvasSmith = new CanvasSmith(canvas);
 
       // Add the images onto canvasSmith
-      canvasSmith.addImages(items);
+      try {
+        canvasSmith.addImages(items);
+      } catch (err) {
+        return cb(err);
+      }
 
       // Export our canvas
       canvasSmith['export'](exportOpts, cb);
