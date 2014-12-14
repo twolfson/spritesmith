@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.21.0 - Added `twolfson-style` for consistent styling and linting
+
 0.20.1 - Fixed bad image handling
 
 0.20.0 - Upgraded to `phantomjssmith@0.5.0` to pick up JPEG support
