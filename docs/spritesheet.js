@@ -8,8 +8,7 @@ spritesmith({
     __dirname + '/fork.png',
     __dirname + '/github.png',
     __dirname + '/twitter.png'
-  ],
-  algorithm: 'binary-tree'
+  ]
 }, function handleResult (err, result) {
   // If there was an error, throw it
   if (err) {

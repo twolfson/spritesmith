@@ -6,7 +6,7 @@ var CanvasSmith = require('./smiths/canvas.smith.js');
 
 // Specify defaults
 var engineDefault = 'pixelsmith';
-var algorithmDefault = 'top-down';
+var algorithmDefault = 'binary-tree';
 
 // Define our spritesmith utility
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'top-down'}
