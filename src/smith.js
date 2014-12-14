@@ -10,15 +10,18 @@ var engines = {};
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, pngsmith, or user-defined via Spritesmith.addEngine)
- * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down or user-defined via Spritesmith.addAlgorithm)
+ * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, pngsmith,
+      or user-defined via Spritesmith.addEngine)
+ * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down
+      or user-defined via Spritesmith.addAlgorithm)
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
  * @returns {Mixed} callback[0] err If an error was encountered, this will be returned to callback
  * @returns {Object} callback[1] result Result object of spritesmith
  * @returns {String} callback[1].image Binary string representation of image
- * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height, and width information about the source image
+ * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height,
+      and width information about the source image
  */
 function Spritesmith(params, callback) {
   var retObj = {};
