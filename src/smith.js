@@ -14,7 +14,7 @@ var algorithmDefault = 'top-down';
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
  * @param {String} [params.engine="pixelsmith"] Engine to use (phantomjs, canvas, gm, pngsmith,
-      or user-defined via Spritesmith.addEngine)
+      or user-defined that matches https://github.com/twolfson/spritesmith-engine-test)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down
       or user-defined via Spritesmith.addAlgorithm)
  * @param {Number} [params.padding] Padding to use between images
