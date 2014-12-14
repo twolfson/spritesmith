@@ -6,7 +6,6 @@ var Layout = require('layout');
 var CanvasSmith = require('./smiths/canvas.smith.js');
 var engines = {};
 
-
 /**
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
@@ -31,13 +30,16 @@ function Spritesmith(params, callback) {
   // If the engine is not defined
   if (engine === undefined) {
     // If the engine was not auto, inform the user
-    assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine \'' + enginePref + '\' could not be loaded. Please be sure you have installed it properly on your machine.');
+    assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine "' + enginePref + '" could not be loaded. ' +
+      'Please be sure you have installed it properly on your machine.');
 
     // Begin attempting to load the engines (in order of hardest to easiest)
     engine = engines.canvas || engines.gm || engines.phantomjs || engines.pngsmith;
 
     // Assert there is an engine
-    assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. Please be sure you have installed canvas or gm.');
+    assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. ' +
+        'Please be sure you have installed one of the engines from ' +
+        'https://github.com/Ensighten/spritesmith#requirements.');
   }
 
   // If there is a set parameter for the engine, use it
@@ -65,10 +67,14 @@ function Spritesmith(params, callback) {
         // Save the non-padded properties as meta data
         var width = img.width;
         var height = img.height;
-        var meta = {'img': img, 'actualWidth': width, 'actualHeight': height};
+        var meta = {img: img, actualWidth: width, actualHeight: height};
 
         // Add the item with padding to our layer
-        layer.addItem({'width': width + padding, 'height': height + padding, 'meta': meta});
+        layer.addItem({
+          width: width + padding,
+          height: height + padding,
+          meta: meta
+        });
       });
 
       // Callback with nothing
@@ -80,17 +86,17 @@ function Spritesmith(params, callback) {
       packedObj = layer['export']();
 
       // Extract the coordinates
-      var coordinates = {},
-          packedItems = packedObj.items;
+      var coordinates = {};
+      var packedItems = packedObj.items;
       packedItems.forEach(function (item) {
-        var meta = item.meta,
-            img = meta.img,
-            name = img._filepath;
+        var meta = item.meta;
+        var img = meta.img;
+        var name = img._filepath;
         coordinates[name] = {
-          'x': item.x,
-          'y': item.y,
-          'width': meta.actualWidth,
-          'height': meta.actualHeight
+          x: item.x,
+          y: item.y,
+          width: meta.actualWidth,
+          height: meta.actualHeight
         };
       });
 
@@ -149,7 +155,7 @@ function Spritesmith(params, callback) {
       // Export our canvas
       canvasSmith['export'](exportOpts, cb);
     },
-    function saveImageToRetObj(imgStr, cb) {
+    function saveImageToRetObj (imgStr, cb) {
       // Save the image to the retObj
       retObj.image = imgStr;
 
@@ -180,10 +186,10 @@ Spritesmith.addEngine = addEngine;
 Spritesmith.engines = engines;
 
 // Attempt to load canvas and imagemagick
-var canvasEngine,
-    gmEngine,
-    phantomjsEngine,
-    pngEngine;
+var canvasEngine;
+var gmEngine;
+var phantomjsEngine;
+var pngEngine;
 try {
   canvasEngine = require('canvassmith');
 } catch (e) {}

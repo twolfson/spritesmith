@@ -26,7 +26,7 @@ var spritesmithUtils = {
 
       // Load in params and add on to src
       var options = params.options || {};
-      var spritesmithParams = _.extend({'src': params.sprites}, options);
+      var spritesmithParams = _.extend({src: params.sprites}, options);
 
       // Attempt to spritesmith out the sprites
       var that = this;
@@ -66,7 +66,7 @@ var spritesmithUtils = {
     assert.deepEqual(expectedCoords, normCoords, 'Actual coordinates do not match expected coordinates');
   },
 
-  assertProps: function() {
+  assertProps: function () {
     // Load in the properties
     var actualProps = this.result.properties;
     var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
@@ -84,8 +84,10 @@ var spritesmithUtils = {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.png', result.image, 'binary');
       fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.jpg', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.coordinates.json', JSON.stringify(result.coordinates, null, 4));
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.properties.json', JSON.stringify(result.properties, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.coordinates.json',
+        JSON.stringify(result.coordinates, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.properties.json',
+        JSON.stringify(result.properties, null, 4));
     }
 
     // Assert the actual image is the same expected
