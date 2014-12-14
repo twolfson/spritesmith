@@ -40,7 +40,7 @@ function spritesmith(params, callback) {
       console.error('Attempted to load spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed its dependencies. Documentation should be available at ');
       console.error('');
-      // TODO: Consider using pkg.repository
+      // TODO: Consider using pkg.homepage and pkg.repository
       console.error('    https://npm.im/' + encodeURIComponent(engineName));
       console.error('');
       throw err;
