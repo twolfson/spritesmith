@@ -40,6 +40,7 @@
     "pixelsmith": "~1.0.0"
   },
   "devDependencies": {
+    "canvassmith": "~0.2.4",
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
