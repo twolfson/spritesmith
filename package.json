@@ -1,7 +1,7 @@
 {
   "name": "spritesmith",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
-  "version": "0.21.",
+  "version": "0.21.2",
   "homepage": "https://github.com/Ensighten/spritesmith",
   "author": {
     "name": "Todd Wolfson",
