@@ -95,7 +95,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
         - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
-        - For more algorithm options, see the [Algorithms section][]
+        - For more algorithm options, see the [Algorithms section](#algorithms)
     - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
         - See your algorithm's documentation for available options
@@ -137,69 +137,60 @@ More information can be found in the [`layout`][] documentation:
 
 https://github.com/twolfson/layout
 
-// TODO: Relocate information into `spritesmith-engine-test`
-### Adding new engines
-Engine specifications can be found in [spritesmith-engine-test][].
+### Engines
+An engine can greatly improve the speed of your build (e.g. `canvassmith`) or support obscure image formats (e.g. `gmsmith`).
 
-[spritesmith-engine-test]: https://github.com/twolfson/spritesmith-engine-test
+All `spritesmith` engines adhere to a common specification and test suite:
 
-New engines can be added via `Spritesmith.addEngine(name, engine);`.
+https://github.com/twolfson/spritesmith-engine-test
 
-Some existing engines are:
+Below is a list of known engines with their tradeoffs:
 
-- [canvassmith](https://github.com/twolfson/canvassmith)
-- [pngsmith](https://github.com/twolfson/pngsmith)
-- [phantomjssmith](https://github.com/twolfson/phantomjssmith)
-- [gmsmith](https://github.com/twolfson/gmsmith)
+### pixelsmith
+[`pixelsmith`][] is a `node` based engine that runs on top of [`get-pixels`][] and [`save-pixels`][].
 
-## Requirements
-For cross-platform accessibility, `spritesmith` has and supports multiple sprite engines. However, each of these current engines has a different set of external dependencies.
+[`get-pixels`]: https://github.com/mikolalysenko/get-pixels
+[`save-pixels`]: https://github.com/mikolalysenko/save-pixels
 
-### pngsmith
-The `pngsmith` engine uses [`pngparse`][], an JavaScript `png` parser, to interpret images into [`ndarrays`][]. This requires no additional steps before installation.
+**Key differences:** Doesn't support uncommon image formats (e.g. `tiff`) and not as fast as a compiled library (e.g. `canvassmith`).
 
-**Key differences:** It requires no additional installation steps but you are limited to `.png` files for your source files.
+### phantomjssmith
+[`phantomjssmith`][] is a [phantomjs][] based engine. It was originally built to provide cross-platform compatibility but has since been succeeded by [`pixelsmith`][].
 
-[`pngparse`]: https://github.com/darkskyapp/pngparse
-[`ndarrays`]: https://github.com/mikolalysenko/ndarray
+**Requirements:** [phantomjs][] must be installed on your machine and on your `PATH` environment variable. Visit [the phantomjs website][phantomjs] for installation instructions.
 
-### phantomjs
-The `phantomjs` engine relies on having [phantomjs][] installed on your machine. Visit [the phantomjs website][phantomjs] for installation instructions.
+**Key differences:** `phantomjs` is cross-platform and supports all image formats.
 
-**Key differences:** `phantomjs` is the easiest engine to install that supports all image formats.
-
-`spritesmith` has been tested against `phantomjs@1.9.0`.
-
+[`phantomjssmith`][]: https://github.com/twolfson/phantomjssmith
 [phantomjs]: http://phantomjs.org/
 
-### canvas
-The `canvas` engine uses [node-canvas][] which has a dependency on [Cairo][cairo].
+### canvassmith
+[`canvassmith`][] is a [node-canvas][] based engine that runs on top of [Cairo][].
+
+**Requirements:** [Cairo][] and [node-gyp][] must be installed on your machine.
+
+Instructions on how to install [Cairo][] are provided in the [node-canvas wiki][].
+
+[node-gyp][] should be installed via `npm`:
+
+```bash
+npm install -g node-gyp
+```
 
 **Key differences:** `canvas` has the best performance (useful for over 100 sprites). However, it is `UNIX` only.
 
-Instructions on how to install [Cairo][cairo] are provided in the [node-canvas wiki][node-canvas-wiki].
-
-Additionally, you will need to install [node-gyp][] for the C++ bindings.
-```shell
-sudo npm install -g node-gyp
-```
-
+[`canvassmith`]: https://github.com/twolfson/canvassmith
 [node-canvas]: https://github.com/learnboost/node-canvas
-[cairo]: http://cairographics.org/
-[node-canvas-wiki]: (https://github.com/LearnBoost/node-canvas/wiki/_pages
+[Cairo]: http://cairographics.org/
+[node-canvas wiki]: (https://github.com/LearnBoost/node-canvas/wiki/_pages
 [node-gyp]: https://github.com/TooTallNate/node-gyp/
 
-### gm (Graphics Magick / Image Magick)
-The `gm` engine depends on [Graphics Magick][graphics-magick] or [Image Magick][image-magick].
+### gmsmith
+`gmsmith` is a [`gm`][] based engine that runs on top of either [Graphics Magick][] or [Image Magick][].
 
-**Key differences:** `gm` has the most options for export via `imgOpts`.
-
-[graphics-magick]: http://www.graphicsmagick.org/
-[image-magick]: http://imagemagick.org/
+**Requirements:** Either [Graphics Magick][] or [Image Magick][] must be installed on your machine.
 
 For the best results, install from the site rather than through a package manager (e.g. `apt-get`). This avoids potential transparency issues which have been reported.
-
-`spritesmith` has been developed and tested against `1.3.17`.
 
 [Image Magick][image-magick] is implicitly discovered. However, you can explicitly use it via `engineOpts`
 
@@ -210,6 +201,11 @@ For the best results, install from the site rather than through a package manage
   }
 }
 ```
+
+**Key differences:** `gmsmith` allows for configuring image quality whereas others do not.
+
+[graphics-magick]: http://www.graphicsmagick.org/
+[image-magick]: http://imagemagick.org/
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via `npm run lint` and test via `npm test`.
