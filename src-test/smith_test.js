@@ -52,6 +52,13 @@ var spritesmithUtils = {
     var result = this.result;
     var expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
 
+    // DEV: Write out to actual_files
+    if (process.env.TEST_DEBUG) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.coordinates.json',
+        JSON.stringify(result.coordinates, null, 4));
+    }
+
     // Normalize the actual coordinates
     var actualCoords = result.coordinates;
     var normCoords = {};
@@ -71,45 +78,36 @@ var spritesmithUtils = {
     var actualProps = this.result.properties;
     var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
 
+    // DEV: Write out to actual_files
+    if (process.env.TEST_DEBUG) {
+      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.properties.json',
+        JSON.stringify(this.result.properties, null, 4));
+    }
+
     // Assert that the returned properties equals the expected properties
     assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
   },
 
-  assertSpritesheet: function () {
+  assertSpritesheet: function (filename) {
     var result = this.result;
     var namespace = this.namespace;
 
     // DEV: Write out to actual_files
     if (process.env.TEST_DEBUG) {
       try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.png', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.sprite.jpg', result.image, 'binary');
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.coordinates.json',
-        JSON.stringify(result.coordinates, null, 4));
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.properties.json',
-        JSON.stringify(result.properties, null, 4));
+      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.' + filename, result.image, 'binary');
     }
 
     // Assert the actual image is the same expected
     var actualImage = result.image;
-    var expectedFilenames = ['pixelsmith.png'];
-    var matchesAnImage = false;
-
-    // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
-    expectedFilenames.forEach(function testAgainstExpected (filename) {
-      if (!matchesAnImage) {
-        var filepath = path.join(expectedDir, namespace + '.' + filename);
-        if (fs.existsSync(filepath)) {
-          var expectedImage = fs.readFileSync(filepath, 'binary');
-          matchesAnImage = actualImage === expectedImage;
-        }
-      }
-    });
-
-    assert(matchesAnImage, 'Actual image does not match expected image');
+    var filepath = path.join(expectedDir, namespace + '.' + filename);
+    var expectedImage = fs.readFileSync(filepath, 'binary');
+    assert(actualImage === expectedImage, 'Actual image does not match expected image');
   }
 };
 
+// Start our tests
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
