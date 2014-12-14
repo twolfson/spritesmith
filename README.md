@@ -19,8 +19,8 @@ A folder of icons processed by `spritesmith`:
 [fork-icon]: docs/fork.png
 [github-icon]: docs/github.png
 [twitter-icon]: docs/twitter.png
-[+]: plus.png
-[=]: equals.png
+[+]: docs/plus.png
+[=]: docs/equals.png
 
 generates a spritesheet:
 
