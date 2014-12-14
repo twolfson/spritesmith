@@ -29,7 +29,10 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "mocha src-test/ --timeout 60000"
+    "precheck": "twolfson-style precheck src/ src-test/",
+    "lint": "twolfson-style lint src/ src-test/",
+    "pretest": "twolfson-style install",
+    "test": "npm run precheck && mocha src-test/ --timeout 60000 --reporter dot && npm run lint"
   },
   "dependencies": {
     "async": "~0.2.6",
