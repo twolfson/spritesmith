@@ -20,10 +20,6 @@ var multipleSprites = [
 var spritesmithUtils = {
   process: function (params) {
     before(function processViaSpritesmithFn (done) {
-      // Require and save namespace for later
-      this.namespace = params.namespace;
-      assert(this.namespace, '`params.namespace` was not defined for `spritesmithUtils.process`, please define it');
-
       // Load in params and add on to src
       var options = params.options || {};
       var spritesmithParams = _.extend({src: params.sprites}, options);
@@ -38,7 +34,7 @@ var spritesmithUtils = {
       });
     });
     after(function cleanupResult () {
-      delete this.namespace;
+      delete this.err;
       delete this.result;
     });
   },
@@ -49,17 +45,16 @@ var spritesmithUtils = {
     };
   },
 
-  assertCoordinates: function () {
+  assertCoordinates: function (filename) {
     return function assertCoordinatesFn () {
       // Load in the coordinates
       var result = this.result;
-      var expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
+      var expectedCoords = require(expectedDir + '/' + filename);
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.coordinates.json',
-          JSON.stringify(result.coordinates, null, 4));
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.coordinates, null, 4));
       }
 
       // Normalize the actual coordinates
@@ -77,17 +72,16 @@ var spritesmithUtils = {
     };
   },
 
-  assertProps: function () {
+  assertProps: function (filename) {
     return function assertPropsFn () {
       // Load in the properties
       var actualProps = this.result.properties;
-      var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
+      var expectedProps = require(expectedDir + '/' + filename);
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.properties.json',
-          JSON.stringify(this.result.properties, null, 4));
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(this.result.properties, null, 4));
       }
 
       // Assert that the returned properties equals the expected properties
@@ -118,19 +112,17 @@ var spritesmithUtils = {
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
-      namespace: 'topDown',
       sprites: multipleSprites
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet('topDown.pixelsmith.png'));
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
-    it('has the proper properties', spritesmithUtils.assertProps());
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('topDown.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('topDown.properties.json'));
   });
 
   describe('when converted from left to right', function () {
     spritesmithUtils.process({
-      namespace: 'leftRight',
       sprites: multipleSprites,
       options: {
         algorithm: 'left-right'
@@ -139,13 +131,12 @@ describe('An array of sprites', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet('leftRight.pixelsmith.png'));
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
-    it('has the proper properties', spritesmithUtils.assertProps());
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('leftRight.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('leftRight.properties.json'));
   });
 
   describe('when provided with a padding parameter', function () {
     spritesmithUtils.process({
-      namespace: 'padding',
       sprites: multipleSprites,
       options: {
         algorithm: 'binary-tree',
@@ -155,13 +146,12 @@ describe('An array of sprites', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet('padding.pixelsmith.png'));
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
-    it('has the proper properties', spritesmithUtils.assertProps());
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('padding.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('padding.properties.json'));
   });
 
   describe('when told not to sort', function () {
     spritesmithUtils.process({
-      namespace: 'unsorted',
       sprites: multipleSprites,
       options: {
         algorithm: 'top-down',
@@ -171,8 +161,8 @@ describe('An array of sprites', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet('unsorted.pixelsmith.png'));
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
-    it('has the proper properties', spritesmithUtils.assertProps());
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('unsorted.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('unsorted.properties.json'));
   });
 });
 
@@ -181,7 +171,6 @@ describe('An empty array', function () {
 
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
-      namespace: 'empty',
       sprites: emptySprites
     });
 
@@ -192,7 +181,7 @@ describe('An empty array', function () {
     it('returns an empty coordinate mapping', function () {
       assert.deepEqual(this.result.coordinates, {});
     });
-    it('has the proper properties', spritesmithUtils.assertProps());
+    it('has the proper properties', spritesmithUtils.assertProps('empty.properties.json'));
   });
 });
 
@@ -217,7 +206,6 @@ var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
 describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
   describe('processing a bad image', function () {
     spritesmithUtils.process({
-      namespace: 'canvassmith-error',
       sprites: [path.join(spriteDir, 'malformed.png')],
       options: {
         engine: 'canvassmith'
