@@ -8,6 +8,7 @@ var spritesmith = require('../src/smith.js');
 // Set up paths
 var spriteDir = path.join(__dirname, 'test_sprites');
 var expectedDir = __dirname + '/expected_files';
+var pixelsmithNS = 'pixelsmith-node-' + process.version;
 
 // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
 var multipleSprites = [
@@ -116,7 +117,7 @@ describe('An array of sprites', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet('topDown.pixelsmith.png'));
+    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet('topDown.' + pixelsmithNS + '.png'));
     it('has the proper coordinates', spritesmithUtils.assertCoordinates('topDown.coordinates.json'));
     it('has the proper properties', spritesmithUtils.assertProps('topDown.properties.json'));
   });
@@ -130,7 +131,7 @@ describe('An array of sprites', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet('leftRight.pixelsmith.png'));
+    it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet('leftRight.' + pixelsmithNS + '.png'));
     it('has the proper coordinates', spritesmithUtils.assertCoordinates('leftRight.coordinates.json'));
     it('has the proper properties', spritesmithUtils.assertProps('leftRight.properties.json'));
   });
@@ -145,7 +146,7 @@ describe('An array of sprites', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet('padding.pixelsmith.png'));
+    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet('padding.' + pixelsmithNS + '.png'));
     it('has the proper coordinates', spritesmithUtils.assertCoordinates('padding.coordinates.json'));
     it('has the proper properties', spritesmithUtils.assertProps('padding.properties.json'));
   });
@@ -160,7 +161,7 @@ describe('An array of sprites', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet('unsorted.pixelsmith.png'));
+    it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet('unsorted.' + pixelsmithNS + '.png'));
     it('has the proper coordinates', spritesmithUtils.assertCoordinates('unsorted.coordinates.json'));
     it('has the proper properties', spritesmithUtils.assertProps('unsorted.properties.json'));
   });
