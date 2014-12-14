@@ -47,7 +47,9 @@ and a coordinate map:
 ```
 
 ## Breaking changes in 1.0.0
-We have moved to `pixelsmith` as the default engine. It is `node` based and should support your sprites. Any other engines must be installed outside of `spritesmith`. This will lead to cleaner and faster installations.
+We have moved to `pixelsmith` as the default `engine`. It is `node` based and should support your sprites. Any other engines must be installed outside of `spritesmith`. This will lead to cleaner and faster installations.
+
+We have moved to `binary-tree` as the default `algorithm`. Since we are generating spritesheets, we want the best possible packing out of the box. If you were using `top-down` as the default, please specify it in your configuration.
 
 ## Getting started
 `spritesmith` can be installed via npm: `npm install spritesmith`
