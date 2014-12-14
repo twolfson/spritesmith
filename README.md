@@ -169,17 +169,17 @@ For the best results, install from the site rather than through a package manage
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via [grunt](https://github.com/gruntjs/grunt/) and test via `npm test`.
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via `npm run lint` and test via `npm test`.
 
 ## Donating
-Support this project and [others by twolfson][gittip] via [gittip][].
+Support this project and [others by twolfson][gratipay] via [gratipay][].
 
-[![Support via Gittip][gittip-badge]][gittip]
+[![Support via Gratipay][gratipay-badge]][gratipay]
 
-[gittip-badge]: https://rawgithub.com/twolfson/gittip-badge/master/dist/gittip.png
-[gittip]: https://www.gittip.com/twolfson/
+[gratipay-badge]: https://cdn.rawgit.com/gratipay/gratipay-badge/2.x.x/dist/gratipay.png
+[gratipay]: https://www.gratipay.com/twolfson/
 
 ## License
-Copyright (c) 2012 - 2013 Ensighten
+Copyright (c) 2012 - 2014 Ensighten
 
 Licensed under the MIT license.
