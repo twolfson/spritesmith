@@ -104,7 +104,7 @@ var spritesmithUtils = {
       var actualImageStr = result.image;
       var expectedFilepath = path.join(expectedDir, filename);
       // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
-      getPixels(new Buffer(actualImageStr), 'image/png', function handleActualPixels (err, actualImage) {
+      getPixels(new Buffer(actualImageStr, 'binary'), 'image/png', function handleActualPixels (err, actualImage) {
         if (err) { return done(err); }
         getPixels(expectedFilepath, function handleExpectedPixels (err, expectedImage) {
           if (err) { return done(err); }
