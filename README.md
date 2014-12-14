@@ -26,7 +26,7 @@ generates a spritesheet:
 
 ![spritesheet](docs/spritesheet.png)
 
-and a coordinate map
+and a coordinate map:
 
 ```js
 {
