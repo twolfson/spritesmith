@@ -17,10 +17,11 @@ var algorithmDefault = 'top-down';
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
- * @returns {Mixed} callback[0] err If an error was encountered, this will be returned to callback
- * @returns {Object} callback[1] result Result object of spritesmith
- * @returns {String} callback[1].image Binary string representation of image
- * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height,
+ *    callback should have signature `function (err, result)`
+ * @callback {Mixed} err If an error was encountered, this will be returned to callback
+ * @callback {Object} result Result object of spritesmith
+ * @callback {String} result.image Binary string representation of image
+ * @callback {Object} result.coordinates Map from file name to an object containing x, y, height,
       and width information about the source image
  */
 
