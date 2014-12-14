@@ -1,6 +1,5 @@
 // Load in dependencies
 var async = require('async');
-var assert = require('assert');
 var Layout = require('layout');
 var EngineSmith = require('./smiths/engine.smith.js');
 var CanvasSmith = require('./smiths/canvas.smith.js');
