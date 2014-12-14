@@ -91,7 +91,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - See your engine's documentation for available options
     - params.exportOpts `Mixed` Options to pass through to engine for export
         - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
-        // TODO: Verify `gmsmith` and others list their available export options
+        - // TODO: Verify `gmsmith` and others list their available export options
         - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
         - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
@@ -99,7 +99,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - For more algorithm options, see the [Algorithms section][]
     - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
-        // TODO: Add sort: false documentation to `layout`
+        - // TODO: Add sort: false documentation to `layout`
         - See your algorithm's documentation for available options
 - callback `Function` Error-first function that receives compiled spritesheet and map
     - `callback` should have signature `function (err, result)`
@@ -109,7 +109,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - result.coordinates `Object` Map from filepath to coordinate information between original sprite and spritesheet
             - `filepath` will be the same as provided in `params.src`
             - result.coordinates[filepath] `Object` Container for coordinate information
-                // TODO: The excessive dot notation seems repetitive
+                - // TODO: The excessive dot notation seems repetitive
                 - result.coordinates[filepath].x `Number` Horizontal position of top-left corner of original sprite on spritesheet
                 - result.coordinates[filepath].y `Number` Vertical position of top-left corner of original sprite on spritesheet
                 - result.coordinates[filepath].width `Number` Width of original sprite
