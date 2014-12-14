@@ -156,7 +156,7 @@ Below is a list of known engines with their tradeoffs:
 
 **Key differences:** `phantomjs` is cross-platform and supports all image formats.
 
-[`phantomjssmith`][]: https://github.com/twolfson/phantomjssmith
+[`phantomjssmith`]: https://github.com/twolfson/phantomjssmith
 [phantomjs]: http://phantomjs.org/
 
 #### canvassmith
