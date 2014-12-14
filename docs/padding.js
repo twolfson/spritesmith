@@ -9,7 +9,7 @@ spritesmith({
     __dirname + '/github.png',
     __dirname + '/twitter.png'
   ],
-  padding: 5
+  padding: 20 // Exaggerated for visibility, normally 1 or 2
 }, function handleResult (err, result) {
   // If there was an error, throw it
   if (err) {
