@@ -189,6 +189,12 @@ describe('An empty array', function () {
   });
 });
 
+describe('`spritesmith` using a custom engine via string', function () {
+  describe('processing a set of images', function () {
+
+  });
+});
+
 // Edge cases
 // Test for https://github.com/twolfson/gulp.spritesmith/issues/22
 var canvassmith;
@@ -196,7 +202,7 @@ try {
   canvassmith = require('canvassmith');
 } catch (err) {}
 var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
-describeIfCanvassmithExists('Spritesmith using canvassmith', function () {
+describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
   describe('processing a bad image', function () {
     spritesmithUtils.process({
       namespace: 'canvassmith-error',
