@@ -1,10 +1,14 @@
-# Spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith)
+# spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith)
 
-Utility that takes image files and generates [spritesheets](http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS) and coordinate maps.
+Convert images into [spritesheets][] and coordinate maps.
 
-Once you have satisfied the [requirements](#requirements), spritesmith can be installed via `npm install spritesmith`.
+[spritesheets]: http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS
 
-Spritesmith is also available as a [grunt plugin](https://github.com/Ensighten/grunt-spritesmith), [gulp plugin](https://github.com/twolfson/gulp.spritesmith), and [CLI utility](https://github.com/bevacqua/spritesmith-cli).
+`spritesmith` is also available as:
+
+- [grunt plugin](https://github.com/Ensighten/grunt-spritesmith)
+- [gulp plugin](https://github.com/twolfson/gulp.spritesmith)
+- [CLI utility](https://github.com/bevacqua/spritesmith-cli)
 
 ```js
 var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
@@ -27,7 +31,7 @@ Each engine has system level depedencies. Visit the [requirements section][requi
 During installation, you may see errors for other engines. These should be ignored unless `npm` crashes.
 
 ## Documentation
-Spritesmith is a standalone function
+`spritesmith` is a standalone function
 
 ```js
 /**
