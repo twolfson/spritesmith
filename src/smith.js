@@ -42,7 +42,7 @@ function Spritesmith(params, callback) {
       console.error('Attempted to find spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed "' + engineName + '" and saved it to your `package.json`');
       console.error('');
-      console.error('    npm install ' + engineName);
+      console.error('    npm install ' + engineName + ' --save-dev');
       console.error('');
       throw err;
     }
