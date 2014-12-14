@@ -236,6 +236,48 @@ spritesmith({
 
 ![alt-diagonal spritesheet](docs/alt-diagonal.png)
 
+### Engine
+This is an example of using a custom engine (`canvassmith` in this case).
+
+```js
+// Inside package.json
+{
+    "dependencies": {
+        "canvassmith": "~0.2.4"
+    }
+}
+```
+
+```js
+// In our script
+// Load in dependencies
+var fs = require('fs');
+var spritesmith = require('spritesmith');
+
+// Generate our spritesheet
+spritesmith({
+  src: [
+    __dirname + '/fork.png',
+    __dirname + '/github.png',
+    __dirname + '/twitter.png'
+  ],
+  engine: require('canvassmith')
+}, function handleResult (err, result) {
+  // If there was an error, throw it
+  if (err) {
+    throw err;
+  }
+
+  // Output the image
+  fs.writeFileSync(__dirname + '/canvassmith.png', result.image, 'binary');
+  result.coordinates, result.properties; // Coordinates and properties
+});
+```
+
+**Result:**
+
+![canvassmith spritesheet](docs/canvassmith.png)
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via `npm run lint` and test via `npm test`.
 
