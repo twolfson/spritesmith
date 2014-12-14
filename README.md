@@ -127,6 +127,7 @@ All algorithms provide the current options:
 }
 ```
 
+// TODO: Relocate information into `spritesmith-engine-test`
 ### Adding new engines
 Engine specifications can be found in [spritesmith-engine-test][].
 
