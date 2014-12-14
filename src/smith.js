@@ -10,7 +10,7 @@ var algorithmDefault = 'binary-tree';
 
 // Define our spritesmith utility
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
-// Gist of result: {image: binary, coordinates: {'/absolute/path': {x, y, width, height}}, properties: {width, height}}
+// Gist of result: {image: binary, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}}
 function spritesmith(params, callback) {
   // Set up return items and fallback parameters
   var retObj = {};
