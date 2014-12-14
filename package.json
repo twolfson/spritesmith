@@ -40,8 +40,8 @@
     "pixelsmith": "~1.0.0"
   },
   "devDependencies": {
-    "blink-diff": "~1.0.7",
     "canvassmith": "~0.2.4",
+    "get-pixels": "~3.1.0",
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
