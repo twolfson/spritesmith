@@ -44,66 +44,73 @@ var spritesmithUtils = {
   },
 
   assertNoError: function () {
-    assert.strictEqual(this.err, null);
+    return function assertNoErrorFn () {
+      assert.strictEqual(this.err, null);
+    };
   },
 
   assertCoordinates: function () {
-    // Load in the coordinates
-    var result = this.result;
-    var expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
+    return function assertCoordinatesFn () {
+      // Load in the coordinates
+      var result = this.result;
+      var expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
 
-    // DEV: Write out to actual_files
-    if (process.env.TEST_DEBUG) {
-      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.coordinates.json',
-        JSON.stringify(result.coordinates, null, 4));
-    }
+      // DEV: Write out to actual_files
+      if (process.env.TEST_DEBUG) {
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.coordinates.json',
+          JSON.stringify(result.coordinates, null, 4));
+      }
 
-    // Normalize the actual coordinates
-    var actualCoords = result.coordinates;
-    var normCoords = {};
-    assert(actualCoords, 'Result does not have a coordinates property');
+      // Normalize the actual coordinates
+      var actualCoords = result.coordinates;
+      var normCoords = {};
+      assert(actualCoords, 'Result does not have a coordinates property');
 
-    Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
-      var file = path.relative(spriteDir, filepath);
-      normCoords[file] = actualCoords[filepath];
-    });
+      Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
+        var file = path.relative(spriteDir, filepath);
+        normCoords[file] = actualCoords[filepath];
+      });
 
-    // Assert that the returned coordinates deep equal those in the coordinates.json
-    assert.deepEqual(expectedCoords, normCoords, 'Actual coordinates do not match expected coordinates');
+      // Assert that the returned coordinates deep equal those in the coordinates.json
+      assert.deepEqual(expectedCoords, normCoords, 'Actual coordinates do not match expected coordinates');
+    };
   },
 
   assertProps: function () {
-    // Load in the properties
-    var actualProps = this.result.properties;
-    var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
+    return function assertPropsFn () {
+      // Load in the properties
+      var actualProps = this.result.properties;
+      var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
 
-    // DEV: Write out to actual_files
-    if (process.env.TEST_DEBUG) {
-      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.properties.json',
-        JSON.stringify(this.result.properties, null, 4));
-    }
+      // DEV: Write out to actual_files
+      if (process.env.TEST_DEBUG) {
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.properties.json',
+          JSON.stringify(this.result.properties, null, 4));
+      }
 
-    // Assert that the returned properties equals the expected properties
-    assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
+      // Assert that the returned properties equals the expected properties
+      assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
+    };
   },
 
   assertSpritesheet: function (filename) {
-    var result = this.result;
-    var namespace = this.namespace;
+    return function assertSpritesheetFn () {
+      var result = this.result;
 
-    // DEV: Write out to actual_files
-    if (process.env.TEST_DEBUG) {
-      try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-      fs.writeFileSync(__dirname + '/actual_files/' + namespace + '.' + filename, result.image, 'binary');
-    }
+      // DEV: Write out to actual_files
+      if (process.env.TEST_DEBUG) {
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, result.image, 'binary');
+      }
 
-    // Assert the actual image is the same expected
-    var actualImage = result.image;
-    var filepath = path.join(expectedDir, namespace + '.' + filename);
-    var expectedImage = fs.readFileSync(filepath, 'binary');
-    assert(actualImage === expectedImage, 'Actual image does not match expected image');
+      // Assert the actual image is the same expected
+      var actualImage = result.image;
+      var filepath = path.join(expectedDir, filename);
+      var expectedImage = fs.readFileSync(filepath, 'binary');
+      assert(actualImage === expectedImage, 'Actual image does not match expected image');
+    };
   }
 };
 
@@ -115,10 +122,10 @@ describe('An array of sprites', function () {
       sprites: multipleSprites
     });
 
-    it('has no errors', spritesmithUtils.assertNoError);
-    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet);
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
-    it('has the proper properties', spritesmithUtils.assertProps);
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet('topDown.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
+    it('has the proper properties', spritesmithUtils.assertProps());
   });
 
   describe('when converted from left to right', function () {
@@ -130,10 +137,10 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('has no errors', spritesmithUtils.assertNoError);
-    it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet);
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
-    it('has the proper properties', spritesmithUtils.assertProps);
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a left-right spritesheet', spritesmithUtils.assertSpritesheet('leftRight.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
+    it('has the proper properties', spritesmithUtils.assertProps());
   });
 
   describe('when provided with a padding parameter', function () {
@@ -146,10 +153,10 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('has no errors', spritesmithUtils.assertNoError);
-    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet);
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
-    it('has the proper properties', spritesmithUtils.assertProps);
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet('padding.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
+    it('has the proper properties', spritesmithUtils.assertProps());
   });
 
   describe('when told not to sort', function () {
@@ -162,10 +169,10 @@ describe('An array of sprites', function () {
       }
     });
 
-    it('has no errors', spritesmithUtils.assertNoError);
-    it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet);
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates);
-    it('has the proper properties', spritesmithUtils.assertProps);
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet('unsorted.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates());
+    it('has the proper properties', spritesmithUtils.assertProps());
   });
 });
 
@@ -178,14 +185,14 @@ describe('An empty array', function () {
       sprites: emptySprites
     });
 
-    it('has no errors', spritesmithUtils.assertNoError);
+    it('has no errors', spritesmithUtils.assertNoError());
     it('renders an empty spritesheet', function () {
       assert.strictEqual(this.result.image, '');
     });
     it('returns an empty coordinate mapping', function () {
       assert.deepEqual(this.result.coordinates, {});
     });
-    it('has the proper properties', spritesmithUtils.assertProps);
+    it('has the proper properties', spritesmithUtils.assertProps());
   });
 });
 
