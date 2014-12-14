@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.21.1 - Fixed up style issues in README
+
 0.21.0 - Added `twolfson-style` for consistent styling and linting
 
 0.20.1 - Fixed bad image handling
