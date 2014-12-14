@@ -15,6 +15,8 @@ spritesmith({'src': sprites}, function (err, result) {
 });
 ```
 
+// TODO: Use link in documentation instead of this inline list for algorithms and engines
+
 ## Installation
 `spritesmith` can be installed via npm: `npm install spritesmith`
 
