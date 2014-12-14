@@ -8,24 +8,10 @@ var CanvasSmith = require('./smiths/canvas.smith.js');
 var engineDefault = 'pixelsmith';
 var algorithmDefault = 'top-down';
 
-/**
- * Spritesmith generation function
- * @param {Object} params Parameters for spritesmith
- * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="pixelsmith"] Engine to use
- * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
- * @param {Number} [params.padding] Padding to use between images
- * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
- * @param {Function} callback Function that receives compiled spritesheet and map
- *    callback should have signature `function (err, result)`
- * @callback {Mixed} err If an error was encountered, this will be returned to callback
- * @callback {Object} result Result object of spritesmith
- * @callback {String} result.image Binary string representation of image
- * @callback {Object} result.coordinates Map from file name to an object containing x, y, height,
-      and width information about the source image
- */
-
-function Spritesmith(params, callback) {
+// Define our spritesmith utility
+// Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'top-down'}
+// Gist of result: {image: binary, coordinates: {'/absolute/path': {x, y, width, height}}, properties: {width, height}}
+function spritesmith(params, callback) {
   // Set up return items and fallback parameters
   var retObj = {};
   var files = params.src;
@@ -188,10 +174,10 @@ function Spritesmith(params, callback) {
   ], callback);
 }
 
-// Add the smiths to Spritesmith
-Spritesmith.EngineSmith = EngineSmith;
-Spritesmith.Layout = Layout;
-Spritesmith.CanvasSmith = CanvasSmith;
+// Add the smiths to spritesmith
+spritesmith.EngineSmith = EngineSmith;
+spritesmith.Layout = Layout;
+spritesmith.CanvasSmith = CanvasSmith;
 
-// Export Spritesmith
-module.exports = Spritesmith;
+// Export spritesmith
+module.exports = spritesmith;
