@@ -1,4 +1,5 @@
 // Load in dependencies
+var fs = require('fs');
 var spritesmith = require('../');
 
 // Generate our spritesheet
@@ -7,7 +8,8 @@ spritesmith({
     __dirname + '/fork.png',
     __dirname + '/github.png',
     __dirname + '/twitter.png'
-  ]
+  ],
+  algorithm: 'binary-tree'
 }, function handleResult (err, result) {
   // If there was an error, throw it
   if (err) {
@@ -15,5 +17,8 @@ spritesmith({
   }
 
   // Otherwise, log the JSON
-  console.log(result.coordinates);
+  console.log(JSON.stringify(result.coordinates, null, 2));
+
+  // and output the image
+  fs.writeFileSync(__dirname + '/spritesmith.png', result.image, 'binary');
 });

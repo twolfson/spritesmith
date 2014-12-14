@@ -10,6 +10,37 @@ Convert images into [spritesheets][] and coordinate maps.
 - [gulp plugin](https://github.com/twolfson/gulp.spritesmith)
 - [CLI utility](https://github.com/bevacqua/spritesmith-cli)
 
+A folder of icons processed by `spritesmith`:
+
+[![Fork icon][fork-icon]][fork-icon] ![+][]
+[![GitHub icon][github-icon]][github-icon] ![+][]
+[![Twitter icon][twitter-icon]][twitter-icon] ![=][]
+
+generates a spritesheet:
+
+![spritesheet](docs/spritesheet.png)
+
+and a coordinate map
+
+```js
+{
+  "/home/todd/github/spritesmith/docs/fork.png": {
+    "x": 0,
+    "y": 0,
+    "width": 32,
+    "height": 32
+  },
+  "/home/todd/github/spritesmith/docs/github.png": {
+    "x": 32,
+    "y": 0,
+    "width": 32,
+    "height": 32
+  },
+  // ...
+}
+```
+
+## Getting started
 ```js
 var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
 spritesmith({'src': sprites}, function (err, result) {
@@ -21,7 +52,6 @@ spritesmith({'src': sprites}, function (err, result) {
 
 // TODO: Use link in documentation instead of this inline list for algorithms and engines
 
-## Installation
 `spritesmith` can be installed via npm: `npm install spritesmith`
 
 Each engine has system level depedencies. Visit the [requirements section][requirements] for more information.
