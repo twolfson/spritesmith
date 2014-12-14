@@ -65,10 +65,9 @@ spritesmith({src: sprites}, function handleResult (err, result) {
 ## Documentation
 `spritesmith` exports a `spritesmith` function as its `module.exports`.
 
+If you would like a faster build time or need to support an obscure image format, see `params.engine`.
 
-If you would like a faster build time or need to support an obscure image format, see `engine`.
-
-If you would like to adjust how images are laid out, see `algorithm` and `algorithmOpts`.
+If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
 // TODO: Link these
 
@@ -76,13 +75,16 @@ If you would like to adjust how images are laid out, see `algorithm` and `algori
 
 // TODO: Add examples with algorithms and whatnot
 
+### `spritesmith(params, callback)`
+Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
+
+- params `Object` Container for paramters
+    - params.src `String[]` Array of filepaths for images to include in spritesheet
+    - params.engine `String|Object` Optional engine override to use
+        - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
+        - For more engine options, see the [Engines section][] //  TODO: Link me
+
 ```js
-/**
- * Spritesmith generation function
- * @param {Object} params Parameters for spritesmith
- * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use
-      (phantomjs, canvas, gm, pngsmith or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
@@ -97,34 +99,6 @@ If you would like to adjust how images are laid out, see `algorithm` and `algori
  * @returns {Object} callback[1].properties.width Width of the spritesheet
  * @returns {Object} callback[1].properties.height Height of the spritesheet
  */
-```
-
-### PhantomJS export options
-For the `phantomjs` engine, the current output options are:
-
-```js
-{
-  timeout: 10000 // Milliseconds to wait until terminating PhantomJS script
-}
-```
-
-### Canvas export options
-For the `canvas` engine, the current output options are:
-
-```js
-{
-  format: 'png' // Format to export the canvas to (png or jpeg)
-}
-```
-
-### gm export options
-For the `gm` engine, the current output options are:
-
-```js
-{
-  format: 'png', // Format to export the canvas to (png or jpeg)
-  quality: 75 // Quality of the output image
-}
 ```
 
 ### Available packing algorithms
@@ -152,11 +126,6 @@ Some existing engines are:
 - [pngsmith](https://github.com/twolfson/pngsmith)
 - [phantomjssmith](https://github.com/twolfson/phantomjssmith)
 - [gmsmith](https://github.com/twolfson/gmsmith)
-
-### Adding new packing algorithms
-Algorithms are maintained inside of [twolfson/layout](https://github.com/twolfson/layout/). Example algorithms can be found in [twolfson/layout/lib/algorithms](https://github.com/twolfson/layout/tree/master/lib/algorithms).
-
-New algorithms can be added via `Spritesmith.Layout.addAlgorithm(name, algorithm);`.
 
 ## Requirements
 For cross-platform accessibility, `spritesmith` has and supports multiple sprite engines. However, each of these current engines has a different set of external dependencies.
