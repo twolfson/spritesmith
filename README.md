@@ -12,9 +12,15 @@ Convert images into [spritesheets][] and coordinate maps.
 
 A folder of icons processed by `spritesmith`:
 
-[![Fork icon][fork-icon]][fork-icon] ![+][]
-[![GitHub icon][github-icon]][github-icon] ![+][]
-[![Twitter icon][twitter-icon]][twitter-icon] ![=][]
+![Fork icon][fork-icon] ![+][]
+![GitHub icon][github-icon] ![+][]
+![Twitter icon][twitter-icon] ![=][]
+
+[fork-icon]: docs/fork.png
+[github-icon]: docs/github.png
+[twitter-icon]: docs/twitter.png
+[+]: plus.png
+[=]: equals.png
 
 generates a spritesheet:
 
