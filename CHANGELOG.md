@@ -1,4 +1,6 @@
 # spritesmith changelog
+0.21.2 - Moved to `fix-travis-ci` to resolve `node@0.8` + `jscs` issues
+
 0.21.1 - Fixed up style issues in README
 
 0.21.0 - Added `twolfson-style` for consistent styling and linting

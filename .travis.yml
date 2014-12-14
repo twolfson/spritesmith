@@ -9,7 +9,7 @@ matrix:
 
 before_install:
   # Upgrade npm to avoid semver issues
-  - npm install npm@1.x.x -g
+  - curl --location http://rawgit.com/twolfson/fix-travis-ci/master/lib/install.sh | bash -s
 
 install:
   # Install canvassmith dependencies
