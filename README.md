@@ -55,7 +55,7 @@ For the `phantomjs` engine, the current output options are:
 
 ```js
 {
-  'timeout': 10000 // Milliseconds to wait until terminating PhantomJS script
+  timeout: 10000 // Milliseconds to wait until terminating PhantomJS script
 }
 ```
 
@@ -64,7 +64,7 @@ For the `canvas` engine, the current output options are:
 
 ```js
 {
-  'format': 'png' // Format to export the canvas to (png or jpeg)
+  format: 'png' // Format to export the canvas to (png or jpeg)
 }
 ```
 
@@ -73,8 +73,8 @@ For the `gm` engine, the current output options are:
 
 ```js
 {
-  'format': 'png', // Format to export the canvas to (png or jpeg)
-  'quality': 75 // Quality of the output image
+  format: 'png', // Format to export the canvas to (png or jpeg)
+  quality: 75 // Quality of the output image
 }
 ```
 
@@ -86,7 +86,7 @@ All algorithms provide the current options:
 
 ```js
 {
-  'sort': false // Stops sorting of images (default for all algorithms)
+  sort: false // Stops sorting of images (default for all algorithms)
 }
 ```
 
@@ -162,8 +162,8 @@ For the best results, install from the site rather than through a package manage
 
 ```js
 {
-  'engineOpts': {
-    'imagemagick': true
+  engineOpts: {
+    imagemagick: true
   }
 }
 ```
