@@ -101,12 +101,14 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
         // TODO: Add sort: false documentation to `layout`
         - See your algorithm's documentation for available options
-```js
- * @param {Function} callback Function that receives compiled spritesheet and map
- * @returns {Mixed} callback[0] err If an error was encountered, this will be returned to callback
- * @returns {Object} callback[1] result Result object of spritesmith
- * @returns {String} callback[1].image Binary string representation of image
- * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height, and width information about the source image
+- callback `Function` Error-first function that receives compiled spritesheet and map
+    - `callback` should have signature `function (err, result)`
+    - err `Error|null` If an error occurred, this will be it
+    - result `Object` Container for result items
+        - result.image `String` Binary string representation of image
+        - result.coordinates `Object` Map from filepath to an object containing x, y, height, and width information about the source image
+            - `filepath` will be the same as provided in `params.src`
+            - TODO: Document x, y, height, width
  * @returns {Object} callback[1].properties Properties about the spritesheet itself
  * @returns {Object} callback[1].properties.width Width of the spritesheet
  * @returns {Object} callback[1].properties.height Height of the spritesheet
