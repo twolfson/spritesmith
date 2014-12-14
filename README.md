@@ -186,7 +186,7 @@ npm install -g node-gyp
 
 For the best results, install from the site rather than through a package manager (e.g. `apt-get`). This avoids potential transparency issues which have been reported.
 
-[Image Magick][image-magick] is implicitly discovered. However, you can explicitly use it via `engineOpts`
+[Image Magick][] is implicitly discovered. However, you can explicitly use it via `engineOpts`
 
 ```js
 {
