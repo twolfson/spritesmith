@@ -186,7 +186,7 @@ npm install -g node-gyp
 [node-gyp]: https://github.com/TooTallNate/node-gyp/
 
 ### gmsmith
-`gmsmith` is a [`gm`][] based engine that runs on top of either [Graphics Magick][] or [Image Magick][].
+[`gmsmith`][] is a [`gm`][] based engine that runs on top of either [Graphics Magick][] or [Image Magick][].
 
 **Requirements:** Either [Graphics Magick][] or [Image Magick][] must be installed on your machine.
 
@@ -204,6 +204,7 @@ For the best results, install from the site rather than through a package manage
 
 **Key differences:** `gmsmith` allows for configuring image quality whereas others do not.
 
+[`gmsmith`]: https://github.com/twolfson/gmsmith
 [graphics-magick]: http://www.graphicsmagick.org/
 [image-magick]: http://imagemagick.org/
 
