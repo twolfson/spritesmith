@@ -50,7 +50,6 @@ var spritesmithUtils = {
     return function assertCoordinatesFn () {
       // Load in the coordinates
       var result = this.result;
-      var expectedCoords = require(expectedDir + '/' + filename);
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
@@ -59,6 +58,7 @@ var spritesmithUtils = {
       }
 
       // Normalize the actual coordinates
+      var expectedCoords = require(expectedDir + '/' + filename);
       var actualCoords = result.coordinates;
       var normCoords = {};
       assert(actualCoords, 'Result does not have a coordinates property');
@@ -76,16 +76,17 @@ var spritesmithUtils = {
   assertProps: function (filename) {
     return function assertPropsFn () {
       // Load in the properties
-      var actualProps = this.result.properties;
-      var expectedProps = require(expectedDir + '/' + filename);
+      var result = this.result;
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(this.result.properties, null, 4));
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.properties, null, 4));
       }
 
       // Assert that the returned properties equals the expected properties
+      var actualProps = result.properties;
+      var expectedProps = require(expectedDir + '/' + filename);
       assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
     };
   },
