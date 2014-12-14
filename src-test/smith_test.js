@@ -124,9 +124,9 @@ describe('An array of sprites', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a top-down spritesheet', spritesmithUtils.assertSpritesheet('topDown.pixelsmith.png'));
-    it('has the proper coordinates', spritesmithUtils.assertCoordinates('topDown.coordinates.json'));
-    it('has the proper properties', spritesmithUtils.assertProps('topDown.properties.json'));
+    it('renders a binary-tree spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('binaryTree.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('binaryTree.properties.json'));
   });
 
   describe('when converted from left to right', function () {
@@ -203,7 +203,7 @@ describe('`spritesmith` using a custom engine via string', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('topDown.phantomjs.png'));
+    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.phantomjs.png'));
   });
 });
 
@@ -217,7 +217,7 @@ describe('`spritesmith` using a custom engine via an object', function () {
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('topDown.phantomjs.png'));
+    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.phantomjs.png'));
   });
 });
 
