@@ -42,14 +42,9 @@
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
+    "phantomjssmith": "~0.5.1",
     "twolfson-style": "~1.6.0",
     "underscore": "~1.4.4"
-  },
-  "optionalDependencies": {
-    "canvassmith": "~0.2.0",
-    "gmsmith": "~0.4.1",
-    "phantomjssmith": "~0.5.0",
-    "pngsmith": "~0.1.0"
   },
   "keywords": [
     "sprite",
