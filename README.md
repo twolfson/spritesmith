@@ -95,12 +95,11 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
         - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
-        - // TODO: Link me and consider and linking directly to layout
         - For more algorithm options, see the [Algorithms section][]
     - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
-        - // TODO: Add sort: false documentation to `layout`
         - See your algorithm's documentation for available options
+            - https://github.com/twolfson/layout#algorithms
 - callback `Function` Error-first function that receives compiled spritesheet and map
     - `callback` should have signature `function (err, result)`
     - err `Error|null` If an error occurred, this will be it
@@ -119,17 +118,24 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
 
 [`pixelsmith`]: https://github.com/twolfson/pixelsmith
 
-### Available packing algorithms
-The available packing algorithms are: `top-down`, `left-right`, `diagonal` (\\ format), `alt-diagonal` (/ format), `binary-tree` (best packing possible).
+### Algorithms
+Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
 
-#### `algorithmOpts`
-All algorithms provide the current options:
+[`layout`]: https://github.com/twolfson/layout
 
-```js
-{
-  sort: false // Stops sorting of images (default for all algorithms)
-}
-```
+|         `top-down`        |          `left-right`         |         `diagonal`        |           `alt-diagonal`          |          `binary-tree`          |
+|---------------------------|-------------------------------|---------------------------|-----------------------------------|---------------------------------|
+| ![top-down][top-down-img] | ![left-right][left-right-img] | ![diagonal][diagonal-img] | ![alt-diagonal][alt-diagonal-img] | ![binary-tree][binary-tree-img] |
+
+[top-down-img]: https://raw.githubusercontent.com/twolfson/layout/2.0.2/docs/top-down.png
+[left-right-img]: https://raw.githubusercontent.com/twolfson/layout/2.0.2/docs/left-right.png
+[diagonal-img]: https://raw.githubusercontent.com/twolfson/layout/2.0.2/docs/diagonal.png
+[alt-diagonal-img]: https://raw.githubusercontent.com/twolfson/layout/2.0.2/docs/alt-diagonal.png
+[binary-tree-img]: https://raw.githubusercontent.com/twolfson/layout/2.0.2/docs/binary-tree.png
+
+More information can be found in the [`layout`][] documentation:
+
+https://github.com/twolfson/layout
 
 // TODO: Relocate information into `spritesmith-engine-test`
 ### Adding new engines
