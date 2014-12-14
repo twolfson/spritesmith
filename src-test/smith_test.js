@@ -185,12 +185,31 @@ describe('An empty array', function () {
   });
 });
 
-describe.skip('`spritesmith` using a custom engine via string', function () {
+describe('`spritesmith` using a custom engine via string', function () {
   describe('processing a set of images', function () {
-    it('has no errors', function () {
+    spritesmithUtils.process({
+      sprites: multipleSprites,
+      options: {
+        engine: 'phantomjssmith'
+      }
     });
-    it('renders a spritesheet', function () {
+
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('topDown.phantomjs.png'));
+  });
+});
+
+describe('`spritesmith` using a custom engine via an object', function () {
+  describe('processing a set of images', function () {
+    spritesmithUtils.process({
+      sprites: multipleSprites,
+      options: {
+        engine: require('phantomjssmith')
+      }
     });
+
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('topDown.phantomjs.png'));
   });
 });
 
