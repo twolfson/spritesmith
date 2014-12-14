@@ -213,8 +213,6 @@ describe('`spritesmith` using a custom engine via an object', function () {
   });
 });
 
-
-
 // Edge cases
 // Test for https://github.com/twolfson/gulp.spritesmith/issues/22
 var canvassmith;
