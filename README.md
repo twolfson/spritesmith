@@ -80,20 +80,28 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
 
 - params `Object` Container for paramters
     - params.src `String[]` Array of filepaths for images to include in spritesheet
+    - params.padding `Number` Padding to use between images
+        - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
     - params.engine `String|Object` Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
         - //  TODO: Link me
         - For more engine options, see the [Engines section][]
+    - params.engineOpts `Object` Options to pass through to engine for settings
+        - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
+        - See your engine's documentation for available options
+    - params.exportOpts `Mixed` Options to pass through to engine for export
+        - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
+        // TODO: Verify `gmsmith` and others list their available export options
+        - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
         - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
         - // TODO: Link me and consider and linking directly to layout
         - For more algorithm options, see the [Algorithms section][]
-
+    - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
+        - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
+        // TODO: Add sort: false documentation to `layout`
+        - See your algorithm's documentation for available options
 ```js
- * @param {Number} [params.padding] Padding to use between images
- * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
- * @param {Mixed} [params.algorithmOpts] Options to pass through to algorithm for layout
- * @param {Mixed} [params.exportOpts] Options to pass through to engine for export
  * @param {Function} callback Function that receives compiled spritesheet and map
  * @returns {Mixed} callback[0] err If an error was encountered, this will be returned to callback
  * @returns {Object} callback[1] result Result object of spritesmith
