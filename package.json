@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "async": "~0.2.6",
-    "layout": "~2.0.0"
+    "layout": "~2.0.0",
+    "pixelsmith": "~1.0.0"
   },
   "devDependencies": {
     "jscs": "~1.8.1",

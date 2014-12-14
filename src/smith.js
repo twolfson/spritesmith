@@ -1,16 +1,19 @@
 // Load in dependencies
 var async = require('async');
 var assert = require('assert');
-var EngineSmith = require('./smiths/engine.smith.js');
 var Layout = require('layout');
+var EngineSmith = require('./smiths/engine.smith.js');
 var CanvasSmith = require('./smiths/canvas.smith.js');
-var engines = {};
+
+// Specify defaults
+var engineDefault = 'pixelsmith';
+var algorithmDefault = 'top-down';
 
 /**
  * Spritesmith generation function
  * @param {Object} params Parameters for spritesmith
  * @param {String[]} [params.src] Images to generate into sprite sheet
- * @param {String} [params.engine="auto"] Engine to use (phantomjs, canvas, gm, pngsmith,
+ * @param {String} [params.engine="pixelsmith"] Engine to use (phantomjs, canvas, gm, pngsmith,
       or user-defined via Spritesmith.addEngine)
  * @param {String} [params.algorithm="top-down"] Algorithm to pack images with (top-down
       or user-defined via Spritesmith.addAlgorithm)
@@ -26,23 +29,36 @@ var engines = {};
 function Spritesmith(params, callback) {
   var retObj = {};
   var files = params.src;
-  var enginePref = params.engine || 'auto';
-  var engine = engines[enginePref];
-  var algorithmPref = params.algorithm || 'top-down';
+  var engineName = params.engine || engineDefault;
+  var engine = engineName;
+  var algorithmName = params.algorithm || algorithmDefault;
 
-  // If the engine is not defined
-  if (engine === undefined) {
-    // If the engine was not auto, inform the user
-    assert.strictEqual(enginePref, 'auto', 'Sorry, the spritesmith engine "' + enginePref + '" could not be loaded. ' +
-      'Please be sure you have installed it properly on your machine.');
+  // If the engine is a `require` path, attempt to load it
+  if (typeof engineName === 'string') {
+    // Attempt to resolve the engine to verify it is installed at all
+    try {
+      require.resolve(engineName);
+    } catch (err) {
+      console.error('Attempted to find spritesmith engine "' + engineName + '" but could not.');
+      console.error('Please verify you have installed "' + engineName + '" and saved it to your `package.json`');
+      console.error('');
+      console.error('    npm install ' + engineName);
+      console.error('');
+      throw err;
+    }
 
-    // Begin attempting to load the engines (in order of hardest to easiest)
-    engine = engines.canvas || engines.gm || engines.phantomjs || engines.pngsmith;
-
-    // Assert there is an engine
-    assert(engine, 'Sorry, no spritesmith engine could be loaded for your machine. ' +
-        'Please be sure you have installed one of the engines from ' +
-        'https://github.com/Ensighten/spritesmith#requirements.');
+    // Attempt to load the engine
+    try {
+      engine = require(engineName);
+    } catch (err) {
+      console.error('Attempted to load spritesmith engine "' + engineName + '" but could not.');
+      console.error('Please verify you have installed its dependencies. Documentation should be available at ');
+      console.error('');
+      // TODO: Consider using pkg.repository
+      console.error('    https://npm.im/' + encodeURIComponent(engineName));
+      console.error('');
+      throw err;
+    }
   }
 
   // If there is a set parameter for the engine, use it
@@ -53,7 +69,7 @@ function Spritesmith(params, callback) {
 
   // Create our smiths
   var engineSmith = new EngineSmith(engine);
-  var layer = new Layout(algorithmPref, params.algorithmOpts);
+  var layer = new Layout(algorithmName, params.algorithmOpts);
   var padding = params.padding || 0;
   var exportOpts = params.exportOpts || {};
   var packedObj;
@@ -176,43 +192,6 @@ function Spritesmith(params, callback) {
 Spritesmith.EngineSmith = EngineSmith;
 Spritesmith.Layout = Layout;
 Spritesmith.CanvasSmith = CanvasSmith;
-
-/**
- * Method to add new engines via
- * @param {String} name Name of engine
- * @param {Function} engine Engine to bind under name
- */
-function addEngine(name, engine) {
-  engines[name] = engine;
-}
-Spritesmith.addEngine = addEngine;
-Spritesmith.engines = engines;
-
-// Attempt to load canvas and imagemagick
-var canvasEngine;
-var gmEngine;
-var phantomjsEngine;
-var pngEngine;
-try {
-  canvasEngine = require('canvassmith');
-} catch (e) {}
-
-try {
-  gmEngine = require('gmsmith');
-} catch (e) {}
-
-try {
-  phantomjsEngine = require('phantomjssmith');
-} catch (e) {}
-
-try {
-  pngEngine = require('pngsmith');
-} catch (e) {}
-
-if (canvasEngine) { addEngine('canvas', canvasEngine); }
-if (gmEngine) { addEngine('gm', gmEngine); }
-if (phantomjsEngine) { addEngine('phantomjs', phantomjsEngine); }
-if (pngEngine) { addEngine('pngsmith', pngEngine); }
 
 // Export Spritesmith
 module.exports = Spritesmith;
