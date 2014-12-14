@@ -1,19 +1,36 @@
 {
   "name": "spritesmith",
-  "version": "0.20.1",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
+  "version": "0.20.1",
+  "homepage": "https://github.com/Ensighten/spritesmith",
+  "author": {
+    "name": "Todd Wolfson",
+    "email": "todd@twolfson.com",
+    "url": "http://twolfson.com/"
+  },
+  "contributors": [
+    "Alex Bain <alex@alexba.in"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Ensighten/spritesmith.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ensighten/spritesmith/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Ensighten/spritesmith/blob/master/LICENSE-MIT"
+    }
+  ],
   "main": "src/smith.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
   "scripts": {
     "test": "mocha src-test/ --timeout 60000"
   },
-  "keywords": [
-    "sprite",
-    "spritesheet",
-    "css"
-  ],
-  "author": "Todd Wolfson <todd@twolfson.com>",
-  "contributors": "Alex Bain <alex@alexba.in",
-  "license": "MIT",
   "dependencies": {
     "async": "~0.2.6",
     "layout": "~2.0.0"
@@ -31,8 +48,9 @@
     "phantomjssmith": "~0.5.0",
     "pngsmith": "~0.1.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Ensighten/spritesmith.git"
-  }
+  "keywords": [
+    "sprite",
+    "spritesheet",
+    "css"
+  ]
 }
