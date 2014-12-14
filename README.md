@@ -203,6 +203,39 @@ For the best results, install from the site rather than through a package manage
 [Graphics Magick]: http://www.graphicsmagick.org/
 [Image Magick]: http://imagemagick.org/
 
+## Examples
+### Algorithm
+This is an example of using a custom layout via the `alt-diagonal` algorithm.
+
+```js
+// Load in dependencies
+var fs = require('fs');
+var spritesmith = require('spritesmith');
+
+// Generate our spritesheet
+spritesmith({
+  src: [
+    __dirname + '/fork.png',
+    __dirname + '/github.png',
+    __dirname + '/twitter.png'
+  ],
+  algorithm: 'alt-diagonal'
+}, function handleResult (err, result) {
+  // If there was an error, throw it
+  if (err) {
+    throw err;
+  }
+
+  // Output the image
+  fs.writeFileSync(__dirname + '/alt-diagonal.png', result.image, 'binary');
+  result.coordinates, result.properties; // Coordinates and properties
+});
+```
+
+**Result:**
+
+![alt-diagonal spritesheet](docs/alt-diagonal.png)
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via `npm run lint` and test via `npm test`.
 
