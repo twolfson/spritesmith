@@ -118,6 +118,8 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
             - result.properties.width `Number` Width of the spritesheet
             - result.properties.height `Number` Height of the spritesheet
 
+[`pixelsmith`]: https://github.com/twolfson/pixelsmith
+
 ### Available packing algorithms
 The available packing algorithms are: `top-down`, `left-right`, `diagonal` (\\ format), `alt-diagonal` (/ format), `binary-tree` (best packing possible).
 
