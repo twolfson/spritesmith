@@ -223,6 +223,7 @@ function addEngineTest(params) {
 
     describe('processing a bad image', function () {
       spritesmithUtils.process({
+        // This was for https://github.com/twolfson/gulp.spritesmith/issues/22
         // Use engine as namespace (e.g. `phantomjs`)
         namespace: params.engineName + '-error',
         sprites: [path.join(spriteDir, 'malformed.png')],
