@@ -69,8 +69,6 @@ If you would like a faster build time or need to support an obscure image format
 
 If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
-// TODO: Add examples with algorithms and whatnot
-
 ### `spritesmith(params, callback)`
 Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
 
