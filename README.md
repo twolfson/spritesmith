@@ -86,7 +86,6 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - See your engine's documentation for available options
     - params.exportOpts `Mixed` Options to pass through to engine for export
         - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
-        - // TODO: Verify `gmsmith` and others list their available export options
         - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
         - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
