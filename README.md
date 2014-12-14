@@ -219,6 +219,6 @@ Support this project and [others by twolfson][gratipay] via [gratipay][].
 [gratipay]: https://www.gratipay.com/twolfson/
 
 ## License
-Copyright (c) 2012 - 2014 Ensighten
+Copyright (c) 2012-2014 Ensighten
 
 Licensed under the MIT license.
