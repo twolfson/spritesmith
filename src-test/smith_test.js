@@ -188,10 +188,8 @@ describe('An empty array', function () {
 describe.skip('`spritesmith` using a custom engine via string', function () {
   describe('processing a set of images', function () {
     it('has no errors', function () {
-
     });
     it('renders a spritesheet', function () {
-
     });
   });
 });
