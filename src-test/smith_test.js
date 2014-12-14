@@ -191,64 +191,25 @@ describe('An empty array', function () {
   });
 });
 
-function addEngineTest(params) {
-  // Attempt to load the engine
-  try {
-    require(params.module);
-  } catch (e) {}
-
-  // Create an engine-specific test
-  describe(params.engineName , function () {
-    describe('when processed via spritesmith', function () {
-      spritesmithUtils.process({
-        // Use engine as namespace (e.g. `phantomjs`)
-        namespace: params.engineName,
-        sprites: multipleSprites,
-        options: {
-          engine: params.engineName
-        }
-      });
-
-      it('has no errors', spritesmithUtils.assertNoError);
-      it('returns an image', function () {
-        // DEV: Write out to actual_files
-        if (process.env.TEST_DEBUG) {
-          try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-          fs.writeFileSync(__dirname + '/actual_files/' + this.namespace + '.sprite.png', this.result.image, 'binary');
-        }
-
-        assert.notEqual(this.result.image, '');
-      });
+// Edge cases
+// Test for https://github.com/twolfson/gulp.spritesmith/issues/22
+var canvassmith;
+try {
+  canvassmith = require('canvassmith');
+} catch (err) {}
+var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
+describeIfCanvassmithExists('Spritesmith using canvassmith', function () {
+  describe('processing a bad image', function () {
+    spritesmithUtils.process({
+      namespace: 'canvassmith-error',
+      sprites: [path.join(spriteDir, 'malformed.png')],
+      options: {
+        engine: 'canvassmith'
+      }
     });
 
-    describe('processing a bad image', function () {
-      spritesmithUtils.process({
-        // This was for https://github.com/twolfson/gulp.spritesmith/issues/22
-        // Use engine as namespace (e.g. `phantomjs`)
-        namespace: params.engineName + '-error',
-        sprites: [path.join(spriteDir, 'malformed.png')],
-        options: {
-          engine: params.engineName
-        }
-      });
-
-      it('calls back with an error', function () {
-        assert.notEqual(this.err, null);
-      });
+    it('calls back with an error', function () {
+      assert.notEqual(this.err, null);
     });
   });
-}
-
-// Test specific engines
-addEngineTest({
-  engineName: 'phantomjs',
-  module: 'phantomjssmith'
-});
-addEngineTest({
-  engineName: 'gm',
-  module: 'gmsmith'
-});
-addEngineTest({
-  engineName: 'canvas',
-  module: 'canvassmith'
 });
