@@ -19,7 +19,10 @@
     "layout": "~2.0.0"
   },
   "devDependencies": {
+    "jscs": "~1.8.1",
+    "jshint": "~2.5.10",
     "mocha": "~1.21.4",
+    "twolfson-style": "~1.6.0",
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {
