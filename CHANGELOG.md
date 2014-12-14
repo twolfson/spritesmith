@@ -1,4 +1,12 @@
 # spritesmith changelog
+1.0.0 - Major release with multiple breaking changes:
+
+- Moved to `pixelsmith` as default engine
+- Removed all other engines
+- Removed `addEngine`
+- Overhauled documentation
+- Made tests more explicit
+
 0.21.2 - Moved to `fix-travis-ci` to resolve `node@0.8` + `jscs` issues
 
 0.21.1 - Fixed up style issues in README
