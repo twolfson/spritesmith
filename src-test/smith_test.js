@@ -1,13 +1,13 @@
 // Load in modules
-var assert = require('assert'),
-    fs = require('fs'),
-    path = require('path'),
-    _ = require('underscore'),
-    spritesmith = require('../src/smith.js');
+var assert = require('assert');
+var fs = require('fs');
+var path = require('path');
+var _ = require('underscore');
+var spritesmith = require('../src/smith.js');
 
 // Set up paths
-var spriteDir = path.join(__dirname, 'test_sprites'),
-    expectedDir = __dirname + '/expected_files';
+var spriteDir = path.join(__dirname, 'test_sprites');
+var expectedDir = __dirname + '/expected_files';
 
 // DEV: These were unsorted for testing `sort: false` but these work for all tests as is =D
 var multipleSprites = [
@@ -25,8 +25,8 @@ var spritesmithUtils = {
       assert(this.namespace, '`params.namespace` was not defined for `spritesmithUtils.process`, please define it');
 
       // Load in params and add on to src
-      var options = params.options || {},
-          spritesmithParams = _.extend({'src': params.sprites}, options);
+      var options = params.options || {};
+      var spritesmithParams = _.extend({'src': params.sprites}, options);
 
       // Attempt to spritesmith out the sprites
       var that = this;
@@ -49,12 +49,12 @@ var spritesmithUtils = {
 
   assertCoordinates: function () {
     // Load in the coordinates
-    var result = this.result,
-        expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
+    var result = this.result;
+    var expectedCoords = require(expectedDir + '/' + this.namespace + '.coordinates.json');
 
     // Normalize the actual coordinates
-    var actualCoords = result.coordinates,
-        normCoords = {};
+    var actualCoords = result.coordinates;
+    var normCoords = {};
     assert(actualCoords, 'Result does not have a coordinates property');
 
     Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
@@ -68,16 +68,16 @@ var spritesmithUtils = {
 
   assertProps: function() {
     // Load in the properties
-    var actualProps = this.result.properties,
-        expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
+    var actualProps = this.result.properties;
+    var expectedProps = require(expectedDir + '/' + this.namespace + '.properties.json');
 
     // Assert that the returned properties equals the expected properties
     assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
   },
 
   assertSpritesheet: function () {
-    var result = this.result,
-        namespace = this.namespace;
+    var result = this.result;
+    var namespace = this.namespace;
 
     // DEV: Write out to actual_files
     if (process.env.TEST_DEBUG) {
@@ -89,9 +89,9 @@ var spritesmithUtils = {
     }
 
     // Assert the actual image is the same expected
-    var actualImage = result.image,
-        expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'],
-        matchesAnImage = false;
+    var actualImage = result.image;
+    var expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'];
+    var matchesAnImage = false;
 
     // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
     expectedFilenames.forEach(function testAgainstExpected (filename) {
@@ -123,10 +123,10 @@ describe('An array of sprites', function () {
 
   describe('when converted from left to right', function () {
     spritesmithUtils.process({
-      'namespace': 'leftRight',
-      'sprites': multipleSprites,
-      'options': {
-        'algorithm': 'left-right'
+      namespace: 'leftRight',
+      sprites: multipleSprites,
+      options: {
+        algorithm: 'left-right'
       }
     });
 
@@ -138,11 +138,11 @@ describe('An array of sprites', function () {
 
   describe('when provided with a padding parameter', function () {
     spritesmithUtils.process({
-      'namespace': 'padding',
-      'sprites': multipleSprites,
-      'options': {
-        'algorithm': 'binary-tree',
-        'padding': 2
+      namespace: 'padding',
+      sprites: multipleSprites,
+      options: {
+        algorithm: 'binary-tree',
+        padding: 2
       }
     });
 
@@ -154,11 +154,11 @@ describe('An array of sprites', function () {
 
   describe('when told not to sort', function () {
     spritesmithUtils.process({
-      'namespace': 'unsorted',
-      'sprites': multipleSprites,
-      'options': {
-        'algorithm': 'top-down',
-        'algorithmOpts': {'sort': false}
+      namespace: 'unsorted',
+      sprites: multipleSprites,
+      options: {
+        algorithm: 'top-down',
+        algorithmOpts: {sort: false}
       }
     });
 
@@ -174,8 +174,8 @@ describe('An empty array', function () {
 
   describe('when processed via spritesmith', function () {
     spritesmithUtils.process({
-      'namespace': 'empty',
-      'sprites': emptySprites
+      namespace: 'empty',
+      sprites: emptySprites
     });
 
     it('has no errors', spritesmithUtils.assertNoError);
@@ -200,10 +200,10 @@ function addEngineTest(params) {
     describe('when processed via spritesmith', function () {
       spritesmithUtils.process({
         // Use engine as namespace (e.g. `phantomjs`)
-        'namespace': params.engineName,
-        'sprites': multipleSprites,
-        'options': {
-          'engine': params.engineName
+        namespace: params.engineName,
+        sprites: multipleSprites,
+        options: {
+          engine: params.engineName
         }
       });
 
@@ -222,10 +222,10 @@ function addEngineTest(params) {
     describe('processing a bad image', function () {
       spritesmithUtils.process({
         // Use engine as namespace (e.g. `phantomjs`)
-        'namespace': params.engineName + '-error',
-        'sprites': [path.join(spriteDir, 'malformed.png')],
-        'options': {
-          'engine': params.engineName
+        namespace: params.engineName + '-error',
+        sprites: [path.join(spriteDir, 'malformed.png')],
+        options: {
+          engine: params.engineName
         }
       });
 

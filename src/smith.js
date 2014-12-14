@@ -1,9 +1,10 @@
-var async = require('async'),
-    assert = require('assert'),
-    EngineSmith = require('./smiths/engine.smith.js'),
-    Layout = require('layout'),
-    CanvasSmith = require('./smiths/canvas.smith.js'),
-    engines = {};
+// Load in dependencies
+var async = require('async');
+var assert = require('assert');
+var EngineSmith = require('./smiths/engine.smith.js');
+var Layout = require('layout');
+var CanvasSmith = require('./smiths/canvas.smith.js');
+var engines = {};
 
 
 /**
@@ -21,11 +22,11 @@ var async = require('async'),
  * @returns {Object} callback[1].coordinates Map from file name to an object containing x, y, height, and width information about the source image
  */
 function Spritesmith(params, callback) {
-  var retObj = {},
-      files = params.src,
-      enginePref = params.engine || 'auto',
-      engine = engines[enginePref],
-      algorithmPref = params.algorithm || 'top-down';
+  var retObj = {};
+  var files = params.src;
+  var enginePref = params.engine || 'auto';
+  var engine = engines[enginePref];
+  var algorithmPref = params.algorithm || 'top-down';
 
   // If the engine is not defined
   if (engine === undefined) {
@@ -46,11 +47,11 @@ function Spritesmith(params, callback) {
   }
 
   // Create our smiths
-  var engineSmith = new EngineSmith(engine),
-      layer = new Layout(algorithmPref, params.algorithmOpts),
-      padding = params.padding || 0,
-      exportOpts = params.exportOpts || {},
-      packedObj;
+  var engineSmith = new EngineSmith(engine);
+  var layer = new Layout(algorithmPref, params.algorithmOpts);
+  var padding = params.padding || 0;
+  var exportOpts = params.exportOpts || {};
+  var packedObj;
 
   // In a waterfall fashion
   async.waterfall([
@@ -62,9 +63,9 @@ function Spritesmith(params, callback) {
     function smithAddFiles (images, cb) {
       images.forEach(function (img) {
         // Save the non-padded properties as meta data
-        var width = img.width,
-            height = img.height,
-            meta = {'img': img, 'actualWidth': width, 'actualHeight': height};
+        var width = img.width;
+        var height = img.height;
+        var meta = {'img': img, 'actualWidth': width, 'actualHeight': height};
 
         // Add the item with padding to our layer
         layer.addItem({'width': width + padding, 'height': height + padding, 'meta': meta});
@@ -102,8 +103,8 @@ function Spritesmith(params, callback) {
     // Then, generate a canvas
     function generateCanvas (cb) {
       // Grab and fallback the width/height
-      var width = Math.max(packedObj.width || 0, 0),
-          height = Math.max(packedObj.height || 0, 0);
+      var width = Math.max(packedObj.width || 0, 0);
+      var height = Math.max(packedObj.height || 0, 0);
 
       // If there are items
       var itemsExist = packedObj.items.length;

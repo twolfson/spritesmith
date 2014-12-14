@@ -5,7 +5,7 @@ function EngineSmith(engine) {
 
 EngineSmith.prototype = {
   // Create multiple images
-  'createImages': function (files, cb) {
+  createImages: function (files, cb) {
     // If there is a engine.createImages method, use it
     var engine = this.engine;
     async.waterfall([
@@ -26,7 +26,7 @@ EngineSmith.prototype = {
     ], cb);
   },
   // Helper to create canvas via engine
-  'createCanvas': function (width, height, cb) {
+  createCanvas: function (width, height, cb) {
     var engine = this.engine;
     return engine.createCanvas(width, height, cb);
   }
