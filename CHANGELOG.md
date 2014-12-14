@@ -6,6 +6,7 @@
 - Removed `addEngine`
 - Overhauled documentation
 - Made tests more explicit
+- Moved to `binary-tree` as default algorithm
 
 0.21.2 - Moved to `fix-travis-ci` to resolve `node@0.8` + `jscs` issues
 
