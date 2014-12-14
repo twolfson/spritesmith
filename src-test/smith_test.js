@@ -92,7 +92,7 @@ var spritesmithUtils = {
 
     // Assert the actual image is the same expected
     var actualImage = result.image;
-    var expectedFilenames = ['canvas.png', 'gm.png', 'gm2.png', 'phantomjs.png', 'phantomjs2.png'];
+    var expectedFilenames = ['pixelsmith.png'];
     var matchesAnImage = false;
 
     // ANTI-PATTERN: Looping over set without identifiable lines for stack traces
