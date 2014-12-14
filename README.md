@@ -82,10 +82,14 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - params.src `String[]` Array of filepaths for images to include in spritesheet
     - params.engine `String|Object` Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
-        - For more engine options, see the [Engines section][] //  TODO: Link me
+        - //  TODO: Link me
+        - For more engine options, see the [Engines section][]
+    - params.algorithm `String` Optional algorithm to pack images with
+        - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
+        - // TODO: Link me and consider and linking directly to layout
+        - For more algorithm options, see the [Algorithms section][]
 
 ```js
- * @param {String} [params.algorithm="top-down"] Algorithm to pack images with
  * @param {Number} [params.padding] Padding to use between images
  * @param {Mixed} [params.engineOpts] Options to pass through to engine for settings
  * @param {Mixed} [params.algorithmOpts] Options to pass through to algorithm for layout
