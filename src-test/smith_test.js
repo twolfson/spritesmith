@@ -3,6 +3,7 @@ var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var BlinkDiff = require('blink-diff');
 var spritesmith = require('../src/smith.js');
 
 // Set up paths
@@ -90,7 +91,7 @@ var spritesmithUtils = {
   },
 
   assertSpritesheet: function (filename) {
-    return function assertSpritesheetFn () {
+    return function assertSpritesheetFn (done) {
       var result = this.result;
 
       // DEV: Write out to actual_files
@@ -101,9 +102,16 @@ var spritesmithUtils = {
 
       // Assert the actual image is the same expected
       var actualImage = result.image;
-      var filepath = path.join(expectedDir, filename);
-      var expectedImage = fs.readFileSync(filepath, 'binary');
-      assert(actualImage === expectedImage, 'Actual image does not match expected image');
+      var expectedFilepath = path.join(expectedDir, filename);
+      // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
+      var diff = new BlinkDiff({
+        imageA: new Buffer(actualImage),
+        imageBPath: expectedFilepath,
+
+        thresholdType: BlinkDiff.THRESHOLD_PERCENT,
+        threshold: 0.01
+      });
+      diff.run(done);
     };
   }
 };
