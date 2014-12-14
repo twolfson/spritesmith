@@ -89,7 +89,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
         - See your engine's documentation for available options
     - params.algorithm `String` Optional algorithm to pack images with
-        - By default we use `top-down` which packs images vertically from smallest (top) to largest (bottom)
+        - By default we use `binary-tree` which packs images as efficiently as possible
         - For more algorithm options, see the [Algorithms section](#algorithms)
     - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
