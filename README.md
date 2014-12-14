@@ -146,7 +146,7 @@ https://github.com/twolfson/spritesmith-engine-test
 
 Below is a list of known engines with their tradeoffs:
 
-### pixelsmith
+#### pixelsmith
 [`pixelsmith`][] is a `node` based engine that runs on top of [`get-pixels`][] and [`save-pixels`][].
 
 [`get-pixels`]: https://github.com/mikolalysenko/get-pixels
@@ -154,7 +154,7 @@ Below is a list of known engines with their tradeoffs:
 
 **Key differences:** Doesn't support uncommon image formats (e.g. `tiff`) and not as fast as a compiled library (e.g. `canvassmith`).
 
-### phantomjssmith
+#### phantomjssmith
 [`phantomjssmith`][] is a [phantomjs][] based engine. It was originally built to provide cross-platform compatibility but has since been succeeded by [`pixelsmith`][].
 
 **Requirements:** [phantomjs][] must be installed on your machine and on your `PATH` environment variable. Visit [the phantomjs website][phantomjs] for installation instructions.
@@ -164,7 +164,7 @@ Below is a list of known engines with their tradeoffs:
 [`phantomjssmith`][]: https://github.com/twolfson/phantomjssmith
 [phantomjs]: http://phantomjs.org/
 
-### canvassmith
+#### canvassmith
 [`canvassmith`][] is a [node-canvas][] based engine that runs on top of [Cairo][].
 
 **Requirements:** [Cairo][] and [node-gyp][] must be installed on your machine.
@@ -185,7 +185,7 @@ npm install -g node-gyp
 [node-canvas wiki]: (https://github.com/LearnBoost/node-canvas/wiki/_pages
 [node-gyp]: https://github.com/TooTallNate/node-gyp/
 
-### gmsmith
+#### gmsmith
 [`gmsmith`][] is a [`gm`][] based engine that runs on top of either [Graphics Magick][] or [Image Magick][].
 
 **Requirements:** Either [Graphics Magick][] or [Image Magick][] must be installed on your machine.
