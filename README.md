@@ -106,14 +106,17 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - err `Error|null` If an error occurred, this will be it
     - result `Object` Container for result items
         - result.image `String` Binary string representation of image
-        - result.coordinates `Object` Map from filepath to an object containing x, y, height, and width information about the source image
+        - result.coordinates `Object` Map from filepath to coordinate information between original sprite and spritesheet
             - `filepath` will be the same as provided in `params.src`
-            - TODO: Document x, y, height, width
- * @returns {Object} callback[1].properties Properties about the spritesheet itself
- * @returns {Object} callback[1].properties.width Width of the spritesheet
- * @returns {Object} callback[1].properties.height Height of the spritesheet
- */
-```
+            - result.coordinates[filepath] `Object` Container for coordinate information
+                // TODO: The excessive dot notation seems repetitive
+                - result.coordinates[filepath].x `Number` Horizontal position of top-left corder of original sprite on spritesheet
+                - result.coordinates[filepath].y `Number` Vertical position of top-left corder of original sprite on spritesheet
+                - result.coordinates[filepath].width `Number` Width of original sprite
+                - result.coordinates[filepath].height `Number` Height of original sprite
+        - result.properties `Object` Container for information about spritesheet
+            - result.properties.width `Number` Width of the spritesheet
+            - result.properties.height `Number` Height of the spritesheet
 
 ### Available packing algorithms
 The available packing algorithms are: `top-down`, `left-right`, `diagonal` (\\ format), `alt-diagonal` (/ format), `binary-tree` (best packing possible).
