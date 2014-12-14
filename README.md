@@ -47,27 +47,34 @@ and a coordinate map:
 ```
 
 ## Getting started
+`spritesmith` can be installed via npm: `npm install spritesmith`
+
 ```js
-var sprites = ['sprite1.png', 'sprite2.jpg', 'sprite3.png'];
-spritesmith({'src': sprites}, function (err, result) {
+// Load in dependencies
+var spritesmith = require('spritesmith');
+
+// Generate our spritesheet
+var sprites = ['fork.png', 'github.png', 'twitter.png'];
+spritesmith({src: sprites}, function handleResult (err, result) {
   result.image; // Binary string representation of image
   result.coordinates; // Object mapping filename to {x, y, width, height} of image
   result.properties; // Object with metadata about spritesheet {width, height}
 });
 ```
 
+## Documentation
+`spritesmith` exports a `spritesmith` function as its `module.exports`.
+
+
+If you would like a faster build time or need to support an obscure image format, see `engine`.
+
+If you would like to adjust how images are laid out, see `algorithm` and `algorithmOpts`.
+
+// TODO: Link these
+
 // TODO: Use link in documentation instead of this inline list for algorithms and engines
 
-`spritesmith` can be installed via npm: `npm install spritesmith`
-
-Each engine has system level depedencies. Visit the [requirements section][requirements] for more information.
-
-[requirements]: #requirements
-
-During installation, you may see errors for other engines. These should be ignored unless `npm` crashes.
-
-## Documentation
-`spritesmith` is a standalone function
+// TODO: Add examples with algorithms and whatnot
 
 ```js
 /**
