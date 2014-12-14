@@ -69,10 +69,6 @@ If you would like a faster build time or need to support an obscure image format
 
 If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
-// TODO: Link these
-
-// TODO: Use link in documentation instead of this inline list for algorithms and engines
-
 // TODO: Add examples with algorithms and whatnot
 
 ### `spritesmith(params, callback)`
@@ -84,8 +80,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
     - params.engine `String|Object` Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
-        - //  TODO: Link me
-        - For more engine options, see the [Engines section][]
+        - For more engine options, see the [Engines section](#engines)
     - params.engineOpts `Object` Options to pass through to engine for settings
         - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
         - See your engine's documentation for available options
