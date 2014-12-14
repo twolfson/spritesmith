@@ -20,5 +20,5 @@ spritesmith({
   console.log(JSON.stringify(result.coordinates, null, 2));
 
   // and output the image
-  fs.writeFileSync(__dirname + '/spritesmith.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/spritesheet.png', result.image, 'binary');
 });
