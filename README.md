@@ -200,8 +200,9 @@ For the best results, install from the site rather than through a package manage
 **Key differences:** `gmsmith` allows for configuring image quality whereas others do not.
 
 [`gmsmith`]: https://github.com/twolfson/gmsmith
-[graphics-magick]: http://www.graphicsmagick.org/
-[image-magick]: http://imagemagick.org/
+[`gm`]: https://github.com/aheckmann/gm
+[Graphics Magick]: http://www.graphicsmagick.org/
+[Image Magick]: http://imagemagick.org/
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint via `npm run lint` and test via `npm test`.
