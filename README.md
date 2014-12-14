@@ -109,7 +109,6 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - result.coordinates `Object` Map from filepath to coordinate information between original sprite and spritesheet
             - `filepath` will be the same as provided in `params.src`
             - result.coordinates[filepath] `Object` Container for coordinate information
-                - // TODO: The excessive dot notation seems repetitive
                 - result.coordinates[filepath].x `Number` Horizontal position of top-left corner of original sprite on spritesheet
                 - result.coordinates[filepath].y `Number` Vertical position of top-left corner of original sprite on spritesheet
                 - result.coordinates[filepath].width `Number` Width of original sprite
