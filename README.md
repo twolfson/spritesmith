@@ -46,6 +46,12 @@ and a coordinate map:
 }
 ```
 
+### Do you like `spritesmith`?
+[Support us via gratipay][gratipay] or [spread word on Twitter][twitter]
+
+[gratipay]: https://gratipay.com/twolfson/
+[twitter]: https://twitter.com/intent/tweet?text=Spritesheets%20made%20easy%20via%20spritesmith&url=https%3A%2F%2Fgithub.com%2FEnsighten%2Fspritesmith&via=twolfsn
+
 ## Breaking changes in 1.0.0
 We have moved to `pixelsmith` as the default `engine`. It is `node` based and should support your sprites. Any other engines must be installed outside of `spritesmith`. This will lead to cleaner and faster installations.
 
