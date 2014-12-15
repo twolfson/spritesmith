@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.0.3 - Added links to examples from other documentation sections
+
 1.0.2 - Moved to consistent documentation bullets with `grunt-spritesmith` and `gulp.spritesmith`
 
 1.0.1 - Added attribution to README
