@@ -87,8 +87,10 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - src `String[]` - Array of filepaths for images to include in spritesheet
     - padding `Number` - Padding to use between images
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
+        - An example usage of `padding` can be found in the [Examples section](#padding)
     - engine `String|Object` - Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
+        - An example usage of `engine` can be found in the [Examples section](#engine)
         - For more engine options, see the [Engines section](#engines)
     - engineOpts `Object` - Options to pass through to engine for settings
         - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
@@ -98,6 +100,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - See your engine's documentation for available options
     - algorithm `String` - Optional algorithm to pack images with
         - By default we use `binary-tree` which packs images as efficiently as possible
+        - An example usage of `algorithm` can be found in the [Examples section](#algorithm)
         - For more algorithm options, see the [Algorithms section](#algorithms)
     - algorithmOpts `Object` - Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
