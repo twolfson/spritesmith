@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.0.1 - Added attribution to README
+
 1.0.0 - Major release with multiple breaking changes:
 
 - Moved to `pixelsmith` as default engine
