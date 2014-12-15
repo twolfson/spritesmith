@@ -83,41 +83,42 @@ If you would like to adjust how images are laid out, see `params.algorithm` and 
 ### `spritesmith(params, callback)`
 Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
 
-- params `Object` Container for paramters
-    - params.src `String[]` Array of filepaths for images to include in spritesheet
-    - params.padding `Number` Padding to use between images
+- params `Object` - Container for paramters
+    - src `String[]` - Array of filepaths for images to include in spritesheet
+    - padding `Number` - Padding to use between images
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
-    - params.engine `String|Object` Optional engine override to use
+    - engine `String|Object` - Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
         - For more engine options, see the [Engines section](#engines)
-    - params.engineOpts `Object` Options to pass through to engine for settings
+    - engineOpts `Object` - Options to pass through to engine for settings
         - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
         - See your engine's documentation for available options
-    - params.exportOpts `Mixed` Options to pass through to engine for export
+    - exportOpts `Mixed` - Options to pass through to engine for export
         - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
         - See your engine's documentation for available options
-    - params.algorithm `String` Optional algorithm to pack images with
+    - algorithm `String` - Optional algorithm to pack images with
         - By default we use `binary-tree` which packs images as efficiently as possible
         - For more algorithm options, see the [Algorithms section](#algorithms)
-    - params.algorithmOpts `Object` Optional algorithm options to pass through to algorithm for layout
+    - algorithmOpts `Object` - Optional algorithm options to pass through to algorithm for layout
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
         - See your algorithm's documentation for available options
             - https://github.com/twolfson/layout#algorithms
-- callback `Function` Error-first function that receives compiled spritesheet and map
+- callback `Function` - Error-first function that receives compiled spritesheet and map
     - `callback` should have signature `function (err, result)`
-    - err `Error|null` If an error occurred, this will be it
-    - result `Object` Container for result items
-        - result.image `String` Binary string representation of image
-        - result.coordinates `Object` Map from filepath to coordinate information between original sprite and spritesheet
+    - err `Error|null` - If an error occurred, this will be it
+    - result `Object` - Container for result items
+        - image `String` - Binary string representation of image
+        - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
             - `filepath` will be the same as provided in `params.src`
-            - result.coordinates[filepath] `Object` Container for coordinate information
-                - result.coordinates[filepath].x `Number` Horizontal position of top-left corner of original sprite on spritesheet
-                - result.coordinates[filepath].y `Number` Vertical position of top-left corner of original sprite on spritesheet
-                - result.coordinates[filepath].width `Number` Width of original sprite
-                - result.coordinates[filepath].height `Number` Height of original sprite
-        - result.properties `Object` Container for information about spritesheet
-            - result.properties.width `Number` Width of the spritesheet
-            - result.properties.height `Number` Height of the spritesheet
+            - [filepath] `Object` - Container for coordinate information
+                - For those keeping track, this is `result.coordinates[filepath]`
+                - x `Number` - Horizontal position of top-left corner of original sprite on spritesheet
+                - y `Number` - Vertical position of top-left corner of original sprite on spritesheet
+                - width `Number` - Width of original sprite
+                - height `Number` - Height of original sprite
+        - properties `Object` - Container for information about spritesheet
+            - width `Number` - Width of the spritesheet
+            - height `Number` - Height of the spritesheet
 
 [`pixelsmith`]: https://github.com/twolfson/pixelsmith
 
