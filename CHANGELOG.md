@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.1.0 - Upgraded to `layout@2.1.0` to support `Atom`/`node-webkit` environments
+
 1.0.3 - Added links to examples from other documentation sections
 
 1.0.2 - Moved to consistent documentation bullets with `grunt-spritesmith` and `gulp.spritesmith`
