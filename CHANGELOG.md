@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.3.0 - Upgraded to `pixelsmith@1.1.0` to pick up background fill support. Fixes twolfson/gulp.spritesmith#33
+
 1.2.0 - Upgraded to `layout@2.2.0` to restore optimal `binary-tree` packing. Fixes #48
 
 1.1.0 - Upgraded to `layout@2.1.0` to support `Atom`/`node-webkit` environments
