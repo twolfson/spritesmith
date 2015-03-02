@@ -37,7 +37,7 @@
   "dependencies": {
     "async": "~0.2.6",
     "layout": "~2.2.0",
-    "pixelsmith": "~1.0.0"
+    "pixelsmith": "~1.1.0"
   },
   "devDependencies": {
     "canvassmith": "~0.2.4",
