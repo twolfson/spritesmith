@@ -88,6 +88,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - padding `Number` - Padding to use between images
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
         - An example usage of `padding` can be found in the [Examples section](#padding)
+        - The default padding value is 0
     - engine `String|Object` - Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
         - An example usage of `engine` can be found in the [Examples section](#engine)
