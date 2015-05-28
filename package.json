@@ -18,12 +18,7 @@
   "bugs": {
     "url": "https://github.com/Ensighten/spritesmith/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/Ensighten/spritesmith/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "src/smith.js",
   "engines": {
     "node": ">= 0.8.0"
