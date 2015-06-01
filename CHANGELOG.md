@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.3.2 - Moved off of deprecated "licenses" to "license" in `package.json` via @pdehaan in #54
+
 1.3.1 - Added `node@0.12` and `iojs` to CI tests. Temporarily ignoring `iojs` due to `canvassmith` building issues
 
 1.3.0 - Upgraded to `pixelsmith@1.1.0` to pick up background fill support. Fixes twolfson/gulp.spritesmith#33
