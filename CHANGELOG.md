@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.4.0 - Upgraded to `pixelsmith@1.2.0` to add better PNG support
+
 1.3.2 - Moved off of deprecated "licenses" to "license" in `package.json` via @pdehaan in #54
 
 1.3.1 - Added `node@0.12` and `iojs` to CI tests. Temporarily ignoring `iojs` due to `canvassmith` building issues
