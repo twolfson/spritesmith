@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.4.1 - Added `foundry` for release
+
 1.4.0 - Upgraded to `pixelsmith@1.2.0` to add better PNG support
 
 1.3.2 - Moved off of deprecated "licenses" to "license" in `package.json` via @pdehaan in #54
