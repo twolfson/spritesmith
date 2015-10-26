@@ -36,6 +36,9 @@
   },
   "devDependencies": {
     "canvassmith": "~0.2.4",
+    "foundry": "~4.3.2",
+    "foundry-release-git": "~2.0.2",
+    "foundry-release-npm": "~2.0.2",
     "get-pixels": "~3.1.0",
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
@@ -48,5 +51,11 @@
     "sprite",
     "spritesheet",
     "css"
-  ]
+  ],
+  "foundry": {
+    "releaseCommands": [
+      "foundry-release-git",
+      "foundry-release-npm"
+    ]
+  }
 }
