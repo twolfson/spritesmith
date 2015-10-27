@@ -8,17 +8,26 @@ matrix:
   allow_failures:
     - node_js: "0.11"
 
+# Set up `apt` for `canvassmith`, based on `node-canvas` dependencies
+# https://github.com/Automattic/node-canvas/blob/v1.3.0/.travis.yml#L14-L19
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libcairo2-dev
+      - libjpeg8-dev
+      - libpango1.0-dev
+      - libgif-dev
+      - build-essential
+      - g++-4.8
+env:
+  - CXX=g++-4.8
+sudo: false
+
 before_install:
   # Upgrade npm to avoid semver issues
   - curl --location http://rawgit.com/twolfson/fix-travis-ci/master/lib/install.sh | bash -s
-
-install:
-  # Install canvassmith dependencies
-  - sudo apt-get update -y
-  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++ -y
-
-  # Install node modules
-  - npm install
 
 notifications:
   email: false
