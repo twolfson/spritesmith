@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.4.3 - Added newsletter badge to README
+
 1.4.2 - Updated supported node version to `>= 0.10.0`
 
 1.4.1 - Added `foundry` for release
