@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.4.4 - Moved to Gratipay to bit.ly for donations
+
 1.4.3 - Added newsletter badge to README
 
 1.4.2 - Updated supported node version to `>= 0.10.0`
