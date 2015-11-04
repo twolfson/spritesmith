@@ -25,5 +25,9 @@ addons:
 env:
   - CXX=g++-4.8
 
+before_install:
+  # Upgrade npm but not to 3.x.x yet due to dependency issues
+  - npm install -g npm@2.x.x
+
 notifications:
   email: false
