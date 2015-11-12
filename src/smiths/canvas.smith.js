@@ -4,11 +4,11 @@ function CanvasSmith(canvas) {
 CanvasSmith.prototype = {
   addImage: function (imgObj) {
     var img = imgObj.meta.img;
-    this.canvas.addImage(img, this.x, this.y);
+    this.canvas.addImage(img, imgObj.x, imgObj.y);
   },
   addImages: function (images) {
     var that = this;
-    images.forEach(function addEachImage (img) {
+    images.forEach(function addImage (img) {
       that.addImage(img);
     });
   },
