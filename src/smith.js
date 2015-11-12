@@ -49,12 +49,6 @@ function spritesmith(params, callback) {
     }
   }
 
-  // If there is a set parameter for the engine, use it
-  if (engine.set) {
-    var engineOpts = params.engineOpts || {};
-    engine.set(engineOpts);
-  }
-
   // Verify we are on a matching `specVersion`
   if (!semver.satisfies(engine.specVersion, SPEC_VERSION_RANGE)) {
     throw new Error('Expected `engine` to have `specVersion` within "' + SPEC_VERSION_RANGE + '" ' +
@@ -63,7 +57,7 @@ function spritesmith(params, callback) {
   }
 
   // Create our smiths
-  var engineSmith = new EngineSmith(engine);
+  var engineSmith = new EngineSmith(engine, params.engineOpts || {});
   var layer = new Layout(algorithmName, params.algorithmOpts);
   var padding = params.padding || 0;
   var exportOpts = params.exportOpts || {};

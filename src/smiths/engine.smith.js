@@ -1,6 +1,6 @@
 var async = require('async');
-function EngineSmith(engine) {
-  this.engine = engine;
+function EngineSmith(Engine, options) {
+  this.engine = new Engine(options);
 }
 
 EngineSmith.prototype = {
