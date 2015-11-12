@@ -4,25 +4,12 @@ function CanvasSmith(canvas) {
 CanvasSmith.prototype = {
   addImage: function (imgObj) {
     var img = imgObj.meta.img;
-    var x = imgObj.x;
-    var y = imgObj.y;
-    var canvas = this.canvas;
-    canvas.addImage(img, x, y);
+    this.canvas.addImage(img, this.x, this.y);
   },
   addImages: function (images) {
     var that = this;
-    images.forEach(function (img) {
+    images.forEach(function addEachImage (img) {
       that.addImage(img);
-    });
-  },
-  addImageMap: function (imageMap) {
-    var that = this;
-    var imageNames = Object.getOwnPropertyNames(imageMap);
-
-    // Add the images
-    imageNames.forEach(function (name) {
-      var image = imageMap[name];
-      that.addImage(image);
     });
   },
   export: function (options, cb) {
