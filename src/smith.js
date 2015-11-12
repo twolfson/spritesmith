@@ -1,12 +1,14 @@
 // Load in dependencies
 var async = require('async');
 var Layout = require('layout');
+var semver = require('semver');
 var EngineSmith = require('./smiths/engine.smith.js');
 var CanvasSmith = require('./smiths/canvas.smith.js');
 
 // Specify defaults
 var engineDefault = 'pixelsmith';
 var algorithmDefault = 'binary-tree';
+var SPEC_VERSION_RANGE = '>=1.1.0 <2.0.0';
 
 // Define our spritesmith utility
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
@@ -51,6 +53,14 @@ function spritesmith(params, callback) {
   if (engine.set) {
     var engineOpts = params.engineOpts || {};
     engine.set(engineOpts);
+  }
+
+  // Verify we are on a matching `specVersion`
+  if (!semver.satisfies(engine.specVersion, SPEC_VERSION_RANGE)) {
+    throw new Error('Expected `engine` to have `specVersion` within "' + SPEC_VERSION_RANGE + '" ' +
+      'but it was "' + engine.specVersion + '". ' +
+      'Please verify you are on the latest version of your engine:\n' +
+      '    `npm install my-engine@latest`');
   }
 
   // Create our smiths
