@@ -8,7 +8,7 @@ var CanvasSmith = require('./smiths/canvas.smith.js');
 // Specify defaults
 var engineDefault = 'pixelsmith';
 var algorithmDefault = 'binary-tree';
-var SPEC_VERSION_RANGE = '>=1.1.0 <2.0.0';
+var SPEC_VERSION_RANGE = '>=2.0.0 <3.0.0';
 
 // Define our spritesmith utility
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
