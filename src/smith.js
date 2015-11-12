@@ -58,9 +58,8 @@ function spritesmith(params, callback) {
   // Verify we are on a matching `specVersion`
   if (!semver.satisfies(engine.specVersion, SPEC_VERSION_RANGE)) {
     throw new Error('Expected `engine` to have `specVersion` within "' + SPEC_VERSION_RANGE + '" ' +
-      'but it was "' + engine.specVersion + '". ' +
-      'Please verify you are on the latest version of your engine:\n' +
-      '    `npm install my-engine@latest`');
+      'but it was "' + engine.specVersion + '". Please verify you are on the latest version of your engine: ' +
+      '`npm install my-engine@latest`');
   }
 
   // Create our smiths
