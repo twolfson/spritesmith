@@ -1,4 +1,6 @@
 # spritesmith changelog
+1.5.0 - Added requisite for specVersion to be provided by an engine
+
 1.4.6 - Moved to older version of npm to repair Travis CI
 
 1.4.5 - Updated link to specification
