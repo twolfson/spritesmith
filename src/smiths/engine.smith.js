@@ -26,9 +26,9 @@ EngineSmith.prototype = {
     ], cb);
   },
   // Helper to create canvas via engine
-  createCanvas: function (width, height, cb) {
+  createCanvas: function (width, height) {
     var engine = this.engine;
-    return engine.createCanvas(width, height, cb);
+    return engine.createCanvas(width, height);
   }
 };
 

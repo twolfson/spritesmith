@@ -136,9 +136,12 @@ function spritesmith(params, callback) {
 
       // If there are items, generate the canvas
       if (itemsExist) {
-        engine.createCanvas(width, height, cb);
-      } else {
+        var canvas = engineSmith.createCanvas(width, height);
+        process.nextTick(function handleNextTick () {
+          cb(null, canvas);
+        });
       // Otherwise, skip over potential errors/CPU
+      } else {
         cb(null, '');
       }
     },
