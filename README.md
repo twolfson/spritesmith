@@ -128,6 +128,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
                 - width `Number` - Width of the spritesheet
                 - height `Number` - Height of the spritesheet
     - TODO: Determine whether all errors should go to `image` or both
+    - TODO: Maybe make `info` be an event on a single stream?
 
 ### Algorithms
 Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
