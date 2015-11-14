@@ -115,7 +115,6 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - info `Object` - Readable stream that outputs coordinates and properties
         - Only 1 `data` event will be emitted from this stream
         - data `Object` - Container for spritesheet and coordinate data
-            - image `String` - Binary string representation of image
             - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
                 - `filepath` will be the same as provided in `params.src`
                 - [filepath] `Object` - Container for coordinate information
@@ -129,6 +128,22 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
                 - height `Number` - Height of the spritesheet
     - TODO: Determine whether all errors should go to `image` or both
     - TODO: Maybe make `info` be an event on a single stream?
+
+```
+retObj = spritsmith({})
+retObj.image.pipe(disk)
+retObj.info.on('data', function (data) {
+  data.coordinates
+});
+```
+
+```
+imgStream = spritsmith({})
+imgStream.pipe(disk)
+imgStream.on('info', function (info) {
+  info.coordinates
+});
+```
 
 ### Algorithms
 Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
