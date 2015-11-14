@@ -106,24 +106,28 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
         - For example `top-down` supports ignoring sorting via `{algorithmOpts: {sort: false}}`
         - See your algorithm's documentation for available options
             - https://github.com/twolfson/layout#algorithms
-- callback `Function` - Error-first function that receives compiled spritesheet and map
-    - `callback` should have signature `function (err, result)`
-    - err `Error|null` - If an error occurred, this will be it
-    - result `Object` - Container for result items
-        - image `String` - Binary string representation of image
-        - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
-            - `filepath` will be the same as provided in `params.src`
-            - [filepath] `Object` - Container for coordinate information
-                - For those keeping track, this is `result.coordinates[filepath]`
-                - x `Number` - Horizontal position of top-left corner of original sprite on spritesheet
-                - y `Number` - Vertical position of top-left corner of original sprite on spritesheet
-                - width `Number` - Width of original sprite
-                - height `Number` - Height of original sprite
-        - properties `Object` - Container for information about spritesheet
-            - width `Number` - Width of the spritesheet
-            - height `Number` - Height of the spritesheet
 
-[`pixelsmith`]: https://github.com/twolfson/pixelsmith
+**Returns:**
+
+- retObj `Object` - Object containing streams that will return data
+    - image `Object` - Readable stream that outputs compiled spritesheet
+        - `data` events emitted from this stream will be `Buffer` chunks of the image
+    - info `Object` - Readable stream that outputs coordinates and properties
+        - Only 1 `data` event will be emitted from this stream
+        - data `Object` - Container for spritesheet and coordinate data
+            - image `String` - Binary string representation of image
+            - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
+                - `filepath` will be the same as provided in `params.src`
+                - [filepath] `Object` - Container for coordinate information
+                    - For those keeping track, this is `result.coordinates[filepath]`
+                    - x `Number` - Horizontal position of top-left corner of original sprite on spritesheet
+                    - y `Number` - Vertical position of top-left corner of original sprite on spritesheet
+                    - width `Number` - Width of original sprite
+                    - height `Number` - Height of original sprite
+            - properties `Object` - Container for information about spritesheet
+                - width `Number` - Width of the spritesheet
+                - height `Number` - Height of the spritesheet
+    - TODO: Determine whether all errors should go to `image` or both
 
 ### Algorithms
 Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
@@ -158,6 +162,7 @@ Below is a list of known engines with their tradeoffs:
 #### pixelsmith
 [`pixelsmith`][] is a `node` based engine that runs on top of [`get-pixels`][] and [`save-pixels`][].
 
+[`pixelsmith`]: https://github.com/twolfson/pixelsmith
 [`get-pixels`]: https://github.com/mikolalysenko/get-pixels
 [`save-pixels`]: https://github.com/mikolalysenko/save-pixels
 
