@@ -132,6 +132,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
 ```
 retObj = spritsmith({})
 retObj.image.pipe(disk)
+// TODO: Use this format -- it's better for `pipe` handling of CSS
 retObj.info.on('data', function (data) {
   data.coordinates
 });
