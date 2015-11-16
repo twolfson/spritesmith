@@ -158,7 +158,7 @@ function spritesmith(params, callback) {
       // If there is no canvas, callback with an empty string
       var items = packedObj.items;
       if (!canvas) {
-        return cb(null, '');
+        return cb(null, new Buffer(0));
       }
 
       // Add the images onto canvas
@@ -172,12 +172,18 @@ function spritesmith(params, callback) {
       }
 
       // Export our canvas
-      var resultStream = canvas['export'](exportOpts);
-      resultStream.on('error', cb);
-      resultStream.pipe(concat(function handleResult (result) {
-        retObj.image = result;
-        cb(null);
+      var imageStream = canvas['export'](exportOpts);
+      imageStream.on('error', cb);
+      imageStream.pipe(concat(function handleResult (image) {
+        cb(null, image);
       }));
+    },
+    function saveImage (image, cb) {
+      // Save the image to the retObj
+      retObj.image = image;
+
+      // Callback
+      cb(null);
     },
     function smithCallbackData (cb) {
       // Callback with the return object
