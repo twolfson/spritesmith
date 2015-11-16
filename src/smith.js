@@ -150,7 +150,7 @@ function spritesmith(params, callback) {
         });
       // Otherwise, skip over potential errors/CPU
       } else {
-        cb(null, '');
+        cb(null, null);
       }
     },
     // Then, export the canvas
