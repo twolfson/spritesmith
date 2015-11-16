@@ -27,5 +27,5 @@ function retinaSpritesmith(params, callback) {
   }, params);
 
   // Generate both our spritesheets in parallel
-  // TODO: Thinking that these should
+  // TODO: Thinking that these should be more intertwined -- we want to assert image sizes before we actually generate a spritesheet
 }
