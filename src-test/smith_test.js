@@ -98,14 +98,14 @@ var spritesmithUtils = {
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + filename, result.image, 'binary');
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, result.image);
       }
 
       // Assert the actual image is the same expected
-      var actualImageStr = result.image;
+      var actualImageBuff = result.image;
       var expectedFilepath = path.join(expectedDir, filename);
       // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
-      getPixels(new Buffer(actualImageStr, 'binary'), 'image/png', function handleActualPixels (err, actualImage) {
+      getPixels(actualImageBuff, 'image/png', function handleActualPixels (err, actualImage) {
         if (err) { return done(err); }
         getPixels(expectedFilepath, function handleExpectedPixels (err, expectedImage) {
           if (err) { return done(err); }

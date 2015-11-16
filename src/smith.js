@@ -1,5 +1,6 @@
 // Load in dependencies
 var async = require('async');
+var concat = require('concat-stream');
 var Layout = require('layout');
 var semver = require('semver');
 
@@ -171,14 +172,12 @@ function spritesmith(params, callback) {
       }
 
       // Export our canvas
-      canvas['export'](exportOpts, cb);
-    },
-    function saveImageToRetObj (imgStr, cb) {
-      // Save the image to the retObj
-      retObj.image = imgStr;
-
-      // Callback
-      cb(null);
+      var resultStream = canvas['export'](exportOpts);
+      resultStream.on('error', cb);
+      resultStream.pipe(concat(function handleResult (result) {
+        retObj.image = result;
+        cb(null);
+      }));
     },
     function smithCallbackData (cb) {
       // Callback with the return object
