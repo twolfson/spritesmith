@@ -2,7 +2,6 @@
 var async = require('async');
 var Layout = require('layout');
 var semver = require('semver');
-var CanvasSmith = require('./smiths/canvas.smith.js');
 
 // Specify defaults
 var engineDefault = 'pixelsmith';
@@ -161,18 +160,18 @@ function spritesmith(params, callback) {
         return cb(null, '');
       }
 
-      // Create a CanvasSmithy
-      var canvasSmith = new CanvasSmith(canvas);
-
-      // Add the images onto canvasSmith
+      // Add the images onto canvas
       try {
-        canvasSmith.addImages(items);
+        items.forEach(function addImage (item) {
+          var img = item.meta.img;
+          canvas.addImage(img, item.x, item.y);
+        });
       } catch (err) {
         return cb(err);
       }
 
       // Export our canvas
-      canvasSmith['export'](exportOpts, cb);
+      canvas['export'](exportOpts, cb);
     },
     function saveImageToRetObj (imgStr, cb) {
       // Save the image to the retObj
@@ -187,10 +186,6 @@ function spritesmith(params, callback) {
     }
   ], callback);
 }
-
-// Add the smiths to spritesmith
-spritesmith.Layout = Layout;
-spritesmith.CanvasSmith = CanvasSmith;
 
 // Export spritesmith
 module.exports = spritesmith;
