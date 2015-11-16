@@ -18,6 +18,6 @@ spritesmith({
   }
 
   // Output the image
-  fs.writeFileSync(__dirname + '/canvassmith.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/canvassmith.png', result.image);
   result.coordinates, result.properties; // Coordinates and properties
 });

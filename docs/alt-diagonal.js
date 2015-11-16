@@ -17,6 +17,6 @@ spritesmith({
   }
 
   // Output the image
-  fs.writeFileSync(__dirname + '/alt-diagonal.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/alt-diagonal.png', result.image);
   result.coordinates, result.properties; // Coordinates and properties
 });

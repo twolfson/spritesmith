@@ -67,7 +67,7 @@ var spritesmith = require('spritesmith');
 // Generate our spritesheet
 var sprites = ['fork.png', 'github.png', 'twitter.png'];
 spritesmith({src: sprites}, function handleResult (err, result) {
-  result.image; // Binary string representation of image
+  result.image; // Buffer representation of image
   result.coordinates; // Object mapping filename to {x, y, width, height} of image
   result.properties; // Object with metadata about spritesheet {width, height}
 });
@@ -110,7 +110,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - `callback` should have signature `function (err, result)`
     - err `Error|null` - If an error occurred, this will be it
     - result `Object` - Container for result items
-        - image `String` - Binary string representation of image
+        - image `Buffer` - Binary represenation of image
         - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
             - `filepath` will be the same as provided in `params.src`
             - [filepath] `Object` - Container for coordinate information
@@ -242,7 +242,7 @@ spritesmith({
   }
 
   // Output the image
-  fs.writeFileSync(__dirname + '/alt-diagonal.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/alt-diagonal.png', result.image);
   result.coordinates, result.properties; // Coordinates and properties
 });
 ```
@@ -284,7 +284,7 @@ spritesmith({
   }
 
   // Output the image
-  fs.writeFileSync(__dirname + '/canvassmith.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/canvassmith.png', result.image);
   result.coordinates, result.properties; // Coordinates and properties
 });
 ```
@@ -316,7 +316,7 @@ spritesmith({
   }
 
   // Output the image
-  fs.writeFileSync(__dirname + '/padding.png', result.image, 'binary');
+  fs.writeFileSync(__dirname + '/padding.png', result.image);
   result.coordinates, result.properties; // Coordinates and properties
 });
 ```
