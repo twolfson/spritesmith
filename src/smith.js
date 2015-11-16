@@ -2,7 +2,6 @@
 var async = require('async');
 var Layout = require('layout');
 var semver = require('semver');
-var EngineSmith = require('./smiths/engine.smith.js');
 var CanvasSmith = require('./smiths/canvas.smith.js');
 
 // Specify defaults
@@ -18,7 +17,7 @@ function spritesmith(params, callback) {
   var retObj = {};
   var files = params.src;
   var engineName = params.engine || engineDefault;
-  var engine = engineName;
+  var Engine = engineName;
   var algorithmName = params.algorithm || algorithmDefault;
 
   // If the engine is a `require` path, attempt to load it
@@ -37,7 +36,7 @@ function spritesmith(params, callback) {
 
     // Attempt to load the engine
     try {
-      engine = require(engineName);
+      Engine = require(engineName);
     } catch (err) {
       console.error('Attempted to load spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed its dependencies. Documentation should be available at ');
@@ -50,14 +49,14 @@ function spritesmith(params, callback) {
   }
 
   // Verify we are on a matching `specVersion`
-  if (!semver.satisfies(engine.specVersion, SPEC_VERSION_RANGE)) {
+  if (!semver.satisfies(Engine.specVersion, SPEC_VERSION_RANGE)) {
     throw new Error('Expected `engine` to have `specVersion` within "' + SPEC_VERSION_RANGE + '" ' +
-      'but it was "' + engine.specVersion + '". Please verify you are on the latest version of your engine: ' +
+      'but it was "' + Engine.specVersion + '". Please verify you are on the latest version of your engine: ' +
       '`npm install my-engine@latest`');
   }
 
   // Create our smiths
-  var engineSmith = new EngineSmith(engine, params.engineOpts || {});
+  var engine = new Engine(params.engineOpts || {});
   var layer = new Layout(algorithmName, params.algorithmOpts);
   var padding = params.padding || 0;
   var exportOpts = params.exportOpts || {};
@@ -67,7 +66,16 @@ function spritesmith(params, callback) {
   async.waterfall([
     function grabImages (cb) {
       // Map the files into their image counterparts
-      engineSmith.createImages(files, cb);
+      engine.createImages(files, cb);
+    },
+    function saveImagePaths (images, cb) {
+      // Iterate over the images and save their paths
+      images.forEach(function saveImagePath (img, i) {
+        img._filepath = files[i];
+      });
+
+      // Callback with the images
+      cb(null, images);
     },
     // Then, add the images to our canvas (dry run)
     function smithAddFiles (images, cb) {
@@ -136,7 +144,7 @@ function spritesmith(params, callback) {
 
       // If there are items, generate the canvas
       if (itemsExist) {
-        var canvas = engineSmith.createCanvas(width, height);
+        var canvas = engine.createCanvas(width, height);
         process.nextTick(function handleNextTick () {
           cb(null, canvas);
         });
@@ -181,7 +189,6 @@ function spritesmith(params, callback) {
 }
 
 // Add the smiths to spritesmith
-spritesmith.EngineSmith = EngineSmith;
 spritesmith.Layout = Layout;
 spritesmith.CanvasSmith = CanvasSmith;
 
