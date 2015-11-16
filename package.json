@@ -32,11 +32,11 @@
   "dependencies": {
     "async": "~0.2.6",
     "layout": "~2.2.0",
-    "pixelsmith": "twolfson/canvassmith#dev/v2.0a",
+    "pixelsmith": "git+ssh://git@github.com:twolfson/pixelsmith#dev/v2.0a",
     "semver": "~5.0.3"
   },
   "devDependencies": {
-    "canvassmith": "twolfson/canvassmith#dev/v2.0a",
+    "canvassmith": "git+ssh://git@github.com:twolfson/canvassmith#dev/v2.0a",
     "foundry": "~4.3.2",
     "foundry-release-git": "~2.0.2",
     "foundry-release-npm": "~2.0.2",
@@ -44,7 +44,7 @@
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
-    "phantomjssmith": "twolfson/canvassmith#dev/v2.0a",
+    "phantomjssmith": "git+ssh://git@github.com:twolfson/phantomjssmith#dev/v2.0a",
     "twolfson-style": "~1.6.0",
     "underscore": "~1.4.4"
   },
