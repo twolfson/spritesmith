@@ -34,7 +34,8 @@
     "concat-stream": "~1.5.1",
     "layout": "~2.2.0",
     "pixelsmith": "git+ssh://git@github.com:twolfson/pixelsmith#dev/v2.0b",
-    "semver": "~5.0.3"
+    "semver": "~5.0.3",
+    "vinyl": "~1.1.0"
   },
   "devDependencies": {
     "canvassmith": "git+ssh://git@github.com:twolfson/canvassmith#dev/v2.0b",

@@ -3,6 +3,7 @@ var async = require('async');
 var concat = require('concat-stream');
 var Layout = require('layout');
 var semver = require('semver');
+var Vinyl = require('vinyl');
 
 // Specify defaults
 var engineDefault = 'pixelsmith';
@@ -71,7 +72,8 @@ function spritesmith(params, callback) {
     function saveImagePaths (images, cb) {
       // Iterate over the images and save their paths
       images.forEach(function saveImagePath (img, i) {
-        img._filepath = files[i];
+        var file = files[i];
+        img._filepath = Vinyl.isVinyl(file) ? file.path : file;
       });
 
       // Callback with the images
