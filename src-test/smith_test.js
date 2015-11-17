@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
 var getPixels = require('get-pixels');
+var Vinyl = require('vinyl');
 var spritesmith = require('../src/smith.js');
 
 // Set up paths
@@ -172,6 +173,24 @@ describe('An array of sprites', function () {
     it('renders an unsorted spritesheet', spritesmithUtils.assertSpritesheet('unsorted.pixelsmith.png'));
     it('has the proper coordinates', spritesmithUtils.assertCoordinates('unsorted.coordinates.json'));
     it('has the proper properties', spritesmithUtils.assertProps('unsorted.properties.json'));
+  });
+});
+
+describe('An array of vinyl object sprites', function () {
+  describe('when processed via spritesmith', function () {
+    spritesmithUtils.process({
+      sprites: multipleSprites.map(function createVinylObject (filepath) {
+        return new Vinyl({
+          path: filepath,
+          contents: fs.readFileSync(filepath)
+        });
+      })
+    });
+
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a binary-tree spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('binaryTree.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('binaryTree.properties.json'));
   });
 });
 
