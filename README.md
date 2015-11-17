@@ -84,7 +84,10 @@ If you would like to adjust how images are laid out, see `params.algorithm` and 
 Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
 
 - params `Object` - Container for paramters
-    - src `String[]` - Array of filepaths for images to include in spritesheet
+    - src `String[]|Object[]` - Array of filepaths for images to include in spritesheet
+        - If a `String` is provided, then it's used as the image's filepath
+        - If an `Object` is provided, then it should be a [Vinyl][] object pointing to the source image
+            - Depending on the engine, we may/may not use the contents (e.g. `gmsmith` uses filepaths only)
     - padding `Number` - Padding to use between images
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
         - An example usage of `padding` can be found in the [Examples section](#padding)
@@ -124,6 +127,7 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
             - height `Number` - Height of the spritesheet
 
 [`pixelsmith`]: https://github.com/twolfson/pixelsmith
+[Vinyl]: https://github.com/gulpjs/vinyl
 
 ### Algorithms
 Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
