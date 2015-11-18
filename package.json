@@ -33,11 +33,11 @@
     "async": "~0.2.6",
     "concat-stream": "~1.5.1",
     "layout": "~2.2.0",
-    "pixelsmith": "~1.3.4",
+    "pixelsmith": "~2.0.0",
     "semver": "~5.0.3"
   },
   "devDependencies": {
-    "canvassmith": "~0.4.4",
+    "canvassmith": "~1.0.0",
     "foundry": "~4.3.2",
     "foundry-release-git": "~2.0.2",
     "foundry-release-npm": "~2.0.2",
@@ -45,7 +45,7 @@
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
-    "phantomjssmith": "~0.7.5",
+    "phantomjssmith": "~1.0.0",
     "twolfson-style": "~1.6.0",
     "underscore": "~1.4.4",
     "vinyl": "~1.1.0"
