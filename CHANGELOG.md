@@ -1,4 +1,6 @@
 # spritesmith changelog
+2.0.0 - Upgraded to `spritesmith-engine-spec@2.0.0`
+
 1.5.0 - Added requisite for specVersion to be provided by an engine
 
 1.4.6 - Moved to older version of npm to repair Travis CI
