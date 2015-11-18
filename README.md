@@ -60,7 +60,13 @@ We have moved to `binary-tree` as the default `algorithm`. We changed this to gi
 ## Breaking changes in 2.0.0
 We have moved from `result.image` being a binary string to it being a `Buffer`. This is to use more canonical conventions in Node.js.
 
-We have moved from [spritesmith-engine-spec@1.1.0][] to [spritesmith-engine-spec@2.0.0][]. This is add support for [Vinyl][] objects via `src` as well as future-proof ourselves for forwarding streaming outputs.
+We have moved from [spritesmith-engine-spec@1.1.0][] to [spritesmith-engine-spec@2.0.0][]. This means if you use an custom engine (e.g. `gmsmith`, `canvassmith`), then you will need to upgrade it.
+
+```bash
+npm install gmsmith@latest --save-dev
+```
+
+By upgrading the engine, we added support for [Vinyl][] objects via `src` as well as future-proof ourselves for forwarding streaming outputs.
 
 [spritesmith-engine-spec@1.1.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/1.1.0
 [spritesmith-engine-spec@2.0.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/2.0.0
