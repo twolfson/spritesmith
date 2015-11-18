@@ -57,6 +57,14 @@ We have moved to `pixelsmith` as the default `engine`. It is `node` based and sh
 
 We have moved to `binary-tree` as the default `algorithm`. We changed this to give the best possible packing out of the box. If you were using `top-down` as the default, please specify it in your configuration.
 
+## Breaking changes in 2.0.0
+We have moved from `result.image` being a binary string to it being a `Buffer`. This is to use more canonical conventions in Node.js.
+
+We have moved from [spritesmith-engine-spec@1.1.0][] to [spritesmith-engine-spec@2.0.0][]. This is add support for [Vinyl][] objects via `src` as well as future-proof ourselves for forwarding streaming outputs.
+
+[spritesmith-engine-spec@1.1.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/1.1.0
+[spritesmith-engine-spec@2.0.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/2.0.0
+
 ## Getting started
 `spritesmith` can be installed via npm: `npm install spritesmith`
 
