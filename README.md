@@ -63,7 +63,7 @@ We have moved from `result.image` being a binary string to it being a `Buffer`. 
 We have moved from [spritesmith-engine-spec@1.1.0][] to [spritesmith-engine-spec@2.0.0][]. This means if you use an custom engine (e.g. `gmsmith`, `canvassmith`), then you will need to upgrade it.
 
 ```bash
-npm install gmsmith@latest --save-dev
+npm install my-engine-smith@latest --save-dev
 ```
 
 By upgrading the engine, we added support for [Vinyl][] objects via `src` as well as future-proof ourselves for forwarding streaming outputs.
