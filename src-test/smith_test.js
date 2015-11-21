@@ -273,7 +273,8 @@ describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
     });
 
     it('calls back with an error', function () {
-      assert.notEqual(this.err, null);
+      assert.notEqual(this.imgErr, undefined);
+      assert.notEqual(this.infoErr, undefined);
     });
   });
 });
