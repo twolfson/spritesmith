@@ -2,7 +2,6 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var _ = require('underscore');
 var getPixels = require('get-pixels');
 var Vinyl = require('vinyl');
 var spritesmith = require('../src/smith.js');
@@ -20,15 +19,11 @@ var multipleSprites = [
 
 // Define common utilities
 var spritesmithUtils = {
-  process: function (params) {
-    before(function processViaSpritesmithFn (done) {
-      // Load in params and add on to src
-      var options = params.options || {};
-      var spritesmithParams = _.extend({src: params.sprites}, options);
-
+  run: function (params) {
+    before(function runFn (done) {
       // Attempt to spritesmith out the sprites
       var that = this;
-      spritesmith(spritesmithParams, function saveResult (err, result) {
+      spritesmith(params, function saveResult (err, result) {
         // Save the result and callback
         that.err = err;
         that.result = result;
@@ -121,8 +116,8 @@ var spritesmithUtils = {
 // Start our tests
 describe('An array of sprites', function () {
   describe('when processed via spritesmith', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites
+    spritesmithUtils.run({
+      src: multipleSprites
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -132,11 +127,9 @@ describe('An array of sprites', function () {
   });
 
   describe('when converted from left to right', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        algorithm: 'left-right'
-      }
+    spritesmithUtils.run({
+      src: multipleSprites,
+      algorithm: 'left-right'
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -146,12 +139,10 @@ describe('An array of sprites', function () {
   });
 
   describe('when provided with a padding parameter', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        algorithm: 'binary-tree',
-        padding: 2
-      }
+    spritesmithUtils.run({
+      src: multipleSprites,
+      algorithm: 'binary-tree',
+      padding: 2
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -161,12 +152,10 @@ describe('An array of sprites', function () {
   });
 
   describe('when told not to sort', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        algorithm: 'top-down',
-        algorithmOpts: {sort: false}
-      }
+    spritesmithUtils.run({
+      src: multipleSprites,
+      algorithm: 'top-down',
+      algorithmOpts: {sort: false}
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -178,8 +167,8 @@ describe('An array of sprites', function () {
 
 describe('An array of vinyl object sprites', function () {
   describe('when processed via spritesmith', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites.map(function createVinylObject (filepath) {
+    spritesmithUtils.run({
+      src: multipleSprites.map(function createVinylObject (filepath) {
         return new Vinyl({
           path: filepath,
           contents: fs.readFileSync(filepath)
@@ -198,8 +187,8 @@ describe('An empty array', function () {
   var emptySprites = [];
 
   describe('when processed via spritesmith', function () {
-    spritesmithUtils.process({
-      sprites: emptySprites
+    spritesmithUtils.run({
+      src: emptySprites
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -215,11 +204,9 @@ describe('An empty array', function () {
 
 describe('`spritesmith` using a custom engine via string', function () {
   describe('processing a set of images', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        engine: 'phantomjssmith'
-      }
+    spritesmithUtils.run({
+      src: multipleSprites,
+      engine: 'phantomjssmith'
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -229,11 +216,9 @@ describe('`spritesmith` using a custom engine via string', function () {
 
 describe('`spritesmith` using a custom engine via an object', function () {
   describe('processing a set of images', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        engine: require('phantomjssmith')
-      }
+    spritesmithUtils.run({
+      src: multipleSprites,
+      engine: require('phantomjssmith')
     });
 
     it('has no errors', spritesmithUtils.assertNoError());
@@ -250,11 +235,9 @@ try {
 var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
 describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
   describe('processing a bad image', function () {
-    spritesmithUtils.process({
-      sprites: [path.join(spriteDir, 'malformed.png')],
-      options: {
-        engine: 'canvassmith'
-      }
+    spritesmithUtils.run({
+      src: [path.join(spriteDir, 'malformed.png')],
+      engine: 'canvassmith'
     });
 
     it('calls back with an error', function () {
