@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "async": "~0.2.6",
-    "concat-stream": "~1.5.1",
     "layout": "~2.2.0",
     "pixelsmith": "~2.0.0",
     "semver": "~5.0.3",

@@ -1,6 +1,5 @@
 // Load in dependencies
 var async = require('async');
-var concat = require('concat-stream');
 var Layout = require('layout');
 var semver = require('semver');
 var through2 = require('through2');
@@ -15,7 +14,6 @@ var SPEC_VERSION_RANGE = '>=2.0.0 <3.0.0';
 // Gist of result: {image: binary, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}}
 function spritesmith(params) {
   // Set up return items and fallback parameters
-  var retObj = {};
   var files = params.src;
   var engineName = params.engine || engineDefault;
   var Engine = engineName;
@@ -66,6 +64,7 @@ function spritesmith(params) {
   // Generate streams for returning
   var infoStream = through2();
   var imageStream = through2();
+  var infoObj = {};
 
   // In a waterfall fashion
   async.waterfall([
@@ -125,7 +124,7 @@ function spritesmith(params) {
       });
 
       // Save the coordinates
-      retObj.coordinates = coordinates;
+      infoObj.coordinates = coordinates;
 
       // Continue
       cb(null);
@@ -145,10 +144,14 @@ function spritesmith(params) {
       }
 
       // Export the total width and height of the generated canvas
-      retObj.properties = {
+      infoObj.properties = {
         width: width,
         height: height
       };
+
+      // Emit our info
+      infoStream.push(infoObj);
+      infoStream.push(null);
 
       // If there are items, generate the canvas
       if (itemsExist) {
@@ -180,27 +183,17 @@ function spritesmith(params) {
       }
 
       // Export our canvas
-      var imageStream = canvas['export'](exportOpts);
-      imageStream.on('error', cb);
-      imageStream.pipe(concat(function handleResult (image) {
-        cb(null, image);
-      }));
-    },
-    function saveImage (image, cb) {
-      // Save the image to the retObj
-      retObj.image = image;
-
-      // Callback
-      cb(null);
-    },
-    function smithCallbackData (cb) {
-      // Callback with the return object
-      cb(null, retObj);
+      var exportStream = canvas['export'](exportOpts);
+      exportStream.on('error', function forwardError (err) {
+        imageStream.emit('error', err);
+      });
+      exportStream.pipe(imageStream);
     }
   ], function handleError (err) {
-    // If there was an error, emit it on the info stream
+    // If there was an error, emit it on the image stream
+    // DEV: We use `imageStream` since it's not yet closed
     if (err) {
-      infoStream.emit('error', err);
+      imageStream.emit('error', err);
     }
   });
 
