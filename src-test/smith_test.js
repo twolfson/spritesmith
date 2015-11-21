@@ -23,29 +23,15 @@ var spritesmithUtils = {
     before(function runFn (done) {
       // Attempt to process the sprites via Spritesmith
       var that = this;
-      var spriteData = Spritesmith.run(params);
-
-      // Save our info for later
-      this.info = spriteData.info;
-
-      // Handle image via concatenation
-      var errEncountered = false;
-      spriteData.img.on('error', function saveImgError (err) {
-        errEncountered = true;
-        that.imgErr = err;
+      Spritesmith.run(params, function handleRun (err, result) {
+        that.err = err;
+        that.result = result;
         done();
       });
-      spriteData.img.pipe(concat(, function saveImg (buff) {
-        that.img = buff;
-        if (!errEncountered) {
-          done();
-        }
-      }));
     });
     after(function cleanup () {
-      delete this.info;
-      delete this.imgErr;
-      delete this.img;
+      delete this.err;
+      delete this.result;
     });
   },
 
@@ -103,7 +89,7 @@ var spritesmithUtils = {
   assertSpritesheet: function (filename) {
     return function assertSpritesheetFn (done) {
       // Load our variables
-      var actualImageBuff = this.img;
+      var actualImageBuff = this.result.img;
       var expectedFilepath = path.join(expectedDir, filename);
 
       // DEV: Write out to actual_files
@@ -206,7 +192,7 @@ describe('An empty array', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders an empty spritesheet', function () {
-      assert.deepEqual(this.img, new Buffer(0));
+      assert.deepEqual(this.result.img, new Buffer(0));
     });
     it('returns an empty coordinate mapping', function () {
       assert.deepEqual(this.result.coordinates, {});
