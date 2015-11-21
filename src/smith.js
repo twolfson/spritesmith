@@ -94,9 +94,25 @@ Spritesmith.run = function (params) {
   return retObj;
 };
 Spritesmith.prototype = {
-  createImages: function (files, cb) {
+  createImages: function (files, callback) {
     // Forward image creation to our engine
-    this.engine.createImages(files, cb);
+    this.engine.createImages(files, function handleImags (err, images) {
+      // If there was an error, callback with it
+      if (err) {
+        return callback(err);
+      }
+
+      // Otherwise, iterate over the images and save their paths (required for coordinates)
+      images.forEach(function saveImagePath (img, i) {
+        // DEV: We don't use `Vinyl.isVinyl` since that was introduced in Sep 2015
+        //   We want some backwards compatibility with older setups
+        var file = files[i];
+        img._filepath = typeof file === 'object' ? file.path : file;
+      });
+
+      // Callback with our images
+      callback(null, images);
+    });
   },
   processImages: function (images, options) {
     // Set up our algorithm/layout placement and export configuration
@@ -112,16 +128,9 @@ Spritesmith.prototype = {
     var infoObj = {};
 
     // After we return the streams
+    var that = this;
     process.nextTick(function handleNextTick () {
-      // Iterate over the images and save their paths
-      images.forEach(function saveImagePath (img, i) {
-        // DEV: We don't use `Vinyl.isVinyl` since that was introduced in Sep 2015
-        //   We want some backwards compatibility with older setups
-        var file = files[i];
-        img._filepath = typeof file === 'object' ? file.path : file;
-      });
-
-      // Then, add the images to our canvas (dry run)
+      // Add our images to our canvas (dry run)
       images.forEach(function (img) {
         // Save the non-padded properties as meta data
         var width = img.width;
@@ -189,7 +198,7 @@ Spritesmith.prototype = {
       // Otherwise, generate and export our canvas
       } else {
         // Crete our canvas
-        canvas = engine.createCanvas(width, height);
+        canvas = that.engine.createCanvas(width, height);
 
         // Add the images onto canvas
         try {
@@ -219,5 +228,5 @@ Spritesmith.prototype = {
   }
 };
 
-// Export spritesmith
-module.exports = spritesmith;
+// Export Spritesmith
+module.exports = Spritesmith;
