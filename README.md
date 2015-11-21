@@ -1,5 +1,7 @@
 # spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith) [![Subscribe to newsletter](https://img.shields.io/badge/newsletter-subscribe-blue.svg)](http://eepurl.com/bD4qkf)
 
+// TODO: Document breaking changes (mostly that we are a class now and `spritesmith` is `Spritesmith.run`)
+
 Convert images into [spritesheets][] and coordinate maps.
 
 [spritesheets]: http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29#Sprites_by_CSS
@@ -71,11 +73,11 @@ By upgrading the engine, we added support for [Vinyl][] objects via `src` as wel
 
 ```js
 // Load in dependencies
-var spritesmith = require('spritesmith');
+var Spritesmtih = require('spritesmith');
 
 // Generate our spritesheet
 var sprites = ['fork.png', 'github.png', 'twitter.png'];
-spritesmith({src: sprites}, function handleResult (err, result) {
+Spritesmith.run({src: sprites}, function handleResult (err, result) {
   result.image; // Buffer representation of image
   result.coordinates; // Object mapping filename to {x, y, width, height} of image
   result.properties; // Object with metadata about spritesheet {width, height}
