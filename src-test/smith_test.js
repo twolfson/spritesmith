@@ -6,7 +6,7 @@ var async = require('async');
 var concat = require('concat-stream');
 var getPixels = require('get-pixels');
 var Vinyl = require('vinyl');
-var spritesmith = require('../src/smith.js');
+var Spritesmith = require('../src/smith.js');
 
 // Set up paths
 var spriteDir = path.join(__dirname, 'test_sprites');
@@ -23,9 +23,9 @@ var multipleSprites = [
 var spritesmithUtils = {
   run: function (params) {
     before(function runFn (done) {
-      // Attempt to spritesmith out the sprites
+      // Attempt to process the sprites via Spritesmith
       var that = this;
-      var spriteData = spritesmith(params);
+      var spriteData = Spritesmith.run(params);
       async.parallel([
         function handleInfoStream (cb) {
           var errEncountered = false;
