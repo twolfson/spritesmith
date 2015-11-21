@@ -52,11 +52,6 @@ and a coordinate map:
 [support-us]: http://bit.ly/support-spritesmith2
 [twitter]: https://twitter.com/intent/tweet?text=Spritesheets%20made%20easy%20via%20spritesmith&url=https%3A%2F%2Fgithub.com%2FEnsighten%2Fspritesmith&via=twolfsn
 
-## Breaking changes in 1.0.0
-We have moved to `pixelsmith` as the default `engine`. It is `node` based and should support your sprites. Any other engines must be installed outside of `spritesmith`. This will lead to cleaner and faster installations.
-
-We have moved to `binary-tree` as the default `algorithm`. We changed this to give the best possible packing out of the box. If you were using `top-down` as the default, please specify it in your configuration.
-
 ## Breaking changes in 2.0.0
 We have moved from `result.image` being a binary string to it being a `Buffer`. This is to use more canonical conventions in Node.js.
 
