@@ -30,13 +30,13 @@
     "test": "npm run precheck && mocha src-test/ --timeout 60000 --reporter dot && npm run lint"
   },
   "dependencies": {
-    "async": "~0.2.6",
     "layout": "~2.2.0",
     "pixelsmith": "~2.0.0",
     "semver": "~5.0.3",
     "through2": "~2.0.0"
   },
   "devDependencies": {
+    "async": "~1.5.0",
     "canvassmith": "~1.0.0",
     "concat-stream": "~1.5.1",
     "foundry": "~4.3.2",

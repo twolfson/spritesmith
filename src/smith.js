@@ -1,5 +1,4 @@
 // Load in dependencies
-var async = require('async');
 var Layout = require('layout');
 var semver = require('semver');
 var through2 = require('through2');
@@ -71,7 +70,7 @@ Spritesmith.run = function (params) {
   var retObj = Spritesmith.generateStreams();
 
   // In an async fashion, create our images
-  spritesmith.createImages(function handleImages (err, images) {
+  spritesmith.createImages(params.src, function handleImages (err, images) {
     // If there was an error, emit it on the imgStream
     if (err) {
       retObj.img.emit('error', err);
