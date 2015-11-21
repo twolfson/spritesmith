@@ -67,8 +67,8 @@ var spritesmithUtils = {
 
   assertNoError: function () {
     return function assertNoErrorFn () {
-      assert.strictEqual(this.imgErr, null);
-      assert.strictEqual(this.infoErr, null);
+      assert.strictEqual(this.imgErr, undefined);
+      assert.strictEqual(this.infoErr, undefined);
     };
   },
 

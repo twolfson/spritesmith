@@ -62,7 +62,7 @@ function spritesmith(params) {
   var packedObj;
 
   // Generate streams for returning
-  var infoStream = through2();
+  var infoStream = through2.obj();
   var imgStream = through2();
   var infoObj = {};
 
