@@ -54,7 +54,7 @@ function Spritesmith(params) {
   this.engine = new Engine(params.engineOpts || {});
 }
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
-// Gist of result: img: buffer, info: {coordinates: {filepath: {x, y, width, height}}, properties: {width, height}}
+// Gist of result: img: buffer, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}
 Spritesmith.run = function (params, callback) {
   // Create a new spritesmith with our parameters
   var spritesmith = new Spritesmith(params);
@@ -77,7 +77,8 @@ Spritesmith.run = function (params, callback) {
     spriteData.img.pipe(concat({encoding: 'buffer'}, function handleImg (buff) {
       // Callback with all our info
       callback(null, {
-        info: spriteData.info,
+        coordinates: spriteData.coordinates,
+        properties: spriteData.properties,
         img: buff
       });
     }));
@@ -114,7 +115,7 @@ Spritesmith.prototype = {
 
     // Generate stream and info for returning
     var imgStream = through2();
-    var infoObj = {};
+    var retObj = {img: imgStream};
 
     // Add our images to our canvas (dry run)
     images.forEach(function (img) {
@@ -151,7 +152,7 @@ Spritesmith.prototype = {
     });
 
     // Save the coordinates
-    infoObj.coordinates = coordinates;
+    retObj.coordinates = coordinates;
 
     // Then, generate a canvas
     // Grab and fallback the width/height
@@ -167,7 +168,7 @@ Spritesmith.prototype = {
     }
 
     // Export the total width and height of the generated canvas
-    infoObj.properties = {
+    retObj.properties = {
       width: width,
       height: height
     };
@@ -205,11 +206,8 @@ Spritesmith.prototype = {
       }
     });
 
-    // Return our stream and info
-    return {
-      info: infoObj,
-      img: imgStream
-    };
+    // Return our info
+    return retObj;
   }
 };
 
