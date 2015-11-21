@@ -42,13 +42,17 @@ var spritesmithUtils = {
           }));
         },
         function handleImgStream (cb) {
+          var errEncountered = false;
           spriteData.img.on('error', function saveImgError (err) {
+            errEncountered = true;
             that.imgErr = err;
             cb();
           });
           spriteData.img.pipe(concat(function saveImg (buff) {
             that.img = buff;
-            cb();
+            if (!errEncountered) {
+              cb();
+            }
           }));
         }
       ], done);
