@@ -2,7 +2,6 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var async = require('async');
 var concat = require('concat-stream');
 var getPixels = require('get-pixels');
 var Vinyl = require('vinyl');
@@ -26,40 +25,26 @@ var spritesmithUtils = {
       // Attempt to process the sprites via Spritesmith
       var that = this;
       var spriteData = Spritesmith.run(params);
-      async.parallel([
-        function handleInfoStream (cb) {
-          var errEncountered = false;
-          spriteData.info.on('error', function saveInfoError (err) {
-            errEncountered = true;
-            that.infoErr = err;
-            cb();
-          });
-          spriteData.info.pipe(concat({encoding: 'object'}, function saveInfo (infoArr) {
-            that.infoArr = infoArr;
-            if (!errEncountered) {
-              cb();
-            }
-          }));
-        },
-        function handleImgStream (cb) {
-          var errEncountered = false;
-          spriteData.img.on('error', function saveImgError (err) {
-            errEncountered = true;
-            that.imgErr = err;
-            cb();
-          });
-          spriteData.img.pipe(concat({encoding: 'buffer'}, function saveImg (buff) {
-            that.img = buff;
-            if (!errEncountered) {
-              cb();
-            }
-          }));
+
+      // Save our info for later
+      this.info = spriteData.info;
+
+      // Handle image via concatenation
+      var errEncountered = false;
+      spriteData.img.on('error', function saveImgError (err) {
+        errEncountered = true;
+        that.imgErr = err;
+        done();
+      });
+      spriteData.img.pipe(concat({encoding: 'buffer'}, function saveImg (buff) {
+        that.img = buff;
+        if (!errEncountered) {
+          done();
         }
-      ], done);
+      }));
     });
-    after(function cleanupResult () {
-      delete this.infoErr;
-      delete this.infoArr;
+    after(function cleanup () {
+      delete this.info;
       delete this.imgErr;
       delete this.img;
     });
@@ -68,27 +53,25 @@ var spritesmithUtils = {
   assertNoError: function () {
     return function assertNoErrorFn () {
       assert.strictEqual(this.imgErr, undefined);
-      assert.strictEqual(this.infoErr, undefined);
     };
   },
 
   assertCoordinates: function (filename) {
     return function assertCoordinatesFn () {
       // Load in the coordinates
-      assert.strictEqual(this.infoArr.length, 1);
-      var result = this.infoArr[0];
+      var info = this.info;
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.coordinates, null, 4));
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(info.coordinates, null, 4));
       }
 
       // Normalize the actual coordinates
       var expectedCoords = require(expectedDir + '/' + filename);
-      var actualCoords = result.coordinates;
+      var actualCoords = info.coordinates;
       var normCoords = {};
-      assert(actualCoords, 'Result does not have a coordinates property');
+      assert(actualCoords, '`info` does not have a coordinates property');
 
       Object.getOwnPropertyNames(actualCoords).forEach(function (filepath) {
         var file = path.relative(spriteDir, filepath);
@@ -103,17 +86,16 @@ var spritesmithUtils = {
   assertProps: function (filename) {
     return function assertPropsFn () {
       // Load in the properties
-      assert.strictEqual(this.infoArr.length, 1);
-      var result = this.infoArr[0];
+      var info = this.info;
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.properties, null, 4));
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(info.properties, null, 4));
       }
 
       // Assert that the returned properties equals the expected properties
-      var actualProps = result.properties;
+      var actualProps = info.properties;
       var expectedProps = require(expectedDir + '/' + filename);
       assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
     };
@@ -228,8 +210,7 @@ describe('An empty array', function () {
       assert.deepEqual(this.img, new Buffer(0));
     });
     it('returns an empty coordinate mapping', function () {
-      assert.strictEqual(this.infoArr.length, 1);
-      assert.deepEqual(this.infoArr[0].coordinates, {});
+      assert.deepEqual(this.info.coordinates, {});
     });
     it('has the proper properties', spritesmithUtils.assertProps('empty.properties.json'));
   });
