@@ -193,7 +193,7 @@ function spritesmith(params) {
   ], function handleError (err) {
     // If there was an error, emit it on the image stream
     // DEV: We use `imgStream` since it's not yet closed
-    // TODO: Make this more granular
+    // TODO: Make this more granular (e.g. during createImages vs processImages, should be different)
     if (err) {
       imgStream.emit('error', err);
     }
