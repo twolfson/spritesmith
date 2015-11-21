@@ -2,7 +2,6 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var concat = require('concat-stream');
 var getPixels = require('get-pixels');
 var Vinyl = require('vinyl');
 var Spritesmith = require('../src/smith.js');
@@ -36,7 +35,7 @@ var spritesmithUtils = {
         that.imgErr = err;
         done();
       });
-      spriteData.img.pipe(concat({encoding: 'buffer'}, function saveImg (buff) {
+      spriteData.img.pipe(concat(, function saveImg (buff) {
         that.img = buff;
         if (!errEncountered) {
           done();

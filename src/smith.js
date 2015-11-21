@@ -1,4 +1,5 @@
 // Load in dependencies
+var concat = require('concat-stream');
 var Layout = require('layout');
 var semver = require('semver');
 var through2 = require('through2');
@@ -52,45 +53,35 @@ function Spritesmith(params) {
   // Create and save our engine for later
   this.engine = new Engine(params.engineOpts || {});
 }
-Spritesmith.generateStreams = function () {
-  return {
-    info: through2.obj(),
-    img: through2()
-  };
-};
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
-// Gist of result:
-//    img: Stream(binary)
-//    info: Stream({coordinates: {filepath: {x, y, width, height}}, properties: {width, height}})
-Spritesmith.run = function (params) {
+// Gist of result: img: buffer, info: {coordinates: {filepath: {x, y, width, height}}, properties: {width, height}}
+Spritesmith.run = function (params, callback) {
   // Create a new spritesmith with our parameters
   var spritesmith = new Spritesmith(params);
 
-  // Generate streams for returning
-  var retObj = Spritesmith.generateStreams();
-
   // In an async fashion, create our images
   spritesmith.createImages(params.src, function handleImages (err, images) {
-    // If there was an error, emit it on the imgStream
+    // If there was an error, callback with it
     if (err) {
-      retObj.img.emit('error', err);
-      return;
+      return callback(err);
     }
 
-    // Otherwise, process our images and forward errors/data
+    // Otherwise, process our images, concat our img, and callback
+    // DEV: We don't want to risk dropped `data` events due to calling back with a stream
     var spriteData = spritesmith.processImages(images, params);
-    spriteData.info.on('error', function forwardInfoError (err) {
-      retObj.info.emit('error', err);
-    });
-    spriteData.info.pipe(retObj.info);
-    spriteData.img.on('error', function forwardImgError (err) {
-      retObj.img.emit('error', err);
-    });
-    spriteData.img.pipe(retObj.img);
-  });
 
-  // Return our streams
-  return retObj;
+    // If an error occurs on the image, then callback with it
+    spriteData.img.on('error', callback);
+
+    // Concatenate our image into a buffer
+    spriteData.img.pipe(concat({encoding: 'buffer'}, function handleImg (buff) {
+      // Callback with all our info
+      callback(null, {
+        info: spriteData.info,
+        img: buff
+      });
+    }));
+  });
 };
 Spritesmith.prototype = {
   createImages: function (files, callback) {
