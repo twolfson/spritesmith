@@ -28,13 +28,17 @@ var spritesmithUtils = {
       var spriteData = spritesmith(params);
       async.parallel([
         function handleInfoStream (cb) {
+          var errEncountered = false;
           spriteData.info.on('error', function saveInfoError (err) {
+            errEncountered = true;
             that.infoErr = err;
             cb();
           });
           spriteData.info.pipe(concat(function saveInfo (infoArr) {
             that.infoArr = infoArr;
-            cb();
+            if (!errEncountered) {
+              cb();
+            }
           }));
         },
         function handleImgStream (cb) {
