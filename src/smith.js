@@ -121,74 +121,69 @@ Spritesmith.prototype = {
     var exportOpts = options.exportOpts || {};
     var packedObj;
 
-    // Generate streams for returning
-    var infoStream = through2.obj();
+    // Generate stream and info for returning
     var imgStream = through2();
     var infoObj = {};
 
-    // After we return the streams
+    // Add our images to our canvas (dry run)
+    images.forEach(function (img) {
+      // Save the non-padded properties as meta data
+      var width = img.width;
+      var height = img.height;
+      var meta = {img: img, actualWidth: width, actualHeight: height};
+
+      // Add the item with padding to our layer
+      layer.addItem({
+        width: width + padding,
+        height: height + padding,
+        meta: meta
+      });
+    });
+
+    // Then, output the coordinates
+    // Export and saved packedObj for later
+    packedObj = layer['export']();
+
+    // Extract the coordinates
+    var coordinates = {};
+    var packedItems = packedObj.items;
+    packedItems.forEach(function (item) {
+      var meta = item.meta;
+      var img = meta.img;
+      var name = img._filepath;
+      coordinates[name] = {
+        x: item.x,
+        y: item.y,
+        width: meta.actualWidth,
+        height: meta.actualHeight
+      };
+    });
+
+    // Save the coordinates
+    infoObj.coordinates = coordinates;
+
+    // Then, generate a canvas
+    // Grab and fallback the width/height
+    var width = Math.max(packedObj.width || 0, 0);
+    var height = Math.max(packedObj.height || 0, 0);
+
+    // If there are items
+    var itemsExist = packedObj.items.length;
+    if (itemsExist) {
+      // Remove the last item's padding
+      width -= padding;
+      height -= padding;
+    }
+
+    // Export the total width and height of the generated canvas
+    infoObj.properties = {
+      width: width,
+      height: height
+    };
+
+    // After we return the stream and info
     var that = this;
     process.nextTick(function handleNextTick () {
-      // Add our images to our canvas (dry run)
-      images.forEach(function (img) {
-        // Save the non-padded properties as meta data
-        var width = img.width;
-        var height = img.height;
-        var meta = {img: img, actualWidth: width, actualHeight: height};
-
-        // Add the item with padding to our layer
-        layer.addItem({
-          width: width + padding,
-          height: height + padding,
-          meta: meta
-        });
-      });
-
-      // Then, output the coordinates
-      // Export and saved packedObj for later
-      packedObj = layer['export']();
-
-      // Extract the coordinates
-      var coordinates = {};
-      var packedItems = packedObj.items;
-      packedItems.forEach(function (item) {
-        var meta = item.meta;
-        var img = meta.img;
-        var name = img._filepath;
-        coordinates[name] = {
-          x: item.x,
-          y: item.y,
-          width: meta.actualWidth,
-          height: meta.actualHeight
-        };
-      });
-
-      // Save the coordinates
-      infoObj.coordinates = coordinates;
-
-      // Then, generate a canvas
-      // Grab and fallback the width/height
-      var width = Math.max(packedObj.width || 0, 0);
-      var height = Math.max(packedObj.height || 0, 0);
-
-      // If there are items
-      var itemsExist = packedObj.items.length;
-      if (itemsExist) {
-        // Remove the last item's padding
-        width -= padding;
-        height -= padding;
-      }
-
-      // Export the total width and height of the generated canvas
-      infoObj.properties = {
-        width: width,
-        height: height
-      };
-
-      // Emit our info
-      infoStream.push(infoObj);
-      infoStream.push(null);
-
       // If there are no items, return with an empty stream
       var canvas;
       if (!itemsExist) {
@@ -219,9 +214,9 @@ Spritesmith.prototype = {
       }
     });
 
-    // Return our streams
+    // Return our stream and info
     return {
-      info: infoStream,
+      info: infoObj,
       img: imgStream
     };
   }
