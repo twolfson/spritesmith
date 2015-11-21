@@ -88,23 +88,17 @@ spritesmith({src: sprites}, function handleResult (err, result) {
 ```
 
 ## Documentation
+// TODO: Update docs
 `spritesmith` exports a `spritesmith` function as its `module.exports`.
 
 If you would like a faster build time or need to support an obscure image format, see `params.engine`.
 
 If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
-### `spritesmith(params, callback)`
-Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
+### `new Spritesmith(params)`
+// TODO: Document me
 
-- params `Object` - Container for paramters
-    - src `String[]|Object[]` - Array of filepaths for images to include in spritesheet
-        - If a `String` is provided, then it's used as the image's filepath
-        - If an `Object` is provided, then it should be a [Vinyl][] object pointing to the source image
-            - Depending on the engine, we may/may not use the contents (e.g. `gmsmith` uses filepaths only)
-    - padding `Number` - Padding to use between images
-        - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
-        - An example usage of `padding` can be found in the [Examples section](#padding)
+- params `Object` - Container for parameters
     - engine `String|Object` - Optional engine override to use
         - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
         - An example usage of `engine` can be found in the [Examples section](#engine)
@@ -112,6 +106,29 @@ Utility that takes images and generates a spritesheet, coordinate map, and sprit
     - engineOpts `Object` - Options to pass through to engine for settings
         - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
         - See your engine's documentation for available options
+
+### `spritesmith.createImages(src, callback)`
+// TODO: Document me
+
+- src `String[]|Object[]` - Array of filepaths for images to include in spritesheet
+    - If a `String` is provided, then it's used as the image's filepath
+    - If an `Object` is provided, then it should be a [Vinyl][] object pointing to the source image
+        - Depending on the engine, we may/may not use the contents (e.g. `gmsmith` uses filepaths only)
+- callback `Function` - Error-first function that receives compiled spritesheet and map
+    - `callback` should have signature `function (err, result)`
+    - err `Error|null` - If an error occurred, this will be it
+    - images `Object[]` - Array of processed images
+        - TODO: Document me
+
+### `Spritesmith.run(params)`
+// TODO: Update docs
+
+Utility that takes images and generates a spritesheet, coordinate map, and spritesheet info
+
+- params `Object` - Container for parameters
+    - padding `Number` - Padding to use between images
+        - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
+        - An example usage of `padding` can be found in the [Examples section](#padding)
     - exportOpts `Mixed` - Options to pass through to engine for export
         - For example `gmsmith` supports `quality` via `{exportOpts: {quality: 75}}`
         - See your engine's documentation for available options
