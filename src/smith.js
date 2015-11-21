@@ -54,7 +54,7 @@ function Spritesmith(params) {
   this.engine = new Engine(params.engineOpts || {});
 }
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
-// Gist of result: img: buffer, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}
+// Gist of result: image: buffer, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}
 Spritesmith.run = function (params, callback) {
   // Create a new spritesmith with our parameters
   var spritesmith = new Spritesmith(params);
@@ -66,20 +66,20 @@ Spritesmith.run = function (params, callback) {
       return callback(err);
     }
 
-    // Otherwise, process our images, concat our img, and callback
+    // Otherwise, process our images, concat our image, and callback
     // DEV: We don't want to risk dropped `data` events due to calling back with a stream
     var spriteData = spritesmith.processImages(images, params);
 
     // If an error occurs on the image, then callback with it
-    spriteData.img.on('error', callback);
+    spriteData.image.on('error', callback);
 
     // Concatenate our image into a buffer
-    spriteData.img.pipe(concat({encoding: 'buffer'}, function handleImg (buff) {
+    spriteData.image.pipe(concat({encoding: 'buffer'}, function handleImage (buff) {
       // Callback with all our info
       callback(null, {
         coordinates: spriteData.coordinates,
         properties: spriteData.properties,
-        img: buff
+        image: buff
       });
     }));
   });
@@ -114,8 +114,8 @@ Spritesmith.prototype = {
     var packedObj;
 
     // Generate stream and info for returning
-    var imgStream = through2();
-    var retObj = {img: imgStream};
+    var imageStream = through2();
+    var retObj = {image: imageStream};
 
     // Add our images to our canvas (dry run)
     images.forEach(function (img) {
@@ -179,7 +179,7 @@ Spritesmith.prototype = {
       // If there are no items, return with an empty stream
       var canvas;
       if (!itemsExist) {
-        imgStream.push(null);
+        imageStream.push(null);
         return;
       // Otherwise, generate and export our canvas
       } else {
@@ -193,16 +193,16 @@ Spritesmith.prototype = {
             canvas.addImage(img, item.x, item.y);
           });
         } catch (err) {
-          imgStream.emit('error', err);
+          imageStream.emit('error', err);
           return;
         }
 
         // Export our canvas
         var exportStream = canvas['export'](exportOpts);
         exportStream.on('error', function forwardError (err) {
-          imgStream.emit('error', err);
+          imageStream.emit('error', err);
         });
-        exportStream.pipe(imgStream);
+        exportStream.pipe(imageStream);
       }
     });
 

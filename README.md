@@ -150,7 +150,8 @@ If you would like to adjust how images are laid out, see `params.algorithm` and 
 
 ```
 {
-  info: ReadableStream, // data = {coordinates, properties}
+  coordinates,
+  properties,
   image: ReadableStream
 }
 ```
