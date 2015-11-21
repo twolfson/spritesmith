@@ -34,7 +34,7 @@ var spritesmithUtils = {
             that.infoErr = err;
             cb();
           });
-          spriteData.info.pipe(concat(function saveInfo (infoArr) {
+          spriteData.info.pipe(concat({encoding: 'object'}, function saveInfo (infoArr) {
             that.infoArr = infoArr;
             if (!errEncountered) {
               cb();
@@ -48,7 +48,7 @@ var spritesmithUtils = {
             that.imgErr = err;
             cb();
           });
-          spriteData.img.pipe(concat(function saveImg (buff) {
+          spriteData.img.pipe(concat({encoding: 'buffer'}, function saveImg (buff) {
             that.img = buff;
             if (!errEncountered) {
               cb();
@@ -215,7 +215,7 @@ describe('An array of vinyl object sprites', function () {
   });
 });
 
-describe.only('An empty array', function () {
+describe('An empty array', function () {
   var emptySprites = [];
 
   describe('when processed via spritesmith', function () {
@@ -225,7 +225,6 @@ describe.only('An empty array', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders an empty spritesheet', function () {
-      console.log(this.img.constructor);
       assert.deepEqual(this.img, new Buffer(0));
     });
     it('returns an empty coordinate mapping', function () {

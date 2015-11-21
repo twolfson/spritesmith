@@ -169,7 +169,6 @@ function spritesmith(params) {
       // If there is no canvas, callback with an empty string
       var items = packedObj.items;
       if (!canvas) {
-        imgStream.push(new Buffer(0));
         imgStream.push(null);
         return;
       }
