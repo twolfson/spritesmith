@@ -2,6 +2,8 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
+var concat = require('concat-stream');
 var getPixels = require('get-pixels');
 var Vinyl = require('vinyl');
 var spritesmith = require('../src/smith.js');
@@ -23,29 +25,50 @@ var spritesmithUtils = {
     before(function runFn (done) {
       // Attempt to spritesmith out the sprites
       var that = this;
-      spritesmith(params, function saveResult (err, result) {
-        // Save the result and callback
-        that.err = err;
-        that.result = result;
-        done();
-      });
+      var spriteData = spritesmith(params);
+      async.parallel([
+        function handleInfoStream (cb) {
+          spriteData.info.on('error', function saveInfoError (err) {
+            that.infoErr = err;
+            cb();
+          });
+          spriteData.info.pipe(concat(function saveInfo (infoArr) {
+            that.infoArr = infoArr;
+            cb();
+          }));
+        },
+        function handleImgStream (cb) {
+          spriteData.img.on('error', function saveImgError (err) {
+            that.imgErr = err;
+            cb();
+          });
+          spriteData.img.pipe(concat(function saveImg (buff) {
+            that.img = buff;
+            cb();
+          }));
+        }
+      ], done);
     });
     after(function cleanupResult () {
-      delete this.err;
-      delete this.result;
+      delete this.infoErr;
+      delete this.infoArr;
+      delete this.imgErr;
+      delete this.img;
     });
   },
 
   assertNoError: function () {
     return function assertNoErrorFn () {
-      assert.strictEqual(this.err, null);
+      assert.strictEqual(this.imgErr, null);
+      assert.strictEqual(this.infoErr, null);
     };
   },
 
   assertCoordinates: function (filename) {
     return function assertCoordinatesFn () {
       // Load in the coordinates
-      var result = this.result;
+      assert.strictEqual(this.infoArr.length, 1);
+      var result = this.infoArr[0];
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
@@ -72,7 +95,8 @@ var spritesmithUtils = {
   assertProps: function (filename) {
     return function assertPropsFn () {
       // Load in the properties
-      var result = this.result;
+      assert.strictEqual(this.infoArr.length, 1);
+      var result = this.infoArr[0];
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
@@ -89,17 +113,17 @@ var spritesmithUtils = {
 
   assertSpritesheet: function (filename) {
     return function assertSpritesheetFn (done) {
-      var result = this.result;
+      // Load our variables
+      var actualImageBuff = this.img;
+      var expectedFilepath = path.join(expectedDir, filename);
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
         try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
-        fs.writeFileSync(__dirname + '/actual_files/' + filename, result.image);
+        fs.writeFileSync(__dirname + '/actual_files/' + filename, actualImageBuff);
       }
 
       // Assert the actual image is the same expected
-      var actualImageBuff = result.image;
-      var expectedFilepath = path.join(expectedDir, filename);
       // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
       getPixels(actualImageBuff, 'image/png', function handleActualPixels (err, actualImage) {
         if (err) { return done(err); }

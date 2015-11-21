@@ -63,7 +63,7 @@ function spritesmith(params) {
 
   // Generate streams for returning
   var infoStream = through2();
-  var imageStream = through2();
+  var imgStream = through2();
   var infoObj = {};
 
   // In a waterfall fashion
@@ -185,22 +185,23 @@ function spritesmith(params) {
       // Export our canvas
       var exportStream = canvas['export'](exportOpts);
       exportStream.on('error', function forwardError (err) {
-        imageStream.emit('error', err);
+        imgStream.emit('error', err);
       });
-      exportStream.pipe(imageStream);
+      exportStream.pipe(imgStream);
     }
   ], function handleError (err) {
     // If there was an error, emit it on the image stream
-    // DEV: We use `imageStream` since it's not yet closed
+    // DEV: We use `imgStream` since it's not yet closed
+    // TODO: Make this more granular
     if (err) {
-      imageStream.emit('error', err);
+      imgStream.emit('error', err);
     }
   });
 
   // Return our streams
   return {
     info: infoStream,
-    image: imageStream
+    img: imgStream
   };
 }
 
