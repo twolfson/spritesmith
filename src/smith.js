@@ -3,6 +3,7 @@ var async = require('async');
 var concat = require('concat-stream');
 var Layout = require('layout');
 var semver = require('semver');
+var through2 = require('through2');
 
 // Specify defaults
 var engineDefault = 'pixelsmith';
@@ -12,7 +13,7 @@ var SPEC_VERSION_RANGE = '>=2.0.0 <3.0.0';
 // Define our spritesmith utility
 // Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
 // Gist of result: {image: binary, coordinates: {filepath: {x, y, width, height}}, properties: {width, height}}
-function spritesmith(params, callback) {
+function spritesmith(params) {
   // Set up return items and fallback parameters
   var retObj = {};
   var files = params.src;
@@ -55,12 +56,16 @@ function spritesmith(params, callback) {
       '`npm install my-engine@latest`');
   }
 
-  // Create our smiths
+  // Create our engine and layout
   var engine = new Engine(params.engineOpts || {});
   var layer = new Layout(algorithmName, params.algorithmOpts);
   var padding = params.padding || 0;
   var exportOpts = params.exportOpts || {};
   var packedObj;
+
+  // Generate streams for returning
+  var infoStream = through2();
+  var imageStream = through2();
 
   // In a waterfall fashion
   async.waterfall([
@@ -192,7 +197,18 @@ function spritesmith(params, callback) {
       // Callback with the return object
       cb(null, retObj);
     }
-  ], callback);
+  ], function handleError (err) {
+    // If there was an error, emit it on the info stream
+    if (err) {
+      infoStream.emit('error', err);
+    }
+  });
+
+  // Return our streams
+  return {
+    info: infoStream,
+    image: imageStream
+  };
 }
 
 // Export spritesmith
