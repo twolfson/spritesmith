@@ -53,20 +53,57 @@ function Spritesmith(params) {
   // Create and save our engine for later
   this.engine = new Engine(params.engineOpts || {});
 }
+Spritesmith.generateStreams = function () {
+  return {
+    info: through2.obj(),
+    img: through2()
+  };
+};
+// Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
+// Gist of result:
+//    img: Stream(binary)
+//    info: Stream({coordinates: {filepath: {x, y, width, height}}, properties: {width, height}})
+Spritesmith.run = function (params) {
+  // Create a new spritesmith with our parameters
+  var spritesmith = new Spritesmith(params);
+
+  // Generate streams for returning
+  var retObj = Spritesmith.generateStreams();
+
+  // In an async fashion, create our images
+  spritesmith.createImages(function handleImages (err, images) {
+    // If there was an error, emit it on the imgStream
+    if (err) {
+      retObj.img.emit('error', err);
+      return;
+    }
+
+    // Otherwise, process our images and forward errors/data
+    var spriteData = spritesmith.processImages(images, params);
+    spriteData.info.on('error', function forwardInfoError (err) {
+      retObj.info.emit('error', err);
+    });
+    spriteData.info.pipe(retObj.info);
+    spriteData.img.on('error', function forwardImgError (err) {
+      retObj.img.emit('error', err);
+    });
+    spriteData.img.pipe(retObj.img);
+  });
+
+  // Return our streams
+  return retObj;
+};
 Spritesmith.prototype = {
   createImages: function (files, cb) {
     // Forward image creation to our engine
     this.engine.createImages(files, cb);
   },
   processImages: function (images, options) {
-    // Set up return items and fallback parameters
-    var files = params.src;
-    var algorithmName = params.algorithm || algorithmDefault;
-
-    // Create our engine and layout
-    var layer = new Layout(algorithmName, params.algorithmOpts);
-    var padding = params.padding || 0;
-    var exportOpts = params.exportOpts || {};
+    // Set up our algorithm/layout placement and export configuration
+    var algorithmName = options.algorithm || algorithmDefault;
+    var layer = new Layout(algorithmName, options.algorithmOpts);
+    var padding = options.padding || 0;
+    var exportOpts = options.exportOpts || {};
     var packedObj;
 
     // Generate streams for returning
@@ -181,13 +218,6 @@ Spritesmith.prototype = {
     };
   }
 };
-
-// Gist of params: {src: files, engine: 'pixelsmith', algorithm: 'binary-tree'}
-// Gist of result:
-//    img: Stream(binary)
-//    info: Stream({coordinates: {filepath: {x, y, width, height}}, properties: {width, height}})
-function spritesmith(params) {
-}
 
 // Export spritesmith
 module.exports = spritesmith;
