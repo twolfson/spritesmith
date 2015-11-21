@@ -215,7 +215,7 @@ describe('An array of vinyl object sprites', function () {
   });
 });
 
-describe('An empty array', function () {
+describe.only('An empty array', function () {
   var emptySprites = [];
 
   describe('when processed via spritesmith', function () {
@@ -225,10 +225,12 @@ describe('An empty array', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders an empty spritesheet', function () {
-      assert.deepEqual(this.result.image, new Buffer(0));
+      console.log(this.img.constructor);
+      assert.deepEqual(this.img, new Buffer(0));
     });
     it('returns an empty coordinate mapping', function () {
-      assert.deepEqual(this.result.coordinates, {});
+      assert.strictEqual(this.infoArr.length, 1);
+      assert.deepEqual(this.infoArr[0].coordinates, {});
     });
     it('has the proper properties', spritesmithUtils.assertProps('empty.properties.json'));
   });
