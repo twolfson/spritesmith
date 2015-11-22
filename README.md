@@ -1,6 +1,6 @@
 # spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith) [![Subscribe to newsletter](https://img.shields.io/badge/newsletter-subscribe-blue.svg)](http://eepurl.com/bD4qkf)
 
-// TODO: Document breaking changes (mostly that we are a class now and `spritesmith` is `Spritesmith.run`)
+// TODO: Update examples and docs
 
 Convert images into [spritesheets][] and coordinate maps.
 
@@ -67,6 +67,21 @@ By upgrading the engine, we added support for [Vinyl][] objects via `src` as wel
 
 [spritesmith-engine-spec@1.1.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/1.1.0
 [spritesmith-engine-spec@2.0.0]: https://github.com/twolfson/spritesmith-engine-spec/tree/2.0.0
+
+## Breaking changes in 3.0.0
+We have updated our API to return streams for images. This required moving to a `constructor` and splitting apart image creation and processing.
+
+We have maintained legacy support for `spritesmith` via `Spritesmith.run` which has an identical API to the `spritesmith` function in `spritesmith<3.0.0`.
+
+```js
+// Before
+var spritesmith = require('spritesmith');
+spritesmith({src: sprites}, function handleResult (err, result) { /* ... */ });
+
+// After
+var Spritesmith = require('spritesmith');
+Spritesmith.run({src: sprites}, function handleResult (err, result) { /* ... */ });
+```
 
 ## Getting started
 `spritesmith` can be installed via npm: `npm install spritesmith`
