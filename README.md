@@ -91,20 +91,6 @@ If you would like a faster build time or need to support an obscure image format
 
 If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
-### `new Spritesmith(params)`
-Constructor for a new `Spritesmith` instance
-
-- params `Object` - Container for parameters
-    - engine `String|Object` - Optional engine override to use
-        - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
-        - An example usage of `engine` can be found in the [Examples section](#engine)
-        - For more engine options, see the [Engines section](#engines)
-    - engineOpts `Object` - Options to pass through to engine for settings
-        - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
-        - See your engine's documentation for available options
-
-[`pixelsmith`]: https://github.com/twolfson/pixelsmith
-
 ### `Spritesmith.run(params, callback)`
 Helper function that initializes a new `Spritesmith` instance, creates images, and processes them into a spritesheet
 
@@ -119,6 +105,20 @@ Helper function that initializes a new `Spritesmith` instance, creates images, a
         - image `Buffer` - In-memory representation of image
         - coordinates `Object` - Same as `coordinates` returned by `spritesmith.processImages`
         - properties `Object` - Same as `properties` returned by `spritesmith.processImages`
+
+### `new Spritesmith(params)`
+Constructor for a new `Spritesmith` instance
+
+- params `Object` - Container for parameters
+    - engine `String|Object` - Optional engine override to use
+        - By default we use [`pixelsmith`][], a node-based `spritesmith` engine
+        - An example usage of `engine` can be found in the [Examples section](#engine)
+        - For more engine options, see the [Engines section](#engines)
+    - engineOpts `Object` - Options to pass through to engine for settings
+        - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
+        - See your engine's documentation for available options
+
+[`pixelsmith`]: https://github.com/twolfson/pixelsmith
 
 ### `spritesmith.createImages(src, callback)`
 Interpret images via the `spritesmith` engine
