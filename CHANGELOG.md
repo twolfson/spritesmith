@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.0.0 - Moved to class and added support for outputting streams
+
 2.0.1 - Updated donation URL
 
 2.0.0 - Upgraded to `spritesmith-engine-spec@2.0.0`
