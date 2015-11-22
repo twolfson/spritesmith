@@ -85,15 +85,14 @@ Spritesmith.run({src: sprites}, function handleResult (err, result) {
 ```
 
 ## Documentation
-// TODO: Update docs
-`spritesmith` exports a `spritesmith` function as its `module.exports`.
+`spritesmith` exports a `Spritesmith` constructor as its `module.exports`.
 
 If you would like a faster build time or need to support an obscure image format, see `params.engine`.
 
 If you would like to adjust how images are laid out, see `params.algorithm` and `params.algorithmOpts`.
 
 ### `new Spritesmith(params)`
-// TODO: Document me
+Constructor for a new `Spritesmith` instance
 
 - params `Object` - Container for parameters
     - engine `String|Object` - Optional engine override to use
@@ -103,6 +102,23 @@ If you would like to adjust how images are laid out, see `params.algorithm` and 
     - engineOpts `Object` - Options to pass through to engine for settings
         - For example `phantomjssmith` accepts `timeout` via `{engineOpts: {timeout: 10000}}`
         - See your engine's documentation for available options
+
+[`pixelsmith`]: https://github.com/twolfson/pixelsmith
+
+### `Spritesmith.run(params, callback)`
+Helper function that initializes a new `Spritesmith` instance, creates images, and processes them into a spritesheet
+
+- params `Object` - Container for parameters
+    - src `String[]|Object[]` - Same as `src` for `spritesmith.createImages`
+    - All other parameters accepted by `new Spritesmith` or `processImages` should be passed in here (e.g. `engine`, `algorithm`)
+- callback `Function` - Error-first function that receives compiled spritesheet and information
+    - `callback` should have signature `function (err, result)`
+    - err `Error|null` - If an error occurred, this will be it
+    - result `Object` - Container for result items
+        - Same signature as content returned by `spritesmith.processImages` (i.e. `{image, coordinates, properties}`)
+        - image `Buffer` - In-memory representation of image
+        - coordinates `Object` - Same as `coordinates` returned by `spritesmith.processImages`
+        - properties `Object` - Same as `properties` returned by `spritesmith.processImages`
 
 ### `spritesmith.createImages(src, callback)`
 // TODO: Document me
@@ -117,7 +133,6 @@ If you would like to adjust how images are laid out, see `params.algorithm` and 
     - images `Object[]` - Array of processed images
         - // TODO: Document me
 
-[`pixelsmith`]: https://github.com/twolfson/pixelsmith
 [Vinyl]: https://github.com/gulpjs/vinyl
 
 ### `spritesheet.processImages(images, options)`
