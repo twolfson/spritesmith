@@ -121,27 +121,29 @@ Helper function that initializes a new `Spritesmith` instance, creates images, a
         - properties `Object` - Same as `properties` returned by `spritesmith.processImages`
 
 ### `spritesmith.createImages(src, callback)`
-// TODO: Document me
+Interpret images via the `spritesmith` engine
 
 - src `String[]|Object[]` - Array of filepaths for images to include in spritesheet
     - If a `String` is provided, then it's used as the image's filepath
     - If an `Object` is provided, then it should be a [Vinyl][] object pointing to the source image
         - Depending on the engine, we may/may not use the contents (e.g. `gmsmith` uses filepaths only)
 - callback `Function` - Error-first function that receives compiled spritesheet and map
-    - `callback` should have signature `function (err, result)`
+    - `callback` should have signature `function (err, images)`
     - err `Error|null` - If an error occurred, this will be it
     - images `Object[]` - Array of processed images
-        - // TODO: Document me
+        - Each `image` will be a proprietary object for the engine
+        - Each `image` will line up with the specification from [spritesmith-engine-spec][spec-createImages]
+        - image `Object` - Metadata container about corresponding input image at same index
+            - height `Number` - Height in pixels of corresponding input image at same index
+            - width `Number` - Width in pixels of corresponding input image at same index
 
 [Vinyl]: https://github.com/gulpjs/vinyl
+[spec-createImages]: https://github.com/twolfson/spritesmith-engine-spec/tree/2.0.0#enginecreateimagesimages-cb
 
 ### `spritesheet.processImages(images, options)`
-// TODO: Document me
+Place interpretted images on a canvas and export spritesheet
 
-- images {{TODO: Document this}} - Images from `createImages`
-
-// TODO: Should we handle these in the constructor to avoid undesired errors in async of `.run`?
-
+- images `Object[]` - Images generated via `spritesmith.createImages`
 - options `Object` - Container for options
     - padding `Number` - Padding to use between images
         - For example if `2` is provided, then there will be a `2px` gap to the right and bottom between each image
@@ -160,19 +162,21 @@ Helper function that initializes a new `Spritesmith` instance, creates images, a
 
 **Returns:**
 
-```
-{
-  coordinates,
-  properties,
-  image: ReadableStream
-}
-```
+- result `Object` - Container for result information
+    - image `ReadableStream` - [Readable stream][] outputting generated image contents
+    - coordinates `Object` - Map from filepath to coordinate information between original sprite and spritesheet
+        - `filepath` will be the same as provided in `params.src`
+        - [filepath] `Object` - Container for coordinate information
+            - For those keeping track, this is `result.coordinates[filepath]`
+            - x `Number` - Horizontal position of top-left corner of original sprite on spritesheet
+            - y `Number` - Vertical position of top-left corner of original sprite on spritesheet
+            - width `Number` - Width of original sprite
+            - height `Number` - Height of original sprite
+    - properties `Object` - Container for information about spritesheet
+        - width `Number` - Width of the spritesheet
+        - height `Number` - Height of the spritesheet
 
-### `Spritesmith.run(params)`
-// TODO: Document me
-
-Same as `new Spritesmith, createImages, processImages` but you get the stream immediately back. Any
-
+[Readable stream]: https://nodejs.org/api/stream.html#stream_class_stream_readable
 
 ### Algorithms
 Images can be laid out in different fashions depending on the algorithm. We use [`layout`][] to provide you as many options as possible. At the time of writing, here are your options for `params.algorithm`:
