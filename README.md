@@ -315,10 +315,10 @@ This is an example of using a custom layout via the `alt-diagonal` algorithm.
 ```js
 // Load in dependencies
 var fs = require('fs');
-var spritesmith = require('spritesmith');
+var Spritesmith = require('spritesmith');
 
 // Generate our spritesheet
-spritesmith({
+Spritesmith.run({
   src: [
     __dirname + '/fork.png',
     __dirname + '/github.png',
@@ -357,10 +357,10 @@ This is an example of using a custom engine (`canvassmith` in this case).
 // In our script
 // Load in dependencies
 var fs = require('fs');
-var spritesmith = require('spritesmith');
+var Spritesmith = require('spritesmith');
 
 // Generate our spritesheet
-spritesmith({
+Spritesmith.run({
   src: [
     __dirname + '/fork.png',
     __dirname + '/github.png',
@@ -389,10 +389,10 @@ This is an example of adding padding between images.
 ```js
 // Load in dependencies
 var fs = require('fs');
-var spritesmith = require('spritesmith');
+var Spritesmith = require('spritesmith');
 
 // Generate our spritesheet
-spritesmith({
+Spritesmith.run({
   src: [
     __dirname + '/fork.png',
     __dirname + '/github.png',
