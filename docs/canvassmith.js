@@ -1,10 +1,10 @@
 // In our script
 // Load in dependencies
 var fs = require('fs');
-var spritesmith = require('../');
+var Spritesmith = require('../');
 
 // Generate our spritesheet
-spritesmith({
+Spritesmith.run({
   src: [
     __dirname + '/fork.png',
     __dirname + '/github.png',

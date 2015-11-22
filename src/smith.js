@@ -12,6 +12,7 @@ var SPEC_VERSION_RANGE = '>=2.0.0 <3.0.0';
 // Define our spritesmith constructor
 function Spritesmith(params) {
   // Process our parameters
+  params = params || {};
   var engineName = params.engine || engineDefault;
   var Engine = engineName;
 

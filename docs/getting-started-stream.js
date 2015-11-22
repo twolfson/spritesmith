@@ -4,13 +4,11 @@ var Spritesmith = require('../');
 
 // Generate our spritesheet
 var spritesmith = new Spritesmith();
-spritesmith.createImages({
-  src: [
-    __dirname + '/fork.png',
-    __dirname + '/github.png',
-    __dirname + '/twitter.png'
-  ]
-}, function handleImages (err, images) {
+spritesmith.createImages([
+  __dirname + '/fork.png',
+  __dirname + '/github.png',
+  __dirname + '/twitter.png'
+], function handleImages (err, images) {
   // If there was an error, throw it
   if (err) {
     throw err;
