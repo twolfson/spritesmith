@@ -107,6 +107,7 @@ Spritesmith.prototype = {
   },
   processImages: function (images, options) {
     // Set up our algorithm/layout placement and export configuration
+    options = options || {};
     var algorithmName = options.algorithm || algorithmDefault;
     var layer = new Layout(algorithmName, options.algorithmOpts);
     var padding = options.padding || 0;

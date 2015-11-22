@@ -88,12 +88,34 @@ Spritesmith.run({src: sprites}, function handleResult (err, result) { /* ... */ 
 
 ```js
 // Load in dependencies
-var Spritesmtih = require('spritesmith');
+var Spritesmith = require('spritesmith');
 
 // Generate our spritesheet
 var sprites = ['fork.png', 'github.png', 'twitter.png'];
 Spritesmith.run({src: sprites}, function handleResult (err, result) {
   result.image; // Buffer representation of image
+  result.coordinates; // Object mapping filename to {x, y, width, height} of image
+  result.properties; // Object with metadata about spritesheet {width, height}
+});
+```
+
+### Usage with streaming output
+We support streaming output by breaking down `run` into 2 parts:
+
+```js
+// Load in dependencies
+var Spritesmith = require('spritesmith');
+
+// Create a new spritesmith and process our images
+var sprites = ['fork.png', 'github.png', 'twitter.png'];
+var spritesmith = new Spritesmith();
+spritesmith.createImages(sprites, function handleImages (err, images) {
+  images[0].width; // Width of image
+  images[0].height; // Height of image
+
+  // Create our result
+  var result = spritesmith.processImages(images);
+  result.image; // Readable stream outputting image
   result.coordinates; // Object mapping filename to {x, y, width, height} of image
   result.properties; // Object with metadata about spritesheet {width, height}
 });
