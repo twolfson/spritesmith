@@ -49,7 +49,7 @@ and a coordinate map:
 ### Do you like `spritesmith`?
 [Support us via donations][support-us] or [spread word on Twitter][twitter]
 
-[support-us]: http://bit.ly/support-spritesmith2
+[support-us]: http://bit.ly/support-spritesmith-1
 [twitter]: https://twitter.com/intent/tweet?text=Spritesheets%20made%20easy%20via%20spritesmith&url=https%3A%2F%2Fgithub.com%2FEnsighten%2Fspritesmith&via=twolfsn
 
 ## Breaking changes in 2.0.0
