@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.1.0 - Upgraded to `pixelsmith@2.1.0` to add quality support for JPEG images
+
 3.0.1 - Updated donation URL
 
 3.0.0 - Moved to class and added support for outputting streams
