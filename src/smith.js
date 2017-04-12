@@ -33,6 +33,9 @@ function Spritesmith(params) {
     // Attempt to load the engine
     try {
       Engine = require(engineName);
+      if (typeof Engine !== 'function') {
+        Engine = Engine.default;
+      }
     } catch (err) {
       console.error('Attempted to load spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed its dependencies. Documentation should be available at ');
