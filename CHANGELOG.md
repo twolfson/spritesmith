@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.2.0 - Removed support for Node.js < 4
+
 3.1.1 - Added support for transpiled ES6 modules
 
 3.1.0 - Upgraded to `pixelsmith@2.1.0` to add quality support for JPEG images
