@@ -3,6 +3,7 @@ var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
 var getPixels = require('get-pixels');
+var pixelmatch = require('pixelmatch');
 var Vinyl = require('vinyl');
 var Spritesmith = require('../src/smith.js');
 
@@ -98,13 +99,17 @@ var spritesmithUtils = {
         fs.writeFileSync(__dirname + '/actual_files/' + filename, actualImageBuff);
       }
 
-      // Assert the actual image is the same expected
+      // Assert the actual image is close to the expected image
       // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
       getPixels(actualImageBuff, 'image/png', function handleActualPixels (err, actualImage) {
         if (err) { return done(err); }
         getPixels(expectedFilepath, function handleExpectedPixels (err, expectedImage) {
           if (err) { return done(err); }
-          assert.deepEqual(actualImage, expectedImage, 'Actual image does not match expected image');
+          assert.deepEqual(actualImage.shape, expectedImage.shape,
+            'Actual image shape does not match expected image shape');
+          var numDiffPixels = pixelmatch(actualImage.data, expectedImage.data, null,
+            actualImage.shape[0], actualImage.shape[1]);
+          assert(numDiffPixels < 10, 'Expected at most 10 pixels to be different but received ' + numDiffPixels);
           done();
         });
       });
