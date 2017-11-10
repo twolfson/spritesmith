@@ -64,7 +64,7 @@ Spritesmith.run = function (params, callback) {
   var spritesmith = new Spritesmith(params);
 
   // In an async fashion, create our images
-  spritesmith.createImages(params.src, function handleImages (err, images) {
+  spritesmith.createImages(params.src, function handleImages(err, images) {
     // If there was an error, callback with it
     if (err) {
       return callback(err);
@@ -78,7 +78,7 @@ Spritesmith.run = function (params, callback) {
     spriteData.image.on('error', callback);
 
     // Concatenate our image into a buffer
-    spriteData.image.pipe(concat({encoding: 'buffer'}, function handleImage (buff) {
+    spriteData.image.pipe(concat({encoding: 'buffer'}, function handleImage(buff) {
       // Callback with all our info
       callback(null, {
         coordinates: spriteData.coordinates,
@@ -91,14 +91,14 @@ Spritesmith.run = function (params, callback) {
 Spritesmith.prototype = {
   createImages: function (files, callback) {
     // Forward image creation to our engine
-    this.engine.createImages(files, function handleImags (err, images) {
+    this.engine.createImages(files, function handleImags(err, images) {
       // If there was an error, callback with it
       if (err) {
         return callback(err);
       }
 
       // Otherwise, iterate over the images and save their paths (required for coordinates)
-      images.forEach(function saveImagePath (img, i) {
+      images.forEach(function saveImagePath(img, i) {
         // DEV: We don't use `Vinyl.isVinyl` since that was introduced in Sep 2015
         //   We want some backwards compatibility with older setups
         var file = files[i];
@@ -139,7 +139,7 @@ Spritesmith.prototype = {
 
     // Then, output the coordinates
     // Export and saved packedObj for later
-    packedObj = layer['export']();
+    packedObj = layer.export();
 
     // Extract the coordinates
     var coordinates = {};
@@ -180,7 +180,7 @@ Spritesmith.prototype = {
 
     // After we return the stream and info
     var that = this;
-    process.nextTick(function handleNextTick () {
+    process.nextTick(function handleNextTick() {
       // If there are no items, return with an empty stream
       var canvas;
       if (!itemsExist) {
@@ -193,7 +193,7 @@ Spritesmith.prototype = {
 
         // Add the images onto canvas
         try {
-          packedObj.items.forEach(function addImage (item) {
+          packedObj.items.forEach(function addImage(item) {
             var img = item.meta.img;
             canvas.addImage(img, item.x, item.y);
           });
@@ -203,8 +203,8 @@ Spritesmith.prototype = {
         }
 
         // Export our canvas
-        var exportStream = canvas['export'](exportOpts);
-        exportStream.on('error', function forwardError (err) {
+        var exportStream = canvas.export(exportOpts);
+        exportStream.on('error', function forwardError(err) {
           imageStream.emit('error', err);
         });
         exportStream.pipe(imageStream);

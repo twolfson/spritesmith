@@ -21,29 +21,29 @@ var multipleSprites = [
 // Define common utilities
 var spritesmithUtils = {
   run: function (params) {
-    before(function runFn (done) {
+    before(function runFn(done) {
       // Attempt to process the sprites via Spritesmith
       var that = this;
-      Spritesmith.run(params, function handleRun (err, result) {
+      Spritesmith.run(params, function handleRun(err, result) {
         that.err = err;
         that.result = result;
         done();
       });
     });
-    after(function cleanup () {
+    after(function cleanup() {
       delete this.err;
       delete this.result;
     });
   },
 
   assertNoError: function () {
-    return function assertNoErrorFn () {
+    return function assertNoErrorFn() {
       assert.strictEqual(this.err, null);
     };
   },
 
   assertCoordinates: function (filename) {
-    return function assertCoordinatesFn () {
+    return function assertCoordinatesFn() {
       // Load in the coordinates
       var result = this.result;
 
@@ -70,7 +70,7 @@ var spritesmithUtils = {
   },
 
   assertProps: function (filename) {
-    return function assertPropsFn () {
+    return function assertPropsFn() {
       // Load in the properties
       var result = this.result;
 
@@ -88,7 +88,7 @@ var spritesmithUtils = {
   },
 
   assertSpritesheet: function (filename) {
-    return function assertSpritesheetFn (done) {
+    return function assertSpritesheetFn(done) {
       // Load our variables
       var actualImageBuff = this.result.image;
       var expectedFilepath = path.join(expectedDir, filename);
@@ -101,9 +101,9 @@ var spritesmithUtils = {
 
       // Assert the actual image is close to the expected image
       // DEV: We are using pngjs for decoding/encoding in the library but this is testing one more cycle
-      getPixels(actualImageBuff, 'image/png', function handleActualPixels (err, actualImage) {
+      getPixels(actualImageBuff, 'image/png', function handleActualPixels(err, actualImage) {
         if (err) { return done(err); }
-        getPixels(expectedFilepath, function handleExpectedPixels (err, expectedImage) {
+        getPixels(expectedFilepath, function handleExpectedPixels(err, expectedImage) {
           if (err) { return done(err); }
           assert.deepEqual(actualImage.shape, expectedImage.shape,
             'Actual image shape does not match expected image shape');
@@ -172,7 +172,7 @@ describe('An array of sprites', function () {
 describe('An array of vinyl object sprites', function () {
   describe('when processed via spritesmith', function () {
     spritesmithUtils.run({
-      src: multipleSprites.map(function createVinylObject (filepath) {
+      src: multipleSprites.map(function createVinylObject(filepath) {
         return new Vinyl({
           path: filepath,
           contents: fs.readFileSync(filepath)
