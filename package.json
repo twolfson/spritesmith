@@ -21,7 +21,7 @@
   "license": "MIT",
   "main": "src/smith.js",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.0.0"
   },
   "scripts": {
     "precheck": "twolfson-style precheck src/ src-test/",
