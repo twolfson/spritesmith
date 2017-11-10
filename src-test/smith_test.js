@@ -49,11 +49,12 @@ var spritesmithUtils = {
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
-        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) { /* Ignore error */ }
         fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.coordinates, null, 4));
       }
 
       // Normalize the actual coordinates
+      // eslint-disable-next-line global-require
       var expectedCoords = require(expectedDir + '/' + filename);
       var actualCoords = result.coordinates;
       var normCoords = {};
@@ -76,12 +77,13 @@ var spritesmithUtils = {
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
-        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) { /* Ignore error */ }
         fs.writeFileSync(__dirname + '/actual_files/' + filename, JSON.stringify(result.properties, null, 4));
       }
 
       // Assert that the returned properties equals the expected properties
       var actualProps = result.properties;
+      // eslint-disable-next-line global-require
       var expectedProps = require(expectedDir + '/' + filename);
       assert.deepEqual(expectedProps, actualProps, 'Actual properties do not match expected properties');
     };
@@ -95,7 +97,7 @@ var spritesmithUtils = {
 
       // DEV: Write out to actual_files
       if (process.env.TEST_DEBUG) {
-        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) {}
+        try { fs.mkdirSync(__dirname + '/actual_files'); } catch (e) { /* Ignore error */ }
         fs.writeFileSync(__dirname + '/actual_files/' + filename, actualImageBuff);
       }
 
@@ -222,6 +224,7 @@ describe('`spritesmith` using a custom engine via an object', function () {
   describe('processing a set of images', function () {
     spritesmithUtils.run({
       src: multipleSprites,
+      // eslint-disable-next-line global-require
       engine: require('phantomjssmith')
     });
 
@@ -234,8 +237,9 @@ describe('`spritesmith` using a custom engine via an object', function () {
 // Test for https://github.com/twolfson/gulp.spritesmith/issues/22
 var canvassmith;
 try {
+  // eslint-disable-next-line global-require
   canvassmith = require('canvassmith');
-} catch (err) {}
+} catch (err) { /* Ignore error */ }
 var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
 describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
   describe('processing a bad image', function () {

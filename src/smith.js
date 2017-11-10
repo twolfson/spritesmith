@@ -22,27 +22,32 @@ function Spritesmith(params) {
     try {
       require.resolve(engineName);
     } catch (err) {
+      /* eslint-disable no-console */
       console.error('Attempted to find spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed "' + engineName + '" and saved it to your `package.json`');
       console.error('');
       console.error('    npm install ' + engineName + ' --save-dev');
       console.error('');
+      /* eslint-enable no-console */
       throw err;
     }
 
     // Attempt to load the engine
     try {
+      // eslint-disable-next-line global-require
       Engine = require(engineName);
       if (typeof Engine !== 'function') {
         Engine = Engine.default;
       }
     } catch (err) {
+      /* eslint-disable no-console */
       console.error('Attempted to load spritesmith engine "' + engineName + '" but could not.');
       console.error('Please verify you have installed its dependencies. Documentation should be available at ');
       console.error('');
       // TODO: Consider using pkg.homepage and pkg.repository
       console.error('    https://npm.im/' + encodeURIComponent(engineName));
       console.error('');
+      /* eslint-enable no-console */
       throw err;
     }
   }
