@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.2.1 - Switched from `twolfson-style` to ESLint
+
 3.2.0 - Removed support for Node.js < 4
 
 3.1.1 - Added support for transpiled ES6 modules
