@@ -2,7 +2,7 @@
   "name": "spritesmith",
   "description": "Utility that takes images and creates a spritesheet with JSON sprite data",
   "version": "3.3.0",
-  "homepage": "https://github.com/Ensighten/spritesmith",
+  "homepage": "https://github.com/twolfson/spritesmith",
   "author": {
     "name": "Todd Wolfson",
     "email": "todd@twolfson.com",
@@ -13,10 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/Ensighten/spritesmith.git"
+    "url": "git://github.com/twolfson/spritesmith.git"
   },
   "bugs": {
-    "url": "https://github.com/Ensighten/spritesmith/issues"
+    "url": "https://github.com/twolfson/spritesmith/issues"
   },
   "license": "MIT",
   "main": "src/smith.js",

@@ -1,4 +1,4 @@
-# spritesmith [![Build status](https://travis-ci.org/Ensighten/spritesmith.png?branch=master)](https://travis-ci.org/Ensighten/spritesmith) [![Subscribe to newsletter](https://img.shields.io/badge/newsletter-subscribe-blue.svg)](http://eepurl.com/bD4qkf)
+# spritesmith [![Build status](https://travis-ci.org/twolfson/spritesmith.png?branch=master)](https://travis-ci.org/twolfson/spritesmith) [![Subscribe to newsletter](https://img.shields.io/badge/newsletter-subscribe-blue.svg)](http://eepurl.com/bD4qkf)
 
 Convert images into [spritesheets][] and coordinate maps.
 
@@ -6,7 +6,7 @@ Convert images into [spritesheets][] and coordinate maps.
 
 `spritesmith` is also available as:
 
-- [grunt plugin](https://github.com/Ensighten/grunt-spritesmith)
+- [grunt plugin](https://github.com/twolfson/grunt-spritesmith)
 - [gulp plugin](https://github.com/twolfson/gulp.spritesmith)
 - [CLI utility](https://github.com/bevacqua/spritesmith-cli)
 
@@ -50,7 +50,7 @@ and a coordinate map:
 [Support us via donations][support-us] or [spread word on Twitter][twitter]
 
 [support-us]: http://bit.ly/support-spritesmith-1
-[twitter]: https://twitter.com/intent/tweet?text=Spritesheets%20made%20easy%20via%20spritesmith&url=https%3A%2F%2Fgithub.com%2FEnsighten%2Fspritesmith&via=twolfsn
+[twitter]: https://twitter.com/intent/tweet?text=Spritesheets%20made%20easy%20via%20spritesmith&url=https%3A%2F%2Fgithub.com%2Ftwolfson%2Fspritesmith&via=twolfsn
 
 ## Breaking changes in 2.0.0
 We have moved from `result.image` being a binary string to it being a `Buffer`. This is to use more canonical conventions in Node.js.
@@ -429,6 +429,6 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 [ubuntu-light]: http://font.ubuntu.com/
 
 ## License
-Copyright (c) 2012-2014 Ensighten
+Copyright (c) 2012 Todd Wolfson
 
 Licensed under the MIT license.

@@ -88,7 +88,7 @@
 
 0.17.4 - Fixed bad name for pngsmith in fallback chain
 
-0.17.3 - Fixed bad fallback chain. Fixes Ensighten/grunt-spritesmith#62
+0.17.3 - Fixed bad fallback chain. Fixes twolfson/grunt-spritesmith#62
 
 0.17.2 - Integrated Travis CI
 
