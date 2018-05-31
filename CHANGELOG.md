@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.3.1 - Corrected license attribution and URL
+
 3.3.0 - Upgraded to `pixelsmith@2.2.0` to add support for Vinyl@2
 
 3.2.1 - Switched from `twolfson-style` to ESLint
