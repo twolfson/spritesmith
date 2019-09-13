@@ -31,7 +31,7 @@
   "dependencies": {
     "concat-stream": "~1.5.1",
     "layout": "~2.2.0",
-    "pixelsmith": "~2.2.0",
+    "pixelsmith": "^2.3.0",
     "semver": "~5.0.3",
     "through2": "~2.0.0"
   },
