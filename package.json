@@ -46,7 +46,8 @@
     "mocha": "~1.21.4",
     "phantomjssmith": "~1.0.0",
     "pixelmatch": "~4.0.2",
-    "vinyl": "~2.1.0"
+    "vinyl": "~2.1.0",
+    "@types/vinyl": "^2.0.7"
   },
   "keywords": [
     "sprite",
