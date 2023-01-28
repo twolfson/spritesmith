@@ -1,13 +1,8 @@
 language: node_js
 sudo: false
 node_js:
-  - "9"
-  - "8"
-  - "6"
-  - "4"
-matrix:
-  allow_failures:
-    - node_js: "9"
+  - "16"
+  - "14"
 
 # Set up `apt` for `canvassmith`, based on `node-canvas` dependencies
 # https://github.com/Automattic/node-canvas/blob/v1.3.0/.travis.yml#L14-L19
