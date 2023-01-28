@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.4.1 - Upgraded Travis CI Node.js environment and to `canvassmith@1.7.0` in `devDependencies`
+
 3.4.0 - Upgraded to `pixelsmith@2.3.0` to propagate `npm audit` fix
 
 3.3.1 - Corrected license attribution and URL
