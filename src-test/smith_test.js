@@ -199,7 +199,7 @@ describe('An empty array', function () {
 
     it('has no errors', spritesmithUtils.assertNoError());
     it('renders an empty spritesheet', function () {
-      assert.deepEqual(this.result.image, new Buffer(0));
+      assert.deepEqual(this.result.image, Buffer.alloc(0));
     });
     it('returns an empty coordinate mapping', function () {
       assert.deepEqual(this.result.coordinates, {});
