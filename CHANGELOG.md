@@ -1,4 +1,6 @@
 # spritesmith changelog
+3.5.1 - Fixed deprecated `Buffer` usage in #96, via @ChrisdeWolf
+
 3.5.0 - Upgraded to `semver@5.7.2` to fix #92, via @ChrisdeWolf in #95
 
 3.4.1 - Upgraded Travis CI Node.js environment and to `canvassmith@1.7.0` in `devDependencies`
