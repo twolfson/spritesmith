@@ -43,7 +43,7 @@
     "foundry-release-git": "~2.0.2",
     "foundry-release-npm": "~2.0.2",
     "get-pixels": "~3.1.0",
-    "mocha": "~1.21.4",
+    "mocha": "~10.7.3",
     "phantomjssmith": "~1.0.0",
     "pixelmatch": "~4.0.2",
     "vinyl": "~2.1.0"
