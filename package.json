@@ -28,6 +28,7 @@
     "lint": "eslint src/ src-test/ --max-warnings 0",
     "test": "npm run precheck && mocha src-test/ --timeout 60000 --reporter dot && npm run lint"
   },
+  "overrides": { "tough-cookie": "~4.1.3" },
   "dependencies": {
     "concat-stream": "~1.5.1",
     "layout": "~2.2.0",
